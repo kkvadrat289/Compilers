@@ -1,0 +1,4 @@
+for file in `find ./samples`
+do
+   cat $file | ./example;
+done

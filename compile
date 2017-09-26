@@ -1,0 +1,2 @@
+lex example.l
+cc lex.yy.c -o example -lfl
