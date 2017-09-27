@@ -1,6 +1,7 @@
+./compile
 echo "" >> ./result.txt
 for file in `find ./samples`
 do
-   cat $file | ./example | cat >> ./result.txt
+   cat $file | ./example
 done
 grep ERROR ./result.txt

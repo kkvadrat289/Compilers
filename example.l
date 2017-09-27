@@ -51,6 +51,9 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "*" printf("STAR");
 "\[" printf("LEFT BRACE");
 "\]" printf("RIGHT BRACE");
+"<" printf("LESS");
+"!" printf("BANG");
+"&" printf("AMPERSAND");
 . printf("ERRROOOOOOOOORRRR(%s)", yytext);
 %%
 
