@@ -1,4 +1,6 @@
+echo "" >> ./result.txt
 for file in `find ./samples`
 do
-   cat $file | ./example;
+   cat $file | ./example | cat >> ./result.txt
 done
+grep ERROR ./result.txt

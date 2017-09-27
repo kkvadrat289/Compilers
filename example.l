@@ -30,11 +30,28 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "new" printf("NEW");
 "this" printf("THIS");
 "return" printf("RETURN");
-[0-9] printf("DIGIT");
+{DIGIT} printf("DIGIT");
 [a-zA-Z_] printf("LETER");
-{LETER}({DIGIT}|{LETER})* printf("ID");
+{LETER}({DIGIT}|{LETER})* printf("ID(%s)", yytext);
 [1-9]{DIGIT}* printf("INT");
 "//".* printf("COMMENT");
+[ \t\n]+ printf(" ");
+"{" printf("LEFT BRACKET");
+"}" printf("RIGHT BRACKET");
+"(" printf("LEFT PARENTHESIS");
+")" printf("RIGHT PARENTHESIS");
+";" printf("SEMICOLON");
+"-" printf("MINUS");
+"+" printf("PLUS");
+"%" printf("PERCENT");
+"/" printf("DIVIDE");
+"," printf("COMMA");
+"." printf("DOT"); 
+"=" printf("EQUALS");
+"*" printf("STAR");
+"\[" printf("LEFT BRACE");
+"\]" printf("RIGHT BRACE");
+. printf("ERRROOOOOOOOORRRR(%s)", yytext);
 %%
 
 void printLocation(){
