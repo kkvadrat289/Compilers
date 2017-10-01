@@ -1,10 +1,18 @@
 %{
 #include <stdio.h>
-#define YY_USER_ACTION printLocation();
+#define YY_USER_ACTION updateLocation();
 static int line_number = 1;
 static int column_number = 1;
-void printLocation();
+struct yylloc{
+	int first_line;
+	int first_column;
+	int last_line;
+	int last_column;
+};
+void updateLocation();
 %}
+
+%option noyywrap
 
 DIGIT [0-9]
 LETER [a-zA-Z_]
@@ -35,7 +43,8 @@ IntegerLiteral [1-9]{DIGIT}*|0
 {LETER}({DIGIT}|{LETER})* printf("ID(%s)", yytext);
 [1-9]{DIGIT}* printf("INT");
 "//".* printf("COMMENT");
-[ \t\n]+ printf(" ");
+[ \t]+ printf("");
+\n printf("\n");
 "{" printf("LEFT BRACKET");
 "}" printf("RIGHT BRACKET");
 "(" printf("LEFT PARENTHESIS");
@@ -57,6 +66,22 @@ IntegerLiteral [1-9]{DIGIT}*|0
 . printf("ERRROOOOOOOOORRRR(%s)", yytext);
 %%
 
-void printLocation(){
-	
+void updateLocation(){
+	printf(" ");
+	yylloc.first_line = line_number;
+	yylloc.first_column = column_number;
+
+	for( int i = 0; i < yyleng; i++ ) {
+		if( yytext[i] == '\n' ) {
+			line_number++;
+			column_number = 1;
+		} else {
+			column_number++;
+		}
+	}
+
+	yylloc.last_line = line_number;
+	yylloc.last_column = column_number;
+
+	printf( "%s", yytext );
 }
