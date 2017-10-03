@@ -535,6 +535,8 @@ char *yytext;
 #line 2 "example.l"
 #include <stdio.h>
 #define YY_USER_ACTION updateLocation();
+#define ANSI_COLOR_RESET   "\x1b[0m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
 static int line_number = 1;
 static int column_number = 1;
 struct yylloc{
@@ -542,10 +544,10 @@ struct yylloc{
 	int first_column;
 	int last_line;
 	int last_column;
-};
+} yylloc;
 void updateLocation();
-#line 547 "lex.yy.c"
-#line 548 "lex.yy.c"
+#line 549 "lex.yy.c"
+#line 550 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -762,9 +764,9 @@ YY_DECL
 		}
 
 	{
-#line 22 "example.l"
+#line 24 "example.l"
 
-#line 767 "lex.yy.c"
+#line 769 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -823,231 +825,231 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 23 "example.l"
+#line 25 "example.l"
 printf("CLASS");
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 24 "example.l"
+#line 26 "example.l"
 printf("VAR");
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 25 "example.l"
+#line 27 "example.l"
 printf("EXTENDS");
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 26 "example.l"
+#line 28 "example.l"
 printf("PUBLIC");
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 27 "example.l"
+#line 29 "example.l"
 printf("STATICVOIDMAIN");
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 28 "example.l"
+#line 30 "example.l"
 printf("STRING");
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 29 "example.l"
+#line 31 "example.l"
 printf("INT");
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 30 "example.l"
+#line 32 "example.l"
 printf("BOOLEAN");
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 31 "example.l"
+#line 33 "example.l"
 printf("IF");
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 "example.l"
+#line 34 "example.l"
 printf("ELSE");
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 33 "example.l"
+#line 35 "example.l"
 printf("WHILE");
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 34 "example.l"
+#line 36 "example.l"
 printf("SYSTEMOUTPRINTLN");
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 35 "example.l"
+#line 37 "example.l"
 printf("LENGTH");
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 36 "example.l"
+#line 38 "example.l"
 printf("TRUE");
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 37 "example.l"
+#line 39 "example.l"
 printf("FALSE");
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 38 "example.l"
+#line 40 "example.l"
 printf("NEW");
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 39 "example.l"
+#line 41 "example.l"
 printf("THIS");
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 40 "example.l"
+#line 42 "example.l"
 printf("RETURN");
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 41 "example.l"
+#line 43 "example.l"
 printf("DIGIT");
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 42 "example.l"
+#line 44 "example.l"
 printf("LETER");
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 43 "example.l"
+#line 45 "example.l"
 printf("ID(%s)", yytext);
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 44 "example.l"
+#line 46 "example.l"
 printf("INT");
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 45 "example.l"
+#line 47 "example.l"
 printf("COMMENT");
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 46 "example.l"
+#line 48 "example.l"
 printf("");
 	YY_BREAK
 case 25:
 /* rule 25 can match eol */
 YY_RULE_SETUP
-#line 47 "example.l"
-printf("\n");
+#line 49 "example.l"
+printf("");
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 48 "example.l"
+#line 50 "example.l"
 printf("LEFT BRACKET");
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 49 "example.l"
+#line 51 "example.l"
 printf("RIGHT BRACKET");
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 50 "example.l"
+#line 52 "example.l"
 printf("LEFT PARENTHESIS");
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 51 "example.l"
+#line 53 "example.l"
 printf("RIGHT PARENTHESIS");
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 52 "example.l"
+#line 54 "example.l"
 printf("SEMICOLON");
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 53 "example.l"
+#line 55 "example.l"
 printf("MINUS");
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 54 "example.l"
+#line 56 "example.l"
 printf("PLUS");
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 55 "example.l"
+#line 57 "example.l"
 printf("PERCENT");
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 56 "example.l"
+#line 58 "example.l"
 printf("DIVIDE");
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 57 "example.l"
+#line 59 "example.l"
 printf("COMMA");
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 58 "example.l"
+#line 60 "example.l"
 printf("DOT"); 
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 59 "example.l"
+#line 61 "example.l"
 printf("EQUALS");
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 60 "example.l"
+#line 62 "example.l"
 printf("STAR");
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 61 "example.l"
+#line 63 "example.l"
 printf("LEFT BRACE");
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 62 "example.l"
+#line 64 "example.l"
 printf("RIGHT BRACE");
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 63 "example.l"
+#line 65 "example.l"
 printf("LESS");
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 64 "example.l"
+#line 66 "example.l"
 printf("BANG");
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 65 "example.l"
+#line 67 "example.l"
 printf("AMPERSAND");
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 66 "example.l"
-printf("ERRROOOOOOOOORRRR(%s)", yytext);
+#line 68 "example.l"
+printf(ANSI_COLOR_BLUE "ERRROOOOOOOOORRRR(%s)" ANSI_COLOR_RESET, yytext);
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 67 "example.l"
+#line 69 "example.l"
 ECHO;
 	YY_BREAK
-#line 1050 "lex.yy.c"
+#line 1052 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2052,7 +2054,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 67 "example.l"
+#line 69 "example.l"
 
 
 void updateLocation(){
@@ -2072,6 +2074,7 @@ void updateLocation(){
 	yylloc.last_line = line_number;
 	yylloc.last_column = column_number;
 
-	printf( "%s", yytext );
+	
+	printf("[%d %d]", line_number, column_number);
 }
 

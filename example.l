@@ -1,6 +1,8 @@
 %{
 #include <stdio.h>
 #define YY_USER_ACTION updateLocation();
+#define ANSI_COLOR_RESET   "\x1b[0m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
 static int line_number = 1;
 static int column_number = 1;
 struct yylloc{
@@ -8,7 +10,7 @@ struct yylloc{
 	int first_column;
 	int last_line;
 	int last_column;
-};
+} yylloc;
 void updateLocation();
 %}
 
@@ -44,7 +46,7 @@ IntegerLiteral [1-9]{DIGIT}*|0
 [1-9]{DIGIT}* printf("INT");
 "//".* printf("COMMENT");
 [ \t]+ printf("");
-\n printf("\n");
+\n printf("");
 "{" printf("LEFT BRACKET");
 "}" printf("RIGHT BRACKET");
 "(" printf("LEFT PARENTHESIS");
@@ -63,7 +65,7 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "<" printf("LESS");
 "!" printf("BANG");
 "&" printf("AMPERSAND");
-. printf("ERRROOOOOOOOORRRR(%s)", yytext);
+. printf(ANSI_COLOR_BLUE "ERRROOOOOOOOORRRR(%s)" ANSI_COLOR_RESET, yytext);
 %%
 
 void updateLocation(){
@@ -83,5 +85,6 @@ void updateLocation(){
 	yylloc.last_line = line_number;
 	yylloc.last_column = column_number;
 
-	printf( "%s", yytext );
+	
+	printf("[%d %d]", line_number, column_number);
 }
