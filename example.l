@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include "example.tab.h"
 #define YY_USER_ACTION updateLocation();
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #define ANSI_COLOR_BLUE    "\x1b[34m"
@@ -23,49 +24,51 @@ id {LETER}({DIGIT}|{LETER})*
 IntegerLiteral [1-9]{DIGIT}*|0
 
 %%
-"class" printf("CLASS");
-"var" printf("VAR");
-"extends" printf("EXTENDS");
-"public" printf("PUBLIC");
-"static void main" printf("STATICVOIDMAIN");
-"String" printf("STRING");
-"int" printf("INT");
-"boolean" printf("BOOLEAN");
-"if" printf("IF");
-"else" printf("ELSE");
-"while" printf("WHILE");
-"System.out.println" printf("SYSTEMOUTPRINTLN");
-"length" printf("LENGTH");
-"true" printf("TRUE");
-"false" printf("FALSE");
-"new" printf("NEW");
-"this" printf("THIS");
-"return" printf("RETURN");
-{DIGIT} printf("DIGIT");
-[a-zA-Z_] printf("LETER");
-{LETER}({DIGIT}|{LETER})* printf("ID(%s)", yytext);
-[1-9]{DIGIT}* printf("INT");
-"//".* printf("COMMENT");
-[ \t\n]+ ;
-"{" printf("LEFT BRACKET");
-"}" printf("RIGHT BRACKET");
-"(" printf("LEFT PARENTHESIS");
-")" printf("RIGHT PARENTHESIS");
-";" printf("SEMICOLON");
-"-" printf("MINUS");
-"+" printf("PLUS");
-"%" printf("PERCENT");
-"/" printf("DIVIDE");
-"," printf("COMMA");
-"." printf("DOT"); 
-"=" printf("EQUALS");
-"*" printf("STAR");
-"\[" printf("LEFT BRACE");
-"\]" printf("RIGHT BRACE");
-"<" printf("LESS");
-"!" printf("BANG");
-"&" printf("AMPERSAND");
-. printf(ANSI_COLOR_BLUE "EROR(%s)" ANSI_COLOR_RESET, yytext);
+"class" 					return CLASS;
+"var" 						return VAR;
+"extends" 					return EXTENDS;
+"public" 					return PUBLIC;
+"static void main" 			return STATICVOIDMAIN;
+"String" 					return STRING;
+"int" 						return INT;
+"boolean" 					return BOOLEAN;
+"if" 						return IF;
+"else" 						return ELSE;
+"while" 					return WHILE;
+"System.out.println" 		return SYSTEMOUTPRINTLN;
+"length" 					return LENGTH;
+"true" 						return TRUE;
+"false" 					return FALSE;
+"new" 						return NEW;
+"this" 						return THIS;
+"return" 					return RETURN;
+{DIGIT} 					return DIGIT;
+[a-zA-Z_] 					return LETER;
+{LETER}({DIGIT}|{LETER})* 	return ID;
+[1-9]{DIGIT}* 				return NUMBER;
+"//".* 						return COMMENT;
+[ \t\n]+ 					;
+"{" 						return LEFT_BRACKET;
+"}" 						return RIGHT_BRACKET;
+"(" 						return LEFT_PARENTHESIS;
+")" 						return RIGHT_PARENTHESIS;
+";" 						return SEMICOLON;
+"-" 						return MINUS;
+"+" 						return PLUS;
+"%" 						return PERCENT;
+"/" 						return DIVIDE;
+"," 						return COMMA;
+"." 						return DOT;
+"=" 						return EQUALS;
+"*" 						return STAR;
+"\[" 						return LEFT_BRACE;
+"\]" 						return RIGHT_BRACE;
+"<" 						return LESS;
+"!" 						return BANG;
+"&" 						return AMPERSAND;
+. 							printf(ANSI_COLOR_BLUE "EROR(%s)" ANSI_COLOR_RESET, yytext);
+
+
 %%
 
 void updateLocation(){
@@ -85,5 +88,5 @@ void updateLocation(){
 	yylloc.last_line = line_number;
 	yylloc.last_column = column_number;
 
-	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
+	//printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
 }
