@@ -42,7 +42,6 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "new" 						return NEW;
 "this" 						return THIS;
 "return" 					return RETURN;
-{DIGIT} 					return DIGIT;
 [a-zA-Z_] 					return LETER;
 {LETER}({DIGIT}|{LETER})* 	return ID;
 [1-9]{DIGIT}* 				return NUMBER;
@@ -65,7 +64,8 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "\]" 						return RIGHT_BRACE;
 "<" 						return LESS;
 "!" 						return BANG;
-"&" 						return AMPERSAND;
+"&&" 						return AND;
+"||"						return OR;
 . 							printf(ANSI_COLOR_BLUE "EROR(%s)" ANSI_COLOR_RESET, yytext);
 
 
