@@ -30,10 +30,10 @@ void yyerror(char *s) {
 %token	ID
 %token	NUMBER
 %token	COMMENT
-%token	LEFT_BRACKET
-%token	RIGHT_BRACKET
-%token	LEFT_PARENTHESIS
-%token	RIGHT_PARENTHESIS
+%token	L_BRACKET
+%token	R_BRACKET
+%token	L_PARENTHESIS
+%token	R_PARENTHESIS
 %token	SEMICOLON
 %token 	MINUS
 %token 	PLUS
@@ -43,12 +43,13 @@ void yyerror(char *s) {
 %token 	DOT
 %token 	EQUALS
 %token 	STAR
-%token 	LEFT_BRACE
-%token 	RIGHT_BRACE
+%token 	L_BRACE
+%token 	R_BRACE
 %token 	LESS
 %token 	BANG	
 %token	AND
-%token	
+%token	<intVal>	INTEGER_VAL
+%token 	<intVal>	BOOL_VAL
 
 %union {
 	int intVal;
@@ -58,6 +59,30 @@ void yyerror(char *s) {
 %type <nameId> id
 
 %%
+method	:	PUBLIC type id 
+		|	PRIVATE
+
+type	:	INT L_BRACE R_BRACE
+		|	BOOLEAN
+		|	INT
+		|	id
+		;
+
+statements:	statements statement
+		|	statement
+		;
+
+statement:	LEFT_BRACKET statements R_BRACKET
+		|	IF L_PARENTHESIS exp R_PARENTHESIS statement ELSE statement 
+		|	WHILE L_PARENTHESIS exp R_PARENTHESIS statement
+		|	SYSTEMOUTPRINTLN L_PARENTHESIS exp R_PARENTHESIS SEMICOLON
+		|	id EQUALS exp SEMICOLON
+		|	id L_BRACE exp R_BRACE EQUALS exp SEMICOLON
+		;
+
+expressions:	expressions COMMA exp
+			|	exp
+			;
 
 exp 	: 	exp AND exp
 		|	exp LESS exp
@@ -66,18 +91,18 @@ exp 	: 	exp AND exp
 		|	exp STAR exp
 		|	exp PERCENT exp
 		|	exp OR exp
-		|	exp LEFT_BRACE exp RIGHT_BRACE
+		|	exp L_BRACE exp R_BRACE
 		| 	exp DOT LENGTH
-		| 	exp DOT ID LEFT_PARENTHESIS ( exp ( COMMA exp )* )? RIGHT_PARENTHESIS
-		| NUMBER
-		| TRUE
-		| FALSE
-		| id
-		| THIS
-		| NEW INT LEFT_BRACE exp RIGHT_BRACE
-		| NEW id LEFT_PARENTHESIS RIGHT_PARENTHESIS
-		| BANG exp
-		| LEFT_PARENTHESIS exp RIGHT_PARENTHESIS
+		| 	exp DOT id L_PARENTHESIS expressions R_PARENTHESIS
+		| 	INTEGER
+		| 	TRUE
+		|	FALSE
+		| 	id
+		| 	THIS
+		| 	NEW INT L_BRACE exp R_BRACE
+		| 	NEW id L_PARENTHESIS R_PARENTHESIS
+		| 	BANG exp
+		| 	L_PARENTHESIS exp R_PARENTHESIS
 		;
 
 id 	:	ID 	;

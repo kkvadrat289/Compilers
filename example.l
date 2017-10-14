@@ -47,10 +47,10 @@ IntegerLiteral [1-9]{DIGIT}*|0
 [1-9]{DIGIT}* 				return NUMBER;
 "//".* 						return COMMENT;
 [ \t\n]+ 					;
-"{" 						return LEFT_BRACKET;
-"}" 						return RIGHT_BRACKET;
-"(" 						return LEFT_PARENTHESIS;
-")" 						return RIGHT_PARENTHESIS;
+"{" 						return L_BRACKET;
+"}" 						return R_BRACKET;
+"(" 						return L_PARENTHESIS;
+")" 						return R_PARENTHESIS;
 ";" 						return SEMICOLON;
 "-" 						return MINUS;
 "+" 						return PLUS;
@@ -60,8 +60,8 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "." 						return DOT;
 "=" 						return EQUALS;
 "*" 						return STAR;
-"\[" 						return LEFT_BRACE;
-"\]" 						return RIGHT_BRACE;
+"\[" 						return L_BRACE;
+"\]" 						return R_BRACE;
 "<" 						return LESS;
 "!" 						return BANG;
 "&&" 						return AND;
