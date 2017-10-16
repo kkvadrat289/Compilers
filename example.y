@@ -37,21 +37,25 @@ void yyerror(char *s) {
 %token	ID
 %token	NUMBER
 %token	COMMENT
+
 %token	L_BRACKET
 %token	R_BRACKET
 %token	L_ROUND
 %token  R_ROUND
+%token 	L_SQUARE
+%token 	R_SQUARE
+
 %token	SEMICOLON
+
 %token 	MINUS
 %token 	PLUS
 %token 	PERCENT
 %token 	DIVIDE
+%token 	EQUALS
+
 %token 	COMMA
 %token 	DOT
-%token 	EQUALS
 %token 	STAR
-%token 	L_SQUARE
-%token 	R_SQUARE
 %token 	LESS
 %token 	BANG
 %token	AND
