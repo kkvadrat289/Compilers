@@ -1,19 +1,25 @@
 %{
 #include <stdio.h>
 #include "example.tab.h"
+
 #define YY_USER_ACTION updateLocation();
+
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #define ANSI_COLOR_BLUE    "\x1b[34m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
+
 static int line_number = 1;
 static int column_number = 1;
+
 struct yylloc{
 	int first_line;
 	int first_column;
 	int last_line;
 	int last_column;
 } yylloc;
+
 void updateLocation();
+
 %}
 
 %option noyywrap
@@ -42,30 +48,37 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "new" 						return NEW;
 "this" 						return THIS;
 "return" 					return RETURN;
+
 [a-zA-Z_] 					return LETER;
 {LETER}({DIGIT}|{LETER})* 	return ID;
 [1-9]{DIGIT}* 				return NUMBER;
 "//".* 						return COMMENT;
 [ \t\n]+ 					;
+
 "{" 						return L_BRACKET;
 "}" 						return R_BRACKET;
-"(" 						return L_PARENTHESIS;
-")" 						return R_PARENTHESIS;
+"(" 						return L_ROUND;
+")" 						return R_ROUND;
+"\[" 						return L_SQUARE;
+"\]" 						return R_SQUARE
+
 ";" 						return SEMICOLON;
+
 "-" 						return MINUS;
 "+" 						return PLUS;
 "%" 						return PERCENT;
 "/" 						return DIVIDE;
+"=" 						return EQUALS;
+
 "," 						return COMMA;
 "." 						return DOT;
-"=" 						return EQUALS;
 "*" 						return STAR;
-"\[" 						return L_BRACE;
-"\]" 						return R_BRACE;
 "<" 						return LESS;
 "!" 						return BANG;
+
 "&&" 						return AND;
 "||"						return OR;
+
 . 							printf(ANSI_COLOR_BLUE "EROR(%s)" ANSI_COLOR_RESET, yytext);
 
 
@@ -87,6 +100,5 @@ void updateLocation(){
 
 	yylloc.last_line = line_number;
 	yylloc.last_column = column_number;
-
 	//printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
 }
