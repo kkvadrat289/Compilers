@@ -11,12 +11,12 @@
 static int line_number = 1;
 static int column_number = 1;
 
-struct yylloc{
+/*struct yylloc{
 	int first_line;
 	int first_column;
 	int last_line;
 	int last_column;
-} yylloc;
+} yylloc;*/
 
 void updateLocation();
 
@@ -34,6 +34,7 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "var" 						return VAR;
 "extends" 					return EXTENDS;
 "public" 					return PUBLIC;
+"private"					return PRIVATE;
 "static void main" 			return STATICVOIDMAIN;
 "String" 					return STRING;
 "int" 						return INT;
@@ -51,7 +52,7 @@ IntegerLiteral [1-9]{DIGIT}*|0
 
 [a-zA-Z_] 					return LETER;
 {LETER}({DIGIT}|{LETER})* 	return ID;
-[1-9]{DIGIT}* 				return NUMBER;
+[1-9]{DIGIT}* 				return INTEGER;
 "//".* 						return COMMENT;
 [ \t\n]+ 					;
 
@@ -60,7 +61,7 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "(" 						return L_ROUND;
 ")" 						return R_ROUND;
 "\[" 						return L_SQUARE;
-"\]" 						return R_SQUARE
+"\]" 						return R_SQUARE;
 
 ";" 						return SEMICOLON;
 
@@ -100,5 +101,5 @@ void updateLocation(){
 
 	yylloc.last_line = line_number;
 	yylloc.last_column = column_number;
-	//printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
+	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
 }

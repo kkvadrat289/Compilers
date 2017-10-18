@@ -45,60 +45,90 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
+    END = 0,
     CLASS = 258,
     VAR = 259,
     EXTENDS = 260,
     PUBLIC = 261,
-    STATICVOIDMAIN = 262,
-    STRING = 263,
-    INT = 264,
-    BOOLEAN = 265,
-    IF = 266,
-    ELSE = 267,
-    WHILE = 268,
-    SYSTEMOUTPRINTLN = 269,
-    LENGTH = 270,
-    TRUE = 271,
-    FALSE = 272,
-    NEW = 273,
-    THIS = 274,
-    RETURN = 275,
-    DIGIT = 276,
-    LETER = 277,
-    ID = 278,
-    NUMBER = 279,
-    COMMENT = 280,
-    LEFT_BRACKET = 281,
-    RIGHT_BRACKET = 282,
-    LEFT_PARENTHESIS = 283,
-    RIGHT_PARENTHESIS = 284,
-    SEMICOLON = 285,
-    MINUS = 286,
-    PLUS = 287,
-    PERCENT = 288,
-    DIVIDE = 289,
-    COMMA = 290,
-    DOT = 291,
-    EQUALS = 292,
-    STAR = 293,
-    LEFT_BRACE = 294,
-    RIGHT_BRACE = 295,
-    LESS = 296,
-    BANG = 297,
-    AMPERSAND = 298
+    PRIVATE = 262,
+    STATICVOIDMAIN = 263,
+    STRING = 264,
+    INT = 265,
+    INTEGER = 266,
+    BOOLEAN = 267,
+    IF = 268,
+    ELSE = 269,
+    WHILE = 270,
+    SYSTEMOUTPRINTLN = 271,
+    LENGTH = 272,
+    TRUE = 273,
+    FALSE = 274,
+    NEW = 275,
+    THIS = 276,
+    RETURN = 277,
+    DIGIT = 278,
+    LETER = 279,
+    ID = 280,
+    COMMENT = 281,
+    L_BRACKET = 282,
+    R_BRACKET = 283,
+    L_ROUND = 284,
+    R_ROUND = 285,
+    L_SQUARE = 286,
+    R_SQUARE = 287,
+    SEMICOLON = 288,
+    MINUS = 289,
+    PLUS = 290,
+    PERCENT = 291,
+    DIVIDE = 292,
+    EQUALS = 293,
+    COMMA = 294,
+    DOT = 295,
+    STAR = 296,
+    LESS = 297,
+    BANG = 298,
+    AND = 299,
+    OR = 300,
+    INTEGER_VAL = 301,
+    BOOL_VAL = 302
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 10 "example.y" /* yacc.c:1909  */
+
+	int intVal;
+	char* nameId;
+
+#line 108 "example.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+/* Location type.  */
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE YYLTYPE;
+struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
+
 
 extern YYSTYPE yylval;
-
+extern YYLTYPE yylloc;
 int yyparse (void);
 
 #endif /* !YY_YY_EXAMPLE_TAB_H_INCLUDED  */
