@@ -50,10 +50,9 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "this" 						return THIS;
 "return" 					return RETURN;
 
-[a-zA-Z_] 					return LETER;
 {LETER}({DIGIT}|{LETER})* 	return ID;
-[1-9]{DIGIT}* 				return INTEGER;
-"//".* 						return COMMENT;
+[1-9]{DIGIT}*|0		return INTEGER;
+"//".* 						;
 [ \t\n]+ 					;
 
 "{" 						return L_BRACKET;
@@ -101,5 +100,8 @@ void updateLocation(){
 
 	yylloc.last_line = line_number;
 	yylloc.last_column = column_number;
+	printf(ANSI_COLOR_GREEN);
+	printf(yytext);
+	printf(ANSI_COLOR_RESET);
 	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
 }

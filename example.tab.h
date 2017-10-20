@@ -34,7 +34,7 @@
 # define YY_YY_EXAMPLE_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -99,7 +99,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 10 "example.y" /* yacc.c:1909  */
+#line 13 "example.y" /* yacc.c:1909  */
 
 	int intVal;
 	char* nameId;

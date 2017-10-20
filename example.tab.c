@@ -65,13 +65,16 @@
 #line 1 "example.y" /* yacc.c:339  */
 
 #include <stdio.h>
+#define RED "\x1b[31m"
+#define RESET "\x1b[0m"
+
 extern int yylex();
 void yyerror(char *s) {
-      fprintf (stderr, "%s\n", s);
+      printf (RED "%s\n" RESET, s);
     }
 
 
-#line 75 "example.tab.c" /* yacc.c:339  */
+#line 78 "example.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -95,7 +98,7 @@ void yyerror(char *s) {
 # define YY_YY_EXAMPLE_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -160,12 +163,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 10 "example.y" /* yacc.c:355  */
+#line 13 "example.y" /* yacc.c:355  */
 
 	int intVal;
 	char* nameId;
 
-#line 169 "example.tab.c" /* yacc.c:355  */
+#line 172 "example.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -196,7 +199,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 200 "example.tab.c" /* yacc.c:358  */
+#line 203 "example.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -500,13 +503,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    83,    83,    84,    87,    93,    94,    97,    98,    99,
-     100,   101,   102,   103,   104,   107,   108,   111,   114,   115,
-     118,   120,   122,   124,   128,   129,   130,   133,   134,   137,
-     138,   139,   140,   143,   144,   147,   148,   149,   150,   151,
-     152,   155,   156,   159,   160,   161,   162,   163,   164,   165,
-     166,   167,   168,   169,   170,   171,   172,   173,   174,   175,
-     176,   177,   178,   181
+       0,    86,    86,    87,    90,    96,    97,   100,   101,   102,
+     103,   104,   105,   106,   107,   110,   111,   114,   117,   118,
+     121,   123,   125,   127,   131,   132,   133,   136,   137,   140,
+     141,   142,   143,   146,   147,   150,   151,   152,   153,   154,
+     155,   158,   159,   162,   163,   164,   165,   166,   167,   168,
+     169,   170,   171,   172,   173,   174,   175,   176,   177,   178,
+     179,   180,   181,   184
 };
 #endif
 
@@ -1531,121 +1534,379 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 83 "example.y" /* yacc.c:1646  */
-    {printf("goal");}
-#line 1537 "example.tab.c" /* yacc.c:1646  */
+#line 86 "example.y" /* yacc.c:1646  */
+    {printf("goal only\n");}
+#line 1540 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 84 "example.y" /* yacc.c:1646  */
-    {printf("goal");}
-#line 1543 "example.tab.c" /* yacc.c:1646  */
+#line 87 "example.y" /* yacc.c:1646  */
+    {printf("goal\n");}
+#line 1546 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 90 "example.y" /* yacc.c:1646  */
-    {printf("main_class");}
-#line 1549 "example.tab.c" /* yacc.c:1646  */
+#line 93 "example.y" /* yacc.c:1646  */
+    {printf("main_class\n");}
+#line 1552 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 96 "example.y" /* yacc.c:1646  */
+    {printf("classes\n");}
+#line 1558 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 94 "example.y" /* yacc.c:1646  */
-    {printf("class");}
-#line 1555 "example.tab.c" /* yacc.c:1646  */
+#line 97 "example.y" /* yacc.c:1646  */
+    {printf("classes\n");}
+#line 1564 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 100 "example.y" /* yacc.c:1646  */
+    {printf("class (%s)\n", (yyvsp[-2].nameId) );}
+#line 1570 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 101 "example.y" /* yacc.c:1646  */
+    {printf("class (%s) vars\n", (yyvsp[-3].nameId) );}
+#line 1576 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 9:
+#line 102 "example.y" /* yacc.c:1646  */
+    {printf("class (%s) methods\n", (yyvsp[-3].nameId) );}
+#line 1582 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 10:
+#line 103 "example.y" /* yacc.c:1646  */
+    {printf("class (%s) vars methods\n", (yyvsp[-4].nameId));}
+#line 1588 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 11:
+#line 104 "example.y" /* yacc.c:1646  */
+    {printf("class ext (%s)\n", (yyvsp[-3].nameId) );}
+#line 1594 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 12:
+#line 105 "example.y" /* yacc.c:1646  */
+    {printf("class ext (%s) vars\n", (yyvsp[-4].nameId) );}
+#line 1600 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 106 "example.y" /* yacc.c:1646  */
+    {printf("class ext (%s) methods\n", (yyvsp[-4].nameId) );}
+#line 1606 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 107 "example.y" /* yacc.c:1646  */
+    {printf("class ext(%s) vars methods\n", (yyvsp[-5].nameId));}
+#line 1612 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 110 "example.y" /* yacc.c:1646  */
+    {printf("vars_vars\n");}
+#line 1618 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 108 "example.y" /* yacc.c:1646  */
-    {printf("var");}
-#line 1561 "example.tab.c" /* yacc.c:1646  */
+#line 111 "example.y" /* yacc.c:1646  */
+    {printf("vars_var\n");}
+#line 1624 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 114 "example.y" /* yacc.c:1646  */
+    {printf("var\n");}
+#line 1630 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 117 "example.y" /* yacc.c:1646  */
+    {printf("methods 1\n");}
+#line 1636 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 115 "example.y" /* yacc.c:1646  */
-    {printf("method");}
-#line 1567 "example.tab.c" /* yacc.c:1646  */
+#line 118 "example.y" /* yacc.c:1646  */
+    {printf("methods 2\n");}
+#line 1642 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 122 "example.y" /* yacc.c:1646  */
+    {printf("method 1 (%s)\n", (yyvsp[-10].nameId));}
+#line 1648 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 124 "example.y" /* yacc.c:1646  */
+    {printf("method 2 (%s)\n", (yyvsp[-9].nameId));}
+#line 1654 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 22:
+#line 126 "example.y" /* yacc.c:1646  */
+    {printf("method 3 (%s)\n", (yyvsp[-9].nameId));}
+#line 1660 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 128 "example.y" /* yacc.c:1646  */
+    {printf("method 4 (%s)\n", (yyvsp[-8].nameId));}
+#line 1666 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 131 "example.y" /* yacc.c:1646  */
+    {printf("args empty\n" );}
+#line 1672 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 129 "example.y" /* yacc.c:1646  */
-    {printf("args");}
-#line 1573 "example.tab.c" /* yacc.c:1646  */
+#line 132 "example.y" /* yacc.c:1646  */
+    {printf("args 2\n");}
+#line 1678 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 130 "example.y" /* yacc.c:1646  */
-    {printf("arg");}
-#line 1579 "example.tab.c" /* yacc.c:1646  */
+#line 133 "example.y" /* yacc.c:1646  */
+    {printf("args 3\n");}
+#line 1684 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 133 "example.y" /* yacc.c:1646  */
-    {printf("public");}
-#line 1585 "example.tab.c" /* yacc.c:1646  */
+#line 136 "example.y" /* yacc.c:1646  */
+    {printf("public\n");}
+#line 1690 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 134 "example.y" /* yacc.c:1646  */
-    {printf("private");}
-#line 1591 "example.tab.c" /* yacc.c:1646  */
+#line 137 "example.y" /* yacc.c:1646  */
+    {printf("private\n");}
+#line 1696 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 137 "example.y" /* yacc.c:1646  */
-    {printf("int[]");}
-#line 1597 "example.tab.c" /* yacc.c:1646  */
+#line 140 "example.y" /* yacc.c:1646  */
+    {printf("int[]\n");}
+#line 1702 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 138 "example.y" /* yacc.c:1646  */
-    {printf("boolean");}
-#line 1603 "example.tab.c" /* yacc.c:1646  */
+#line 141 "example.y" /* yacc.c:1646  */
+    {printf("boolean\n");}
+#line 1708 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 139 "example.y" /* yacc.c:1646  */
-    {printf("int");}
-#line 1609 "example.tab.c" /* yacc.c:1646  */
+#line 142 "example.y" /* yacc.c:1646  */
+    {printf("int\n");}
+#line 1714 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 140 "example.y" /* yacc.c:1646  */
-    {printf("id");}
-#line 1615 "example.tab.c" /* yacc.c:1646  */
+#line 143 "example.y" /* yacc.c:1646  */
+    {printf("id\n");}
+#line 1720 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 143 "example.y" /* yacc.c:1646  */
-    {printf("statements");}
-#line 1621 "example.tab.c" /* yacc.c:1646  */
+#line 146 "example.y" /* yacc.c:1646  */
+    {printf("statements 1\n");}
+#line 1726 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 144 "example.y" /* yacc.c:1646  */
-    {printf("statement");}
-#line 1627 "example.tab.c" /* yacc.c:1646  */
+#line 147 "example.y" /* yacc.c:1646  */
+    {printf("statements 2\n");}
+#line 1732 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 35:
+#line 150 "example.y" /* yacc.c:1646  */
+    {printf("statement 1\n");}
+#line 1738 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 36:
+#line 151 "example.y" /* yacc.c:1646  */
+    {printf("statement 2 if\n");}
+#line 1744 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 37:
+#line 152 "example.y" /* yacc.c:1646  */
+    {printf("statement 3 while\n");}
+#line 1750 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 153 "example.y" /* yacc.c:1646  */
+    {printf("statement 4 sys out print\n");}
+#line 1756 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 39:
+#line 154 "example.y" /* yacc.c:1646  */
+    {printf("statement 5 =\n");}
+#line 1762 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 40:
+#line 155 "example.y" /* yacc.c:1646  */
+    {printf("statement 6 id[]=\n");}
+#line 1768 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 155 "example.y" /* yacc.c:1646  */
-    {printf("expressions");}
-#line 1633 "example.tab.c" /* yacc.c:1646  */
+#line 158 "example.y" /* yacc.c:1646  */
+    {printf("expressions 1\n");}
+#line 1774 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 156 "example.y" /* yacc.c:1646  */
-    {printf("expression");}
-#line 1639 "example.tab.c" /* yacc.c:1646  */
+#line 159 "example.y" /* yacc.c:1646  */
+    {printf("expression 2\n");}
+#line 1780 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 162 "example.y" /* yacc.c:1646  */
+    {printf("and\n");}
+#line 1786 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 44:
+#line 163 "example.y" /* yacc.c:1646  */
+    {printf("less\n");}
+#line 1792 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 45:
+#line 164 "example.y" /* yacc.c:1646  */
+    {printf("PLUS\n");}
+#line 1798 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 46:
+#line 165 "example.y" /* yacc.c:1646  */
+    {printf("MINUS\n");}
+#line 1804 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 47:
+#line 166 "example.y" /* yacc.c:1646  */
+    {printf("*\n");}
+#line 1810 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 167 "example.y" /* yacc.c:1646  */
+    {printf("PERCENT\n");}
+#line 1816 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 49:
+#line 168 "example.y" /* yacc.c:1646  */
+    {printf("or\n");}
+#line 1822 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 169 "example.y" /* yacc.c:1646  */
+    {printf("[ ]\n");}
+#line 1828 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 170 "example.y" /* yacc.c:1646  */
+    {printf("LENGTH\n");}
+#line 1834 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 52:
+#line 171 "example.y" /* yacc.c:1646  */
+    {printf("%s()\n", (yyvsp[-2].nameId));}
+#line 1840 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 53:
+#line 172 "example.y" /* yacc.c:1646  */
+    {printf("%s()\n", (yyvsp[-3].nameId));}
+#line 1846 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 54:
+#line 173 "example.y" /* yacc.c:1646  */
+    {printf("INTEGER\n");}
+#line 1852 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 55:
+#line 174 "example.y" /* yacc.c:1646  */
+    {printf("true\n");}
+#line 1858 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 56:
+#line 175 "example.y" /* yacc.c:1646  */
+    {printf("false\n");}
+#line 1864 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 57:
+#line 176 "example.y" /* yacc.c:1646  */
+    {printf("id\n");}
+#line 1870 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 58:
+#line 177 "example.y" /* yacc.c:1646  */
+    {printf("THIS\n");}
+#line 1876 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 59:
+#line 178 "example.y" /* yacc.c:1646  */
+    {printf("new int [exp]\n");}
+#line 1882 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 60:
+#line 179 "example.y" /* yacc.c:1646  */
+    {printf("new (%s) ()\n", (yyvsp[-2].nameId));}
+#line 1888 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 61:
+#line 180 "example.y" /* yacc.c:1646  */
+    {printf("!exp\n");}
+#line 1894 "example.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 62:
+#line 181 "example.y" /* yacc.c:1646  */
+    {printf("(exp)\n");}
+#line 1900 "example.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 181 "example.y" /* yacc.c:1646  */
+#line 184 "example.y" /* yacc.c:1646  */
     {printf("ID");}
-#line 1645 "example.tab.c" /* yacc.c:1646  */
+#line 1906 "example.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1649 "example.tab.c" /* yacc.c:1646  */
+#line 1910 "example.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1880,5 +2141,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 182 "example.y" /* yacc.c:1906  */
+#line 185 "example.y" /* yacc.c:1906  */
 
+
+int main () { yydebug=0; return yyparse(); }
