@@ -1,0 +1,39 @@
++True
++False
++Binary expression:
+    And
+    LessThan
+    Plus
+    Minus
+    Times
+    Mod
+    Or
++Id
+Goal
+-Program
+MainClass
+ClassDeclSimple
+ClassDeclExtends
+VarDecl
+MethodDecl
+Formal
+IntArrayType
+BooleanType
+IntegerType
+IdentifierType
+Block
+If
+While
+Print
+Assign
+ArrayAssign
+ArrayLookup
+ArrayLength
+Call
+IntegerLiteral
+IdentifierExp
+This
+NewArray
+NewObject
+Not
+
