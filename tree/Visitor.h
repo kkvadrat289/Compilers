@@ -21,6 +21,13 @@ public:
     visit(CIdExp* node);
     visit(CNotExp* node);
     visit(CCallMethod* node);
+    visit(CNewIntArray* node);
+    visit(CNewClassObject* node);
+    visit(CRandomAccess* node);
+    visit(CLength* node);
+    visit(CLength* node);
+    visit(CPrintLine* node);
+    visit(CWhile* node);
 };
 
 #endif // VISITOR_H

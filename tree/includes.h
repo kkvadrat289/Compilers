@@ -24,5 +24,12 @@
 #include "NotExp.h"
 #include "ExpSeq.h"
 #include "CallMethod.h"
+#include "NewIntArray.h"
+#include "NewClassObject.h"
+#include "RandomAccess.h"
+#include "Length.h"
+#include "This.h"
+#include "PrintLine.h"
+#include "While.h"
 
 #endif // INCLUDES_H
