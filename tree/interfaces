@@ -9,13 +9,12 @@
     Mod
     Or
 +Id
-Goal
--Program
-MainClass
++Program (Goal)
++Main
 ClassDeclSimple
 ClassDeclExtends
-VarDecl
-MethodDecl
++VarDecl
++MethodDecl
 Formal
 IntArrayType
 BooleanType
@@ -36,4 +35,3 @@ This
 NewArray
 NewObject
 Not
-

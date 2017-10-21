@@ -1,0 +1,10 @@
+#ifndef UNARYEXP_H
+#define UNARYEXP_H
+
+#include "Visitor.h"
+
+class CUnaryExp: public IExpression{
+    
+}
+
+#endif // UNARYEXP_H

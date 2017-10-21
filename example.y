@@ -90,7 +90,7 @@ goal  : main_class END           {printf("goal only\n");}
 main_class  : CLASS id L_BRACKET
               PUBLIC STATICVOIDMAIN L_ROUND STRING L_SQUARE R_SQUARE id R_ROUND
               L_BRACKET statement_s R_BRACKET
-              R_BRACKET  {printf("main_class\n");}
+              R_BRACKET   {printf("main_class\n");}
             ;
 
 class_s : class_s class   {printf("classes\n");}
@@ -168,17 +168,17 @@ exp : exp AND exp                       {printf("and\n");}
 		|	exp OR exp                        {printf("or\n");}
 		|	exp L_SQUARE exp R_SQUARE         {printf("[ ]\n");}
 		| exp DOT LENGTH                    {printf("LENGTH\n");}
-    | exp DOT id L_ROUND R_ROUND        {printf("%s()\n", $3);}
-		| exp DOT id L_ROUND exp_s R_ROUND  {printf("%s()\n", $3);}
-		| INTEGER   {printf("INTEGER\n");}
-		| TRUE      {printf("true\n");}
-		|	FALSE     {printf("false\n");}
-		| id        {printf("id\n");}
-		| THIS      {printf("THIS\n");}
-		| NEW INT L_SQUARE exp R_SQUARE  {printf("new int [exp]\n");}
-		| NEW id L_ROUND R_ROUND         {printf("new (%s) ()\n", $2);}
-		| BANG exp                       {printf("!exp\n");}
-		| L_ROUND exp R_ROUND            {printf("(exp)\n");}
+    | exp DOT id L_ROUND R_ROUND        {printf("%s()\n", $3);/*call method*/}
+		| exp DOT id L_ROUND exp_s R_ROUND  {printf("%s()\n", $3);/*call method*/}
+		| INTEGER                           {printf("INTEGER\n");}
+		| TRUE                              {printf("true\n");}
+		|	FALSE                             {printf("false\n");}
+		| id                                {printf("id\n");}
+		| THIS                              {printf("THIS\n");}
+		| NEW INT L_SQUARE exp R_SQUARE     {printf("new int [exp]\n");}
+		| NEW id L_ROUND R_ROUND            {printf("new (%s) ()\n", $2);}
+		| BANG exp                          {printf("!exp\n");}
+		| L_ROUND exp R_ROUND               {printf("(exp)\n");}
 		;
 
 id 	:	ID                             {printf("ID");} ;

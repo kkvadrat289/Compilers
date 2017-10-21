@@ -6,7 +6,9 @@
 
 class IStatement: public INode{
 public:
-    virtual void accept(IVisitor *v) const override;
+    virtual void accept(IVisitor *v) const{
+        //pass
+    }
 }
 
 #endif // STATEMENT_H

@@ -20,7 +20,7 @@ public:
         right(right_)
     {}
 
-    void accept(IVisitor *v) const override{
+    void accept(IVisitor *v) const {
         v->visit(this);
     }
 private:

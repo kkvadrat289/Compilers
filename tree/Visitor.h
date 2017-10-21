@@ -19,6 +19,8 @@ public:
     visit(CAssignStatement* node);
     visit(CIf* node);
     visit(CIdExp* node);
+    visit(CNotExp* node);
+    visit(CCallMethod* node);
 };
 
 #endif // VISITOR_H

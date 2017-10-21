@@ -4,7 +4,7 @@
 #include "Expression.h"
 #include "Visitor.h"
 
-class CFalse: public INode{
+class CFalse: public IExpression{
 public:
     void accept(IVisitor* v) const{
         v->visit(this);

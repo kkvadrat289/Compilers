@@ -1,5 +1,7 @@
 AssignStatement.h
 BooleanExp.h
+CallMethod.h
+ExpSeq.h
 IdExp.h
 If.h
 IntegerExp.h
@@ -15,6 +17,7 @@ Main.h
 Method.h
 Node.cpp
 Node.h
+NotExp.h
 Program.h
 Statement.h
 StatementSeq.h

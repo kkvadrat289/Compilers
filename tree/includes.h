@@ -21,5 +21,8 @@
 #include "IdExp.h"
 #include "If.h"
 #include "AssignStatement.h"
+#include "NotExp.h"
+#include "ExpSeq.h"
+#include "CallMethod.h"
 
 #endif // INCLUDES_H
