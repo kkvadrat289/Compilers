@@ -12,6 +12,6 @@ public:
 private:
     std::shared_ptr<CMethodSeq> previousMethods;
     std::shared_ptr<CMethod> newMethod;
-}
+};
 
 #endif // METHODSEQ_H

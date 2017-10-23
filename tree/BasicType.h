@@ -3,6 +3,8 @@
 
 #include "Visitor.h"
 
+class IVisitor;
+
 class CBasicType: public INode{
 public:
     enum BasicType{
@@ -10,12 +12,10 @@ public:
         BOOL,
         INT_ARRAY
     };
-    CBasicType(BasicType type_): type(type_){}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    CBasicType(BasicType type_);
+    void accept(IVisitor *v) const;
 private:
     BasicType type;
-}
+};
 
 #endif // BASICTYPE_H

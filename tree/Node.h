@@ -3,6 +3,8 @@
 
 #include "Visitor.h"
 
+class IVisitor;
+
 class INode
 {
 public:

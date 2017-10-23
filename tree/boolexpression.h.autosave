@@ -1,0 +1,11 @@
+#ifndef BOOLEXPRESSION_H
+#define BOOLEXPRESSION_H
+
+#include "Expression.h"
+
+class BoolExpression: public IExpression{
+public:
+    void 
+}
+
+#endif // BOOLEXPRESSION_H

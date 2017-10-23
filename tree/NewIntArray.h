@@ -3,15 +3,13 @@
 
 #include "Visitor.h"
 
+class IVisitor;
+
 class CNewIntArray: public IExpression
 {
 public:
-    CNewIntArray(std::shared_ptr<IExpression> size_):
-        size(size_)
-    {}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    CNewIntArray(std::shared_ptr<IExpression> size_);
+    void accept(IVisitor *v) const;
 private:
     std::shared_ptr<IExpression> size;
 };
