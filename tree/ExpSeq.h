@@ -12,6 +12,6 @@ public:
 private:
     std::shared_ptr<CExpSeq> previousExp;
     std::shared_ptr<IExpression> lastExp;
-}
+};
 
 #endif // EXPSEQ_H

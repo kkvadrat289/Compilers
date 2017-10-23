@@ -6,28 +6,27 @@
 class IVisitor
 {
 public:
-    visit(CBinExpression* node);
-    visit(CId* node);
-    visit(CTrue* node);
-    visit(CFalse* node);
-    visit(CClass* node);
-    visit(CMain* node);
-    visit(CMethod* node);
-    visit(CProgram* node);
-    visit(CBooleanExp* node);
-    visit(CIntegerExp* node);
-    visit(CAssignStatement* node);
-    visit(CIf* node);
-    visit(CIdExp* node);
-    visit(CNotExp* node);
-    visit(CCallMethod* node);
-    visit(CNewIntArray* node);
-    visit(CNewClassObject* node);
-    visit(CRandomAccess* node);
-    visit(CLength* node);
-    visit(CLength* node);
-    visit(CPrintLine* node);
-    visit(CWhile* node);
+    virtual void visit(const CBinExpression* node) = 0;
+    virtual void visit(const CId* node) = 0;
+    virtual void visit(const CTrue* node) = 0;
+    virtual void visit(const CFalse* node) = 0;
+    virtual void visit(const CClass* node) = 0;
+    virtual void visit(const CMain* node) = 0;
+    virtual void visit(const CMethod* node) = 0;
+    virtual void visit(const CProgram* node) = 0;
+    virtual void visit(const CBooleanExp* node) = 0;
+    virtual void visit(const CIntegerExp* node) = 0;
+    virtual void visit(const CAssignStatement* node) = 0;
+    virtual void visit(const CIf* node) = 0;
+    virtual void visit(const CIdExp* node) = 0;
+    virtual void visit(const CNotExp* node) = 0;
+    virtual void visit(const CCallMethod* node) = 0;
+    virtual void visit(const CNewIntArray* node) = 0;
+    virtual void visit(const CNewClassObject* node) = 0;
+    virtual void visit(const CRandomAccess* node) = 0;
+    virtual void visit(const CLength* node) = 0;
+    virtual void visit(const CPrintLine* node) = 0;
+    virtual void visit(const CWhile* node) = 0;
 };
 
 #endif // VISITOR_H

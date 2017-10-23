@@ -2,7 +2,8 @@
 #define CLASS_H
 
 #include "Node.h"
-#include "Visitor.h"
+#include "VariableSeq.h"
+#include "MethodSeq.h"
 
 class CClass: public INode{
 public:
@@ -17,14 +18,12 @@ public:
         vars(vars_),
         methods(methods_)
     {}
-    void accept(IVisitor *v) const{
-          v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::string name;
     std::string extends;
     std::shared_ptr<CVariableSeq> vars;
     std::shared_ptr<CMethodSeq> methods;
-}
+};
 
 #endif // CLASS_H

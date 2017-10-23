@@ -20,13 +20,11 @@ public:
         right(right_)
     {}
 
-    void accept(IVisitor *v) const {
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const  override;
 private:
     BinType type;
     std::shared_ptr<INode> left;
     std::shared_ptr<INode> right;
-}
+};
 
 #endif // BINEXPRESSION_H

@@ -2,13 +2,10 @@
 #define BOOLEXPRESSION_H
 
 #include "Expression.h"
-#include "Visitor.h"
 
 class CTrue: public IExpression{
 public:
-    void accept(IVisitor* v) const{
-        v->visit(this);
-    }
-}
+    void accept(IVisitor* v) const override;
+};
 
 #endif // BOOLEXPRESSION_H

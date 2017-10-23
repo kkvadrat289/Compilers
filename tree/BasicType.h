@@ -1,7 +1,7 @@
 #ifndef BASICTYPE_H
 #define BASICTYPE_H
 
-#include "Visitor.h"
+#include "Node.h"
 
 class CBasicType: public INode{
 public:
@@ -11,9 +11,7 @@ public:
         INT_ARRAY
     };
     CBasicType(BasicType type_): type(type_){}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     BasicType type;
 }

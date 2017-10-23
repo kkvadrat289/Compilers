@@ -7,7 +7,7 @@
 #include "BinExpression.h"
 #include "Id.h"
 #include "Statement.h"
-#include "Main.h"
+#include "MainClass.h"
 #include "Program.h"
 #include "Method.h"
 #include "Class.h"

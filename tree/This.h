@@ -1,13 +1,11 @@
 #ifndef THIS_H
 #define THIS_H
 
-#include "Visitor.h"
+#include "Expression.h"
 
 class CThis: public IExpression{
 public:
-    void accept(IVisitor* v){
-        v->visit(this);
-    }
-}
+    void accept(IVisitor* v) const override;
+};
 
 #endif // THIS_H

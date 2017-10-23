@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include "Node.h"
+#include "StatementSeq.h"
 #include <string>
 
 class CMain: public INode{
@@ -11,13 +12,11 @@ public:
         paramName(param_),
         statements(statements_)
     {}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::string className;
     std::string paramName;
     std::shared_ptr<CStatementSeq> statements;
-}
+};
 
 #endif // MAIN_H

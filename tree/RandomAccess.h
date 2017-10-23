@@ -1,7 +1,7 @@
 #ifndef RANDOMACCESS_H
 #define RANDOMACCESS_H
 
-#include "Visitor.h"
+#include "Expression.h"
 
 class CRandomAccess: public IExpression{
 public:
@@ -9,12 +9,10 @@ public:
         array(array_),
         position(position_)
     {}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::shared_ptr<IExpression> array;
     std::shared_ptr<IExpression> position;
-}
+};
 
 #endif // RANDOMACCESS_H

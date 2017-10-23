@@ -2,7 +2,6 @@
 #define METHOD_H
 
 #include "Node.h"
-#include "Visitor.h"
 
 class CMethod: public INode{
 public:
@@ -16,9 +15,7 @@ public:
         statements(statements_),
         res(res_)
     {}
-    void accept(IVisitor *v) const {
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const  override;
 private:
     std::string modifier;
     std::shared_ptr<INode> type;
@@ -27,6 +24,6 @@ private:
     std::shared_ptr<CVariableSeq> vars;
     std::shared_ptr<CStatementSeq> statements;
     std::shared_ptr<INode> res;
-}
+};
 
 #endif // METHOD_H

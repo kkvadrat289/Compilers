@@ -9,12 +9,10 @@ public:
         previousStatements(prev),
         newStatement(newStatement_)
     {}
-    void accept(IVisitor *v) const{
-        //pass
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::shared_ptr<CStatementSeq> previousStatements;
     std::shared_ptr<IStatement> newStatement;
-}
+};
 
 #endif // STATEMENTSSEQ_H

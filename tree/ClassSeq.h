@@ -2,7 +2,7 @@
 #define CLASSSEQ_H
 
 #include "Node.h"
-#include "Visitor.h"
+#include "Class.h"
 
 class CClassSeq{
 public:
@@ -13,6 +13,6 @@ public:
 private:
     std::shared_ptr<CClassSeq> previousClasses;
     std::shared_ptr<CClass> newClass;
-}
+};
 
 #endif // CLASSSEQ_H

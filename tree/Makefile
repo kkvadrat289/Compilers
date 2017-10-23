@@ -1,7 +1,9 @@
+SOURCE=main.cpp AllProblemsSolution.cpp Visitor.cpp
+
 all: main
 
 main: main.cpp
-	g++ -g main.cpp -o main.o
+	g++ -g $(SOURCE) -o main.o
 
 clean:
-	rm main.o
+	rm main.o allproblemssolution.o visitor.o

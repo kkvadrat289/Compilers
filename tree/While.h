@@ -1,7 +1,7 @@
 #ifndef WHILE_H
 #define WHILE_H
 
-#include "Visitor.h"
+#include "Statement.h"
 
 class CWhile: public IStatement{
 public:
@@ -9,12 +9,10 @@ public:
         cond(cond_),
         actions(actions_)
     {}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::shared_ptr<IExpression> cond;
     std::shared_ptr<IStatement> actions;
-}
+};
 
 #endif // WHILE_H

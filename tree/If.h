@@ -1,7 +1,8 @@
 #ifndef IF_H
 #define IF_H
 
-#include "Visitor.h"
+#include "Statement.h"
+#include "StatementSeq.h"
 
 class CIf: public IStatement{
 public:
@@ -10,13 +11,11 @@ public:
         ifTrue(ifTrue_),
         ifFalse(ifFalse_)
     {}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::shared_ptr<INode> cond;
     std::shared_ptr<CStatementSeq> ifTrue;
     std::shared_ptr<CStatementSeq> ifFalse;
-}
+};
 
 #endif // IF_H

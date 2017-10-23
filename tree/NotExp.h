@@ -1,18 +1,16 @@
 #ifndef UNARYEXP_H
 #define UNARYEXP_H
 
-#include "Visitor.h"
+#include "Expression.h"
 
 class CNotExp: public IExpression{
 public:
     CNotExp(std::shared_ptr<IExpression> right_):
-        right(righgt_)
+        right(right_)
     {}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::shared_ptr<IExpression> right;
-}
+};
 
 #endif // UNARYEXP_H

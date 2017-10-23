@@ -2,8 +2,8 @@
 #define PROGRAM_H
 
 #include "Node.h"
+#include "ClassSeq.h"
 #include <vector>
-#include <memory>
 
 class CProgram: public INode{
 public:
@@ -11,13 +11,11 @@ public:
       main(main_),
       classes(classes_)
     {}
-    void accept(IVisitor *v) const {
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const  override;
 
 private:
    std::shared_ptr<CMain> main;
    std::shared_ptr<CClassSeq> classes;
-}
+};
 
 #endif // PROGRAM_H

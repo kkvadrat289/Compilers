@@ -3,7 +3,6 @@
 
 #include <string>
 #include "Node.h"
-#include "Visitor.h"
 
 class CVariable: public INode{
 public:
@@ -11,12 +10,10 @@ public:
         type(type_),
         name(name_)
     {}
-    void accept(IVisitor *v) const{
-        v->visit(this);
-    }
+    void accept(IVisitor *v) const override;
 private:
     std::shared_ptr<INode> type;
     std::string name;
-}
+};
 
 #endif // VARIABLE_H
