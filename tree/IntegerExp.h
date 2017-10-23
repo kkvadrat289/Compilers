@@ -3,14 +3,16 @@
 
 #include "Visitor.h"
 
-class IVisitor;
-
 class CIntegerExp: public IExpression{
 public:
-    CIntegerExp(int val_);
-    void accept(IVisitor *v) const;
+    CIntegerExp(int val_):
+        val(val_)
+    {}
+    void accept(IVisitor *v) const{
+        v->visit(this);
+    }
 private:
     int val;
-};
+}
 
 #endif // INTEGEREXPR_H

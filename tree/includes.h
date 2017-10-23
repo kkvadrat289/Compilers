@@ -22,7 +22,7 @@
 #include "If.h"
 #include "AssignStatement.h"
 #include "NotExp.h"
-#include "ExprSeq.h"
+#include "ExpSeq.h"
 #include "CallMethod.h"
 #include "NewIntArray.h"
 #include "NewClassObject.h"
@@ -31,6 +31,5 @@
 #include "This.h"
 #include "PrintLine.h"
 #include "While.h"
-#include "ExprSeq.h"
 
 #endif // INCLUDES_H

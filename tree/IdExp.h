@@ -3,14 +3,14 @@
 
 #include "Visitor.h"
 
-class IVisitor;
-
 class CIdExp: public IExpression{
 public:
-    CIdExp(std::string id_);
-    void accept(IVisitor *v) const;
+    CIdExp(std::string id_): id(id_){}
+    void accept(IVisitor *v) const{
+        v->visit(this);
+    }
 private:
     std::string id;
-};
+}
 
 #endif // IDEXP_H

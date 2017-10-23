@@ -15,6 +15,6 @@ public:
 private:
     std::shared_ptr<CStatementSeq> previousStatements;
     std::shared_ptr<IStatement> newStatement;
-};
+}
 
 #endif // STATEMENTSSEQ_H

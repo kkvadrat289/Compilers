@@ -3,14 +3,16 @@
 
 #include "Visitor.h"
 
-class IVisitor;
-
 class CNotExp: public IExpression{
 public:
-    CNotExp(std::shared_ptr<IExpression> right_);
-    void accept(IVisitor *v) const;
+    CNotExp(std::shared_ptr<IExpression> right_):
+        right(righgt_)
+    {}
+    void accept(IVisitor *v) const{
+        v->visit(this);
+    }
 private:
     std::shared_ptr<IExpression> right;
-};
+}
 
 #endif // UNARYEXP_H

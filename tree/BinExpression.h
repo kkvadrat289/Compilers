@@ -1,11 +1,7 @@
 #ifndef BINEXPRESSION_H
 #define BINEXPRESSION_H
 
-#include "Visitor.h"
 #include "Expression.h"
-#include <memory>
-
-class IVisitor;
 
 class CBinExpression: public IExpression{
 public:
@@ -18,13 +14,19 @@ public:
                    MOD
     };
 
-    CBinExpression(std::shared_ptr<INode> left_, BinType type_, std::shared_ptr<INode> right_);
+    CBinExpression(std::shared_ptr<INode> left_, BinType type_, std::shared_ptr<INode> right_):
+        type(type_),
+        left(left_),
+        right(right_)
+    {}
 
-    void accept(IVisitor *v) const ;
+    void accept(IVisitor *v) const {
+        v->visit(this);
+    }
 private:
     BinType type;
     std::shared_ptr<INode> left;
     std::shared_ptr<INode> right;
-};
+}
 
 #endif // BINEXPRESSION_H

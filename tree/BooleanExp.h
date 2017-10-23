@@ -3,14 +3,14 @@
 
 #include "Visitor.h"
 
-class IVisitor;
-
 class CBooleanExp: public IExpression{
 public:
-    CBooleanExp(bool val_);
-    void accept(IVisitor *v) const;
+    CBooleanExp(bool val_): val(val_){}
+    void accept(IVisitor *v) const{
+        v->visit(this);
+    }
 private:
     bool val;
-};
+}
 
 #endif // BOOLEANEXP_H

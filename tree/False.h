@@ -4,11 +4,11 @@
 #include "Expression.h"
 #include "Visitor.h"
 
-class IVisitor;
-
 class CFalse: public IExpression{
 public:
-    void accept(IVisitor* v) const;
-};
+    void accept(IVisitor* v) const{
+        v->visit(this);
+    }
+}
 
 #endif // FALSE_H

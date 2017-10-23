@@ -5,14 +5,14 @@
 #include "Node.h"
 #include "Visitor.h"
 
-class IVisitor;
-
 class CId: public INode{
 public:
-    CId(const std::string name_);
-    void accept(IVisitor* v) const;
+    CId(const std::string name_): name(name_){}
+    void accept(IVisitor* v) const{
+        v->visit(this);
+    }
 private:
     std::string name;
-};
+}
 
 #endif // ID_H

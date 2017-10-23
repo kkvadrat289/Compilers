@@ -3,11 +3,11 @@
 
 #include "Visitor.h"
 
-class IVisitor;
-
 class CThis: public IExpression{
 public:
-    void accept(IVisitor* v);
-};
+    void accept(IVisitor* v){
+        v->visit(this);
+    }
+}
 
 #endif // THIS_H

@@ -3,15 +3,18 @@
 
 #include "Visitor.h"
 
-class IVisitor;
-
 class CRandomAccess: public IExpression{
 public:
-    CRandomAccess(std::shared_ptr<IExpression> array_, std::shared_ptr<IExpression> position_);
-    void accept(IVisitor *v) const;
+    CRandomAccess(std::shared_ptr<IExpression> array_, std::shared_ptr<IExpression> position_):
+        array(array_),
+        position(position_)
+    {}
+    void accept(IVisitor *v) const{
+        v->visit(this);
+    }
 private:
     std::shared_ptr<IExpression> array;
     std::shared_ptr<IExpression> position;
-};
+}
 
 #endif // RANDOMACCESS_H

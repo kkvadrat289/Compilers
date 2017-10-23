@@ -4,14 +4,15 @@
 #include "Node.h"
 #include "Visitor.h"
 
-class IVisitor;
-
 class CClassSeq{
 public:
-    CClassSeq(std::shared_ptr<CClassSeq> prev, std::shared_ptr<CClass> newClass_);
+    CClassSeq(std::shared_ptr<CClassSeq> prev, std::shared_ptr<CClass> newClass_):
+        previousClasses(prev),
+        newClass(newClass_)
+    {}
 private:
     std::shared_ptr<CClassSeq> previousClasses;
     std::shared_ptr<CClass> newClass;
-};
+}
 
 #endif // CLASSSEQ_H

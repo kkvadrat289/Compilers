@@ -12,6 +12,6 @@ public:
 private:
     std::shared_ptr<CVariableSeq> previousVars;
     std::shared_ptr<CVariable> newVar;
-};
+}
 
 #endif // VARIABLESEQ_H
