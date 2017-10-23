@@ -22,7 +22,7 @@
 #include "If.h"
 #include "AssignStatement.h"
 #include "NotExp.h"
-#include "ExpSeq.h"
+#include "ExprSeq.h"
 #include "CallMethod.h"
 #include "NewIntArray.h"
 #include "NewClassObject.h"

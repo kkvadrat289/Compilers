@@ -5,14 +5,18 @@
 
 class CWhile: public IStatement{
 public:
-    CWhile(std::shared_ptr<IExpression> cond_, std::shared_ptr<IStatement> actions_):
-        cond(cond_),
-        actions(actions_)
-    {}
+    CWhile(std::shared_ptr<IExpression> cond_, std::shared_ptr<CStatementSeq> actions_):
+        cond(cond_)
+    {
+        actions.clear();
+        std::vector<std::shared_ptr<IStatement> > newVec(actions_->getVector());
+        actions.swap(newVec);
+    }
     void accept(IVisitor *v) const override;
+
 private:
     std::shared_ptr<IExpression> cond;
-    std::shared_ptr<IStatement> actions;
+    std::vector<std::shared_ptr<IStatement> > actions;
 };
 
 #endif // WHILE_H

@@ -14,7 +14,13 @@ public:
         expressions.push_back(exp);
     }
     IExpressionSeq(std::shared_ptr<IExpressionSeq> exps, std::shared_ptr<IExpression> exp){
-        //add to vector
+        expressions.clear();
+        std::vector<std::shared_ptr<IExpression> > newVec(exps->getVector());
+        newVec.push_back(exp);
+        expressions.swap(newVec);
+    }
+    std::vector<std::shared_ptr<IExpression> > getVector(){
+        return expressions;
     }
 private:
     std::vector<std::shared_ptr<IExpression> > expressions;

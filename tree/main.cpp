@@ -14,4 +14,5 @@ int main(){
 void testFunction(){
     CTrue* myTrue = new CTrue();
     assert(myTrue);
+
 }

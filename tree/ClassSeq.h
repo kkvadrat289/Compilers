@@ -6,13 +6,22 @@
 
 class CClassSeq{
 public:
-    CClassSeq(std::shared_ptr<CClassSeq> prev, std::shared_ptr<CClass> newClass_):
-        previousClasses(prev),
-        newClass(newClass_)
-    {}
+    CClassSeq(std::shared_ptr<CClassSeq> prev, std::shared_ptr<CClass> newClass_)
+    {
+        classes.clear();
+        std::vector<std::shared_ptr<CClass> > newVec(prev->getVector());
+        newVec.push_back(newClass_);
+        classes.swap(newVec);
+    }
+    CClassSeq(std::shared_ptr<CClass> class_){
+        classes.clear();
+        classes.push_back(class_);
+    }
+    std::vector<std::shared_ptr<CClass> > getVector(){
+        return classes;
+    }
 private:
-    std::shared_ptr<CClassSeq> previousClasses;
-    std::shared_ptr<CClass> newClass;
+    std::vector<std::shared_ptr<CClass> > classes;
 };
 
 #endif // CLASSSEQ_H

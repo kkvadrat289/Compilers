@@ -10,19 +10,28 @@ public:
         modifier(modifier_),
         type(type_),
         name(name_),
-        params(params_),
-        vars(vars_),
-        statements(statements_),
         res(res_)
-    {}
+    {
+        std::vector<std::shared_ptr<CVariable> > newVecP(params_->getVector());
+        params.clear();
+        params.swap(newVecP);
+
+        std::vector<std::shared_ptr<CVariable> > newVecV(vars_->getVector());
+        vars.clear();
+        vars.swap(newVecV);
+
+        std::vector<std::shared_ptr<IStatement> > newVec(statements_->getVector());
+        statements.clear();
+        statements.swap(newVec);
+    }
     void accept(IVisitor *v) const  override;
 private:
     std::string modifier;
     std::shared_ptr<INode> type;
     std::string name;
-    std::shared_ptr<CVariableSeq> params;
-    std::shared_ptr<CVariableSeq> vars;
-    std::shared_ptr<CStatementSeq> statements;
+    std::vector<std::shared_ptr<CVariable> > params;
+    std::vector<std::shared_ptr<CVariable> > vars;
+    std::vector<std::shared_ptr<IStatement> > statements;
     std::shared_ptr<INode> res;
 };
 
