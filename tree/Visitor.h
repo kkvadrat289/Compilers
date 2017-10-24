@@ -1,6 +1,5 @@
 #ifndef VISITOR_H
 #define VISITOR_H
-
 #include "includes.h"
 
 class IVisitor
@@ -23,10 +22,19 @@ public:
     virtual void visit(const CCallMethod* node) = 0;
     virtual void visit(const CNewIntArray* node) = 0;
     virtual void visit(const CNewClassObject* node) = 0;
-    virtual void visit(const CRandomAccess* node) = 0;
+    virtual void visit(const CRandomAccessAssign* node) = 0;
     virtual void visit(const CLength* node) = 0;
     virtual void visit(const CPrintLine* node) = 0;
     virtual void visit(const CWhile* node) = 0;
+    virtual void visit(const CStatements* node) = 0;
+    virtual void visit(const CRandomAccess* node) = 0;
+    virtual void visit(const CArg* node) = 0;
+    virtual void visit(const CStatementSeq* node) = 0;
+    virtual void visit(const CVariable* node) = 0;
+    virtual void visit(const CThis* node) = 0;
+
+
+
 };
 
 #endif // VISITOR_H

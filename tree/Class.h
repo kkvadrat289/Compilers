@@ -7,25 +7,43 @@
 
 class CClass: public INode{
 public:
-    CClass(std::string name_, std::string extends_, std::shared_ptr<CVariableSeq> vars_, std::shared_ptr<CMethodSeq> methods_):
-        name(name_),
-        extends(extends_),
-        methods(methods_)
+    CClass(std::shared_ptr<CId> id_, std::shared_ptr<CId> extends_, std::shared_ptr<CVariableSeq> vars_, std::shared_ptr<CMethodSeq> methods_):
+        id(id_),
+        extends(extends_)
     {
-        //add to vector
+        std::vector<std::shared_ptr<CVariable> > newVec(vars_->getVector());
+        vars.clear();
+        vars.swap(newVec);
+        std::vector<std::shared_ptr<CMethod> > newVecM(methods_->getVector());
+        methods.clear();
+        methods.swap(newVecM);
     }
-    CClass(std::string name_, std::shared_ptr<CVariableSeq> vars_, std::shared_ptr<CMethodSeq> methods_):
-        name(name_),
-        methods(methods_)
+    CClass(std::shared_ptr<CId> id_, std::shared_ptr<CId> extends_, std::shared_ptr<CVariableSeq> vars_):
+        id(id_),
+        extends(extends_)
     {
-        //add to vector
+        std::vector<std::shared_ptr<CVariable> > newVec(vars_->getVector());
+        vars.clear();
+        vars.swap(newVec);
     }
+    CClass(std::shared_ptr<CId> id_, std::shared_ptr<CId> extends_, std::shared_ptr<CMethodSeq> methods_):
+        id(id_),
+        extends(extends_)
+    {
+        std::vector<std::shared_ptr<CMethod> > newVecM(methods_->getVector());
+        methods.clear();
+        methods.swap(newVecM);
+    }
+    CClass(std::shared_ptr<CId> id_, std::shared_ptr<CId> extends_):
+        id(id_),
+        extends(extends_)
+    {}
     void accept(IVisitor *v) const override;
 private:
-    std::string name;
-    std::string extends;
-    std::shared_ptr<std::shared_ptr<CVariable> > vars;
-    std::shared_ptr<CMethodSeq> methods;
+    std::shared_ptr<CId> id;
+    std::shared_ptr<CId> extends;
+    std::vector<std::shared_ptr<CVariable> > vars;
+    std::vector<std::shared_ptr<CMethod> > methods;
 };
 
 #endif // CLASS_H

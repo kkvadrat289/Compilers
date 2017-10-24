@@ -5,14 +5,15 @@
 
 class CRandomAccess: public IExpression{
 public:
-    CRandomAccess(std::shared_ptr<IExpression> array_, std::shared_ptr<IExpression> position_):
-        array(array_),
-        position(position_)
+    CRandomAccess(std::shared_ptr<IExpression> left_, std::shared_ptr<IExpression> right_):
+        left(left_),
+        right(right_)
     {}
     void accept(IVisitor *v) const override;
 private:
-    std::shared_ptr<IExpression> array;
-    std::shared_ptr<IExpression> position;
+    std::shared_ptr<IExpression> left;
+    std::shared_ptr<IExpression> right;
+
 };
 
 #endif // RANDOMACCESS_H

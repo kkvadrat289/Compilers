@@ -14,6 +14,8 @@ public:
         std::vector<std::shared_ptr<CClass> > newVec(classes_->getVector());
         classes.swap(newVec);
     }
+    CProgram(std::shared_ptr<CMain> main_):
+    main(main_){}
     void accept(IVisitor *v) const  override;
 
 private:

@@ -5,12 +5,12 @@
 
 class CNewClassObject: public IExpression{
 public:
-    CNewClassObject(std::string name_):
-        name(name_)
+    CNewClassObject(std::shared_ptr<CId> id_):
+        id(id_)
     {}
     void accept(IVisitor *v) const override;
 private:
-    std::string name;
+    std::shared_ptr<CId> id;
 };
 
 #endif // NEWCLASSOBJECT_H

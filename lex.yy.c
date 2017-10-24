@@ -322,9 +322,6 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
-
-#define yywrap() (/*CONSTCOND*/1)
-#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -534,10 +531,10 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "example.l"
-#line 2 "example.l"
-#include <stdio.h>
-#include "example.tab.h"
+#line 1 "example.lex"
+#line 2 "example.lex"
+#include <stdlib.h>
+#include "tokens.h"
 
 #define YY_USER_ACTION updateLocation();
 
@@ -557,8 +554,8 @@ static int column_number = 1;
 
 void updateLocation();
 
-#line 560 "lex.yy.c"
-#line 561 "lex.yy.c"
+#line 557 "lex.yy.c"
+#line 558 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -775,9 +772,9 @@ YY_DECL
 		}
 
 	{
-#line 32 "example.l"
+#line 30 "example.lex"
 
-#line 780 "lex.yy.c"
+#line 777 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -836,226 +833,226 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 33 "example.l"
+#line 31 "example.lex"
 return CLASS;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 34 "example.l"
+#line 32 "example.lex"
 return VAR;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 35 "example.l"
+#line 33 "example.lex"
 return EXTENDS;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 36 "example.l"
+#line 34 "example.lex"
 return PUBLIC;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 37 "example.l"
+#line 35 "example.lex"
 return PRIVATE;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 38 "example.l"
+#line 36 "example.lex"
 return STATICVOIDMAIN;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 39 "example.l"
+#line 37 "example.lex"
 return STRING;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 40 "example.l"
+#line 38 "example.lex"
 return INT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 41 "example.l"
+#line 39 "example.lex"
 return BOOLEAN;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 42 "example.l"
+#line 40 "example.lex"
 return IF;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 43 "example.l"
+#line 41 "example.lex"
 return ELSE;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 44 "example.l"
+#line 42 "example.lex"
 return WHILE;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 45 "example.l"
+#line 43 "example.lex"
 return SYSTEMOUTPRINTLN;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 46 "example.l"
+#line 44 "example.lex"
 return LENGTH;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 47 "example.l"
+#line 45 "example.lex"
 return TRUE;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 48 "example.l"
+#line 46 "example.lex"
 return FALSE;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 49 "example.l"
+#line 47 "example.lex"
 return NEW;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 50 "example.l"
+#line 48 "example.lex"
 return THIS;
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 51 "example.l"
+#line 49 "example.lex"
 return RETURN;
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 53 "example.l"
+#line 51 "example.lex"
 return ID;
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 54 "example.l"
+#line 52 "example.lex"
 return INTEGER;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 55 "example.l"
+#line 53 "example.lex"
 ;
 	YY_BREAK
 case 23:
 /* rule 23 can match eol */
 YY_RULE_SETUP
-#line 56 "example.l"
+#line 54 "example.lex"
 ;
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 58 "example.l"
+#line 56 "example.lex"
 return L_BRACKET;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 59 "example.l"
+#line 57 "example.lex"
 return R_BRACKET;
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 60 "example.l"
+#line 58 "example.lex"
 return L_ROUND;
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 61 "example.l"
+#line 59 "example.lex"
 return R_ROUND;
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 62 "example.l"
+#line 60 "example.lex"
 return L_SQUARE;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 63 "example.l"
+#line 61 "example.lex"
 return R_SQUARE;
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 65 "example.l"
+#line 63 "example.lex"
 return SEMICOLON;
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 67 "example.l"
+#line 65 "example.lex"
 return MINUS;
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 68 "example.l"
+#line 66 "example.lex"
 return PLUS;
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 69 "example.l"
+#line 67 "example.lex"
 return PERCENT;
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 70 "example.l"
+#line 68 "example.lex"
 return DIVIDE;
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 71 "example.l"
+#line 69 "example.lex"
 return EQUALS;
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 73 "example.l"
+#line 71 "example.lex"
 return COMMA;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 74 "example.l"
+#line 72 "example.lex"
 return DOT;
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 75 "example.l"
+#line 73 "example.lex"
 return STAR;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 76 "example.l"
+#line 74 "example.lex"
 return LESS;
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 77 "example.l"
+#line 75 "example.lex"
 return BANG;
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 79 "example.l"
+#line 77 "example.lex"
 return AND;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 80 "example.l"
+#line 78 "example.lex"
 return OR;
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 82 "example.l"
+#line 80 "example.lex"
 printf(ANSI_COLOR_BLUE "EROR(%s)" ANSI_COLOR_RESET, yytext);
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 85 "example.l"
+#line 83 "example.lex"
 ECHO;
 	YY_BREAK
-#line 1058 "lex.yy.c"
+#line 1055 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2060,7 +2057,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 85 "example.l"
+#line 83 "example.lex"
 
 
 void updateLocation(){

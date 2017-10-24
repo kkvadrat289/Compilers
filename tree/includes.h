@@ -26,10 +26,17 @@
 #include "CallMethod.h"
 #include "NewIntArray.h"
 #include "NewClassObject.h"
-#include "RandomAccess.h"
+#include "RandomAccessAssign.h"
 #include "Length.h"
 #include "This.h"
 #include "PrintLine.h"
 #include "While.h"
+#include "Statements.h"
+#include "Type.h"
+#include "ClassType.h"
+#include "RandomAccess.h"
+#include "Arg.h"
+#include "Args.h"
+#include "BasicType.h"
 
 #endif // INCLUDES_H

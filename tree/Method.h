@@ -2,37 +2,42 @@
 #define METHOD_H
 
 #include "Node.h"
+#include "Args.h"
 
 class CMethod: public INode{
 public:
-    CMethod(std::string modifier_, std::shared_ptr<INode> type_, std::string name_, std::shared_ptr<CVariableSeq> params_,
-             std::shared_ptr<CVariableSeq> vars_, std::shared_ptr<CStatementSeq> statements_,std::shared_ptr<INode> res_):
-        modifier(modifier_),
+    CMethod(std::shared_ptr<IType> type_, std::shared_ptr<CId> id_, std::shared_ptr<CArgs> params_,
+             std::shared_ptr<CVariableSeq> vars_, std::shared_ptr<CStatementSeq> statements_,std::shared_ptr<IExpression> res_):
         type(type_),
-        name(name_),
+        id(id_),
         res(res_)
     {
-        std::vector<std::shared_ptr<CVariable> > newVecP(params_->getVector());
         params.clear();
-        params.swap(newVecP);
+        if (params_){
+            std::vector<std::shared_ptr<CArg> > newVecP(params_->getVector());
+            params.swap(newVecP);
+        }
 
-        std::vector<std::shared_ptr<CVariable> > newVecV(vars_->getVector());
         vars.clear();
-        vars.swap(newVecV);
+        if (vars_){
+            std::vector<std::shared_ptr<CVariable> > newVecV(vars_->getVector());
+            vars.swap(newVecV);
+        }
 
-        std::vector<std::shared_ptr<IStatement> > newVec(statements_->getVector());
         statements.clear();
-        statements.swap(newVec);
+        if (statements_){
+            std::vector<std::shared_ptr<IStatement> > newVec(statements_->getVector());
+            statements.swap(newVec);
+        }
     }
     void accept(IVisitor *v) const  override;
 private:
-    std::string modifier;
-    std::shared_ptr<INode> type;
-    std::string name;
-    std::vector<std::shared_ptr<CVariable> > params;
+    std::shared_ptr<IType> type;
+    std::shared_ptr<CId> id;
+    std::vector<std::shared_ptr<CArg> > params;
     std::vector<std::shared_ptr<CVariable> > vars;
     std::vector<std::shared_ptr<IStatement> > statements;
-    std::shared_ptr<INode> res;
+    std::shared_ptr<IExpression> res;
 };
 
 #endif // METHOD_H

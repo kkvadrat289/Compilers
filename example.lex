@@ -1,15 +1,42 @@
 %{
-#include <stdio.h>
-#include "example.tab.h"
+#include <stdlib.h>
+#include "tree/Visitor.h"
+#include "tokens.h"
 
-#define YY_USER_ACTION updateLocation();
+
+void updateLocation(const char* yytext);
+
+#define YY_USER_ACTION updateLocation(yytext);
 
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_BLUE    "\x1b[34m"
 
-static int line_number = 1;
-static int column_number = 1;
+
+int lineNumber = 1;
+int columnNumber = 1;
+
+void updateLocation(char* yytext){
+	printf(" ");
+	yylloc.first_line = lineNumber;
+	yylloc.first_column = columnNumber;
+
+	for( int i = 0; i < strlen(yytext); i++ ) {
+		if( yytext[i] == '\n' ) {
+			lineNumber++;
+			columnNumber = 1;
+		} else {
+			columnNumber++;
+		}
+	}
+
+	yylloc.last_line = lineNumber;
+	yylloc.last_column = columnNumber;
+	printf(ANSI_COLOR_GREEN);
+	printf(yytext);
+	printf(ANSI_COLOR_RESET);
+	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, lineNumber, columnNumber);
+	}
 
 /*struct yylloc{
 	int first_line;
@@ -18,11 +45,10 @@ static int column_number = 1;
 	int last_column;
 } yylloc;*/
 
-void updateLocation();
 
 %}
 
-%option noyywrap
+%option c++
 
 DIGIT [0-9]
 LETER [a-zA-Z_]
@@ -50,8 +76,15 @@ IntegerLiteral [1-9]{DIGIT}*|0
 "this" 						return THIS;
 "return" 					return RETURN;
 
-{LETER}({DIGIT}|{LETER})* 	return ID;
-[1-9]{DIGIT}*|0		return INTEGER;
+{LETER}({DIGIT}|{LETER})* 	{
+																	yylval.nameId = yytext;
+																	return ID;
+																}
+
+[1-9]{DIGIT}*|0		{
+											yylval.intVal = atoi(yytext);
+											return INTEGER;
+									}
 "//".* 						;
 [ \t\n]+ 					;
 
@@ -84,7 +117,24 @@ IntegerLiteral [1-9]{DIGIT}*|0
 
 %%
 
-void updateLocation(){
+extern "C" {
+  int yywrap();
+}
+
+int yyFlexLexer::yywrap() {
+  return ::yywrap();
+}
+
+yyFlexLexer lexer;
+
+extern "C" int yylex()
+{
+    return lexer.yylex();
+}
+
+
+
+/*void updateLocation(char* yytext){
 	printf(" ");
 	yylloc.first_line = line_number;
 	yylloc.first_column = column_number;
@@ -104,4 +154,4 @@ void updateLocation(){
 	printf(yytext);
 	printf(ANSI_COLOR_RESET);
 	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
-}
+}*/

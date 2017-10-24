@@ -3,17 +3,18 @@
 
 #include "Node.h"
 
-class CBasicType: public INode{
+enum BasicType{
+    INT_,
+    BOOL_,
+    INT_ARRAY_
+};
+
+class CBasicType: public IType{
 public:
-    enum BasicType{
-        INT,
-        BOOL,
-        INT_ARRAY
-    };
+
     CBasicType(BasicType type_): type(type_){}
-    void accept(IVisitor *v) const override;
 private:
     BasicType type;
-}
+};
 
 #endif // BASICTYPE_H

@@ -6,6 +6,9 @@
 void CAssignStatement::accept(IVisitor *v) const{
     v->visit(this);
 }
+void CStatementSeq::accept(IVisitor *v) const{
+    v->visit(this);
+}
 void CBinExpression::accept(IVisitor *v) const{
     v->visit(this);
 }
@@ -51,7 +54,7 @@ void CNewIntArray::accept(IVisitor *v) const{
 void CNewClassObject::accept(IVisitor *v) const{
     v->visit(this);
 }
-void CRandomAccess::accept(IVisitor *v) const{
+void CRandomAccessAssign::accept(IVisitor *v) const{
     v->visit(this);
 }
 void CLength::accept(IVisitor *v) const{
@@ -63,7 +66,24 @@ void CPrintLine::accept(IVisitor *v) const{
 void CWhile::accept(IVisitor *v) const{
     v->visit(this);
 }
-
+void CStatements::accept(IVisitor *v) const{
+    v->visit(this);
+}
+void CRandomAccess::accept(IVisitor *v) const{
+    v->visit(this);
+}
+void CArg::accept(IVisitor *v) const{
+    v->visit(this);
+}
+void CMain::accept(IVisitor *v) const{
+    v->visit(this);
+}
+void CThis::accept(IVisitor *v) const{
+    v->visit(this);
+}
+void CVariable::accept(IVisitor *v) const{
+    v->visit(this);
+}
 INode::~INode(){}
 
 

@@ -1,13 +1,13 @@
-#ifndef VARIABLE_H
-#define VARIABLE_H
+#ifndef ARG_H
+#define ARG_H
 
 #include <string>
 #include "Node.h"
 #include "Type.h"
 
-class CVariable: public INode{
+class CArg: public INode{
 public:
-    CVariable(std::shared_ptr<IType> type_, std::shared_ptr<CId> id_):
+    CArg(std::shared_ptr<IType> type_, std::shared_ptr<CId> id_):
         type(type_),
         id(id_)
     {}
@@ -17,4 +17,4 @@ private:
     std::shared_ptr<CId> id;
 };
 
-#endif // VARIABLE_H
+#endif // ARG_H

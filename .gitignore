@@ -1,0 +1,10 @@
+*.out
+*.o
+parser
+*yy.c
+*yy.cc
+result.txt
+check
+example
+parser.cpp
+tokens.h

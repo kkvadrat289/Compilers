@@ -1,4 +1,0 @@
-bison example.y
-lex example.l
-bison -dt example.y
-cc lex.yy.c example.tab.c

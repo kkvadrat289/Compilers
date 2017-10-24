@@ -7,7 +7,7 @@
 
 class IVisitor;
 
-class IExpressionSeq: public INode{
+class IExpressionSeq{
 public:
     IExpressionSeq(std::shared_ptr<IExpression> exp){
         expressions.clear();

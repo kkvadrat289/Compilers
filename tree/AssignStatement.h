@@ -6,14 +6,14 @@
 
 class CAssignStatement: public IStatement{
 public:
-    CAssignStatement(std::shared_ptr<CIdExp> left_, std::shared_ptr<INode> right_):
+    CAssignStatement(std::shared_ptr<CId> left_, std::shared_ptr<IExpression> right_):
         left(left_),
         right(right_)
     {}
     void accept(IVisitor *v) const override;
 private:
-    std::shared_ptr<CIdExp> left;
-    std::shared_ptr<INode> right;
+    std::shared_ptr<CId> left;
+    std::shared_ptr<IExpression> right;
 };
 
 #endif // ASSIGN_H

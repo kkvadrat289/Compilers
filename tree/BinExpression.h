@@ -3,18 +3,18 @@
 
 #include "Expression.h"
 
+enum BinType { AND_,
+               OR_,
+               LESS_,
+               PLUS_,
+               MINUS_,
+               TIMES_,
+               MOD_
+};
+
 class CBinExpression: public IExpression{
 public:
-    enum BinType { AND,
-                   OR,
-                   LESS,
-                   PLUS,
-                   MINUS,
-                   TIMES,
-                   MOD
-    };
-
-    CBinExpression(std::shared_ptr<INode> left_, BinType type_, std::shared_ptr<INode> right_):
+    CBinExpression(std::shared_ptr<IExpression> left_, BinType type_, std::shared_ptr<IExpression> right_):
         type(type_),
         left(left_),
         right(right_)
@@ -23,8 +23,8 @@ public:
     void accept(IVisitor *v) const  override;
 private:
     BinType type;
-    std::shared_ptr<INode> left;
-    std::shared_ptr<INode> right;
+    std::shared_ptr<IExpression> left;
+    std::shared_ptr<IExpression> right;
 };
 
 #endif // BINEXPRESSION_H

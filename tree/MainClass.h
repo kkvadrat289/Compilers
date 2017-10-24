@@ -7,9 +7,9 @@
 
 class CMain: public INode{
 public:
-    CMain(std::string class_, std::string param_, std::shared_ptr<CStatementSeq> statements_):
-        className(class_),
-        paramName(param_)
+    CMain(std::shared_ptr<CId> id_, std::shared_ptr<CId> paramId_, std::shared_ptr<CStatementSeq> statements_):
+        id (id_),
+        paramId(paramId_)
     {
         std::vector<std::shared_ptr<IStatement> > newVec(statements_->getVector());
         statements.clear();
@@ -17,8 +17,8 @@ public:
     }
     void accept(IVisitor *v) const override;
 private:
-    std::string className;
-    std::string paramName;
+    std::shared_ptr<CId> id;
+    std::shared_ptr<CId> paramId;
     std::vector<std::shared_ptr<IStatement> > statements;
 };
 
