@@ -170,7 +170,8 @@ method	:	modifier type id L_ROUND arg_s R_ROUND
         L_BRACKET RETURN exp SEMICOLON R_BRACKET                       {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), nullptr, nullptr, std::shared_ptr<IExpression>($9)); printf("method 4 (%s)\n", $3);}
         ;
 
-arg_s    :arg_s COMMA type id          {$$ = new CArgs(std::shared_ptr<CArgs>($1), std::shared_ptr<IType>($3), std::shared_ptr<CId>($4)); printf("args 2\n");}
+arg_s    : %empty                      {$$ = new CArgs();}
+        | arg_s COMMA type id          {$$ = new CArgs(std::shared_ptr<CArgs>($1), std::shared_ptr<IType>($3), std::shared_ptr<CId>($4)); printf("args 2\n");}
         | type id                      {$$ = new CArgs(std::shared_ptr<IType>($1), std::shared_ptr<CId>($2)); printf("args 3\n");}
         ;
 
@@ -219,7 +220,7 @@ exp : exp AND exp                       {$$ = new CBinExpression(std::shared_ptr
 		| NEW INT L_SQUARE exp R_SQUARE     {$$ = new CNewIntArray(std::shared_ptr<IExpression>($4)); printf("new int [exp]\n");}
 		| NEW id L_ROUND R_ROUND            {$$ = new CNewClassObject(std::shared_ptr<CId>($2)); printf("new (%s) ()\n", $2);}
 		| BANG exp                          {$$ = new CNotExp(std::shared_ptr<IExpression>($2)); printf("!exp\n");}
-		| BANG L_ROUND exp R_ROUND          {$$ = new CNotExp(std::shared_ptr<IExpression>($3)); printf("(exp)\n");}
+		| L_ROUND exp R_ROUND               {$$ = $2; printf("(exp)\n");}
 		;
 
 id 	:	ID                             {$$ = new CId(std::string(yylval.nameId)); printf("ID");} ;

@@ -13,4 +13,4 @@ solution.o: tree/AllProblemsSolution.cpp
 	g++ -g -c tree/AllProblemsSolution.cpp -o solution.o
 
 clean:
-	rm solution.o lex.o parser.o parser.o parser.cpp tokens.h
+	rm solution.o lex.o parser.o parser parser.cpp tokens.h
