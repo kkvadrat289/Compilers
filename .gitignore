@@ -1,4 +1,5 @@
 *.out
+*.output
 *.o
 parser
 *yy.c
