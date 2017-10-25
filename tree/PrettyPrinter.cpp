@@ -2,7 +2,7 @@
 
 CPrettyprinter::CPrettyprinter(std::string path){
     out.open(path);
-    out << "digraph g {\n" << "graph [ rankdir = LR ];\n";
+    out << "digraph g {\n" /*<< "graph [ rankdir = LR ];" << */ << "\n";
 }
 CPrettyprinter::~CPrettyprinter(){
     out << "}";

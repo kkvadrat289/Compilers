@@ -3,13 +3,14 @@
 
 #include "Expression.h"
 
-enum BinType { AND_,
-               OR_,
-               LESS_,
-               PLUS_,
-               MINUS_,
-               TIMES_,
-               MOD_
+enum BinType {
+    LESS_  = 1,
+    AND_ = 2,
+    OR_ = 3,
+    PLUS_ = 4,
+    MINUS_ = 5,
+    TIMES_ = 6,
+    MOD_ = 7
 };
 
 class CBinExpression: public IExpression{
@@ -22,22 +23,30 @@ public:
         switch(type){
             case AND_:
                 label = "and";
+            break;
             case OR_:
                 label = "or";
+            break;
             case PLUS_:
                 label = "+";
+            break;
             case MINUS_:
                 label = "-";
+            break;
             case TIMES_:
                 label = "*";
+            break;
             case LESS_:
-                label = std::string("less");
+                label = "<";
+            break;
             case MOD_:
                 label = "%";
+            break;
         }
     }
 
     void accept(IVisitor *v) const  override;
+    std::string label;
     BinType type;
     std::shared_ptr<IExpression> left;
     std::shared_ptr<IExpression> right;
