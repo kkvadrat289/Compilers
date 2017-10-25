@@ -22,7 +22,6 @@ public:
     std::vector<std::shared_ptr<IExpression> > getVector(){
         return expressions;
     }
-private:
     std::vector<std::shared_ptr<IExpression> > expressions;
 };
 

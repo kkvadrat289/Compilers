@@ -20,7 +20,6 @@ public:
     std::vector<std::shared_ptr<CClass> > getVector(){
         return classes;
     }
-private:
     std::vector<std::shared_ptr<CClass> > classes;
 };
 

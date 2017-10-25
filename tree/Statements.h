@@ -11,7 +11,7 @@ public:
         statements.swap(newVec);
     }
     void accept(IVisitor *v) const override;
-private:
+
     std::vector<std::shared_ptr<IStatement> > statements;
 };
 

@@ -14,7 +14,7 @@ public:
         std::cout << name_ << std::endl;
     }
     void accept(IVisitor* v) const override;
-private:
+
     std::string name;
 };
 

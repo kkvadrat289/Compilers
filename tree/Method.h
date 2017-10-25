@@ -31,7 +31,6 @@ public:
         }
     }
     void accept(IVisitor *v) const  override;
-private:
     std::shared_ptr<IType> type;
     std::shared_ptr<CId> id;
     std::vector<std::shared_ptr<CArg> > params;

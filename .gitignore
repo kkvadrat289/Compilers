@@ -8,3 +8,11 @@ check
 example
 parser.cpp
 tokens.h
+*.config
+*.creator
+*.files
+*.includes
+*.gv
+*.png
+compile
+getGraph

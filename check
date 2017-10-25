@@ -1,6 +1,0 @@
-./compile
-echo "" >> ./result.txt
-for file in `find ./samples`
-do
-   cat $file | ./a.out
-done

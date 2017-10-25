@@ -20,7 +20,7 @@ public:
     std::vector<std::shared_ptr<CVariable> > getVector(){
         return vars;
     }
-private:
+
     std::vector<std::shared_ptr<CVariable> > vars;
 };
 

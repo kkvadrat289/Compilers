@@ -12,7 +12,7 @@ public:
         id(id_)
     {}
     void accept(IVisitor *v) const override;
-private:
+
     std::shared_ptr<IType> type;
     std::shared_ptr<CId> id;
 };

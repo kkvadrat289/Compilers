@@ -28,7 +28,6 @@ public:
     std::vector<std::shared_ptr<CArg> > getVector(){
         return vars;
     }
-private:
     std::vector<std::shared_ptr<CArg> > vars;
 };
 

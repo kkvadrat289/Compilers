@@ -4,7 +4,8 @@
 #include "Node.h"
 
 class IType{
-
+public:
+    std::string label;
 };
 
 #endif // TYPE_H

@@ -4,6 +4,8 @@
 #include "Node.h"
 
 class IExpression: public INode{
+public:
+    std::string label;
 };
 
 #endif // IEXPRESSION_H

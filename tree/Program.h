@@ -18,7 +18,6 @@ public:
     main(main_){}
     void accept(IVisitor *v) const  override;
 
-private:
    std::shared_ptr<CMain> main;
    std::vector<std::shared_ptr<CClass> > classes;
 };

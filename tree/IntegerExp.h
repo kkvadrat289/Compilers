@@ -9,7 +9,6 @@ public:
         val(val_)
     {}
     void accept(IVisitor *v) const override;
-private:
     int val;
 };
 

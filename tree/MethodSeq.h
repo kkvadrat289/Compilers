@@ -19,7 +19,7 @@ public:
     std::vector<std::shared_ptr<CMethod> > getVector(){
         return methods;
     }
-private:
+
     std::vector<std::shared_ptr<CMethod> > methods;
 };
 

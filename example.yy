@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "tree/Visitor.h"
+//#include "tree/Visitor.h"
+#include "tree/PrettyPrinter.h"
 
 #define RED "\x1b[31m"
 #define RESET "\x1b[0m"
@@ -14,7 +15,7 @@ void yyerror(char *s) {
     }
 
 CTrue *myTrue = new CTrue();
-
+CPrettyprinter *pp = new CPrettyprinter("./graph.gv");
 %}
 
 %union {
@@ -125,8 +126,8 @@ CTrue *myTrue = new CTrue();
 %right BANG
 
 %%
-goal  : main_class END                                                          {$$ = new CProgram(std::shared_ptr<CMain>($1));  printf("goal only\n");}
-      | main_class class_s END                                                  {$$ = new CProgram(std::shared_ptr<CMain>($1), std::shared_ptr<CClassSeq>($2)); printf("goal\n");}
+goal  : main_class END                                                          {$$ = new CProgram(std::shared_ptr<CMain>($1)); $$->accept(pp); printf("goal only\n");}
+      | main_class class_s END                                                  {$$ = new CProgram(std::shared_ptr<CMain>($1), std::shared_ptr<CClassSeq>($2)); $$->accept(pp); printf("goal\n");}
       ;
 
 main_class  : CLASS id L_BRACKET
@@ -229,4 +230,5 @@ id 	:	ID                             {$$ = new CId(std::string(yylval.nameId)); 
 int main (void) {
 //  yydebug=0;
   yyparse();
+  delete pp;
 }

@@ -18,10 +18,26 @@ public:
         type(type_),
         left(left_),
         right(right_)
-    {}
+    {
+        switch(type){
+            case AND_:
+                label = "and";
+            case OR_:
+                label = "or";
+            case PLUS_:
+                label = "+";
+            case MINUS_:
+                label = "-";
+            case TIMES_:
+                label = "*";
+            case LESS_:
+                label = std::string("less");
+            case MOD_:
+                label = "%";
+        }
+    }
 
     void accept(IVisitor *v) const  override;
-private:
     BinType type;
     std::shared_ptr<IExpression> left;
     std::shared_ptr<IExpression> right;

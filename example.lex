@@ -32,10 +32,10 @@ void updateLocation(char* yytext){
 
 	yylloc.last_line = lineNumber;
 	yylloc.last_column = columnNumber;
-	printf(ANSI_COLOR_GREEN);
+	/*printf(ANSI_COLOR_GREEN);
 	printf(yytext);
 	printf(ANSI_COLOR_RESET);
-	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, lineNumber, columnNumber);
+	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, lineNumber, columnNumber);*/
 	}
 
 /*struct yylloc{
@@ -131,27 +131,3 @@ extern "C" int yylex()
 {
     return lexer.yylex();
 }
-
-
-
-/*void updateLocation(char* yytext){
-	printf(" ");
-	yylloc.first_line = line_number;
-	yylloc.first_column = column_number;
-
-	for( int i = 0; i < yyleng; i++ ) {
-		if( yytext[i] == '\n' ) {
-			line_number++;
-			column_number = 1;
-		} else {
-			column_number++;
-		}
-	}
-
-	yylloc.last_line = line_number;
-	yylloc.last_column = column_number;
-	printf(ANSI_COLOR_GREEN);
-	printf(yytext);
-	printf(ANSI_COLOR_RESET);
-	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, line_number, column_number);
-}*/

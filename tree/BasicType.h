@@ -12,8 +12,11 @@ enum BasicType{
 class CBasicType: public IType{
 public:
 
-    CBasicType(BasicType type_): type(type_){}
-private:
+    CBasicType(BasicType type_): type(type_){
+        if (type == INT_) label = "int";
+        if (type == BOOL_) label = "bool";
+        if (type == INT_ARRAY_) label = "int[]";
+    }
     BasicType type;
 };
 

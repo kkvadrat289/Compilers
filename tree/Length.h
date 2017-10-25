@@ -9,7 +9,6 @@ public:
         object(object_)
     {}
     void accept(IVisitor *v) const override;
-private:
     std::shared_ptr<IExpression> object;
 };
 

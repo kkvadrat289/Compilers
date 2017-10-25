@@ -11,7 +11,7 @@ public:
     {}
     void accept(IVisitor *v) const override;
 
-private:
+
     std::shared_ptr<IExpression> cond;
     std::shared_ptr<IStatement> action;
 };

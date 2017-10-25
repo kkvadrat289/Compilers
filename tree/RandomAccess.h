@@ -6,13 +6,13 @@
 class CRandomAccess: public IExpression{
 public:
     CRandomAccess(std::shared_ptr<IExpression> left_, std::shared_ptr<IExpression> right_):
-        left(left_),
-        right(right_)
+        object(left_),
+        position(right_)
     {}
     void accept(IVisitor *v) const override;
-private:
-    std::shared_ptr<IExpression> left;
-    std::shared_ptr<IExpression> right;
+
+    std::shared_ptr<IExpression> object;
+    std::shared_ptr<IExpression> position;
 
 };
 

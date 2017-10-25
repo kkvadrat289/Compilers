@@ -39,7 +39,7 @@ public:
         extends(extends_)
     {}
     void accept(IVisitor *v) const override;
-private:
+
     std::shared_ptr<CId> id;
     std::shared_ptr<CId> extends;
     std::vector<std::shared_ptr<CVariable> > vars;

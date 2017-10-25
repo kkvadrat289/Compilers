@@ -7,7 +7,7 @@ class CIdExp: public IExpression{
 public:
     CIdExp(std::string id_): id(id_){}
     void accept(IVisitor *v) const override;
-private:
+
     std::string id;
 };
 

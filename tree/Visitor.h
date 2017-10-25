@@ -5,6 +5,7 @@
 class IVisitor
 {
 public:
+    virtual ~IVisitor(){}
     virtual void visit(const CBinExpression* node) = 0;
     virtual void visit(const CId* node) = 0;
     virtual void visit(const CTrue* node) = 0;
@@ -32,6 +33,7 @@ public:
     virtual void visit(const CStatementSeq* node) = 0;
     virtual void visit(const CVariable* node) = 0;
     virtual void visit(const CThis* node) = 0;
+
 
 
 

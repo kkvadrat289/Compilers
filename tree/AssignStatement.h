@@ -11,7 +11,6 @@ public:
         right(right_)
     {}
     void accept(IVisitor *v) const override;
-private:
     std::shared_ptr<CId> left;
     std::shared_ptr<IExpression> right;
 };

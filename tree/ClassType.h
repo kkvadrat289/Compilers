@@ -7,8 +7,9 @@ class CClassType: public IType{
 public:
     CClassType(std::shared_ptr<CId> id_):
         id(id_)
-    {}
-private:
+    {
+        label = id->name;
+    }
     std::shared_ptr<CId> id;
 };
 

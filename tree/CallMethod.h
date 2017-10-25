@@ -16,7 +16,6 @@ public:
         }
     }
     void accept(IVisitor *v) const override;
-private:
     std::shared_ptr<IExpression> expression;
     std::shared_ptr<CId> id;
     std::vector<std::shared_ptr<IExpression> > params;
