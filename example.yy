@@ -3,7 +3,7 @@
 #include <string.h>
 
 //#include "tree/Visitor.h"
-#include "tree/PrettyPrinter.h"
+#include "tree/visitors/PrettyPrinter.h"
 
 #define RED "\x1b[31m"
 #define RESET "\x1b[0m"
@@ -14,7 +14,6 @@ void yyerror(char *s) {
       printf (RED "%s\n" RESET, s);
     }
 
-CTrue *myTrue = new CTrue();
 CPrettyprinter *pp = new CPrettyprinter("./graph.gv");
 %}
 
@@ -203,7 +202,7 @@ exp_s:	exp_s COMMA exp  {$$ = new IExpressionSeq(std::shared_ptr<IExpressionSeq>
 			;
 
 exp : exp AND exp                       {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), AND_, std::shared_ptr<IExpression>($3)); printf("and\n");}
-		|	exp LESS exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), LESS_, std::shared_ptr<IExpression>($3)); printf("less!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");}
+		|	exp LESS exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), LESS_, std::shared_ptr<IExpression>($3)); printf("less\n");}
 		|	exp PLUS exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), PLUS_, std::shared_ptr<IExpression>($3)); printf("PLUS\n");}
 		|	exp MINUS exp                     {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), MINUS_, std::shared_ptr<IExpression>($3)); printf("MINUS\n");}
 		|	exp STAR exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), TIMES_, std::shared_ptr<IExpression>($3)); printf("*\n");}

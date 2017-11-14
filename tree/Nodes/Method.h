@@ -3,6 +3,7 @@
 
 #include "Node.h"
 #include "Args.h"
+#include "statements/StatementSeq.h"
 
 class CMethod: public INode{
 public:

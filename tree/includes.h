@@ -1,6 +1,12 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
+
+#include "Nodes/NodeIncludes.h"
+#include "Nodes/Expressions/ExpIncludes.h"
+#include "Nodes/statements/StmIncludes.h"
+
+/*
 #include "Expression.h"
 #include "True.h"
 #include "False.h"
@@ -38,5 +44,6 @@
 #include "Arg.h"
 #include "Args.h"
 #include "BasicType.h"
+*/
 
 #endif // INCLUDES_H

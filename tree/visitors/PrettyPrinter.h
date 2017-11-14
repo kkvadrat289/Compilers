@@ -26,7 +26,6 @@ public:
     void visit(const CIntegerExp* node)  override;
     void visit(const CAssignStatement* node)  override;
     void visit(const CIf* node)  override;
-    void visit(const CIdExp* node)  override;
     void visit(const CNotExp* node)  override;
     void visit(const CCallMethod* node)  override;
     void visit(const CNewIntArray* node)  override;

@@ -1,6 +1,6 @@
 %{
 #include <stdlib.h>
-#include "tree/Visitor.h"
+#include "tree/visitors/Visitor.h"
 #include "tokens.h"
 
 
@@ -32,10 +32,10 @@ void updateLocation(char* yytext){
 
 	yylloc.last_line = lineNumber;
 	yylloc.last_column = columnNumber;
-	/*printf(ANSI_COLOR_GREEN);
+	printf(ANSI_COLOR_GREEN);
 	printf(yytext);
 	printf(ANSI_COLOR_RESET);
-	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, lineNumber, columnNumber);*/
+	printf(ANSI_COLOR_GREEN "[%d,%d]" ANSI_COLOR_RESET, lineNumber, columnNumber);
 	}
 
 /*struct yylloc{

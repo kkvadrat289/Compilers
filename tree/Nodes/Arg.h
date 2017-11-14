@@ -4,6 +4,7 @@
 #include <string>
 #include "Node.h"
 #include "Type.h"
+#include "Expressions/Id.h"
 
 class CArg: public INode{
 public:

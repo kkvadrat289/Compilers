@@ -112,13 +112,11 @@ void CPrettyprinter::visit(const CIf* node) {
     node->cond->accept(this);
     printEdge(node, node->cond, "condition");
     node->ifFalse->accept(this);
-    printEdge(node, node->ifFalse, "true");
+    printEdge(node, node->ifFalse, "false");
     node->ifTrue->accept(this);
     printEdge(node, node->ifTrue, "true");
 }
-void CPrettyprinter::visit(const CIdExp* node) {
-    //useless class
-}
+
 void CPrettyprinter::visit(const CNotExp* node) {
     printVertex(node, "NotExpression");
     node->right->accept(this);

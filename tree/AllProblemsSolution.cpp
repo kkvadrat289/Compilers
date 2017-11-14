@@ -1,7 +1,7 @@
 #ifndef ALLPROBLEMSSOLUTION_CPP
 #define ALLPROBLEMSSOLUTION_CPP
 
-#include "Visitor.h"
+#include "visitors/Visitor.h"
 
 void CAssignStatement::accept(IVisitor *v) const{
     v->visit(this);
@@ -39,9 +39,7 @@ void CIntegerExp::accept(IVisitor *v) const{
 void CIf::accept(IVisitor *v) const{
     v->visit(this);
 }
-void CIdExp::accept(IVisitor *v) const{
-    v->visit(this);
-}
+
 void CNotExp::accept(IVisitor *v) const{
     v->visit(this);
 }

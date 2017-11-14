@@ -1,6 +1,6 @@
 #ifndef VISITOR_H
 #define VISITOR_H
-#include "includes.h"
+#include "../includes.h"
 
 class IVisitor
 {
@@ -18,7 +18,6 @@ public:
     virtual void visit(const CIntegerExp* node) = 0;
     virtual void visit(const CAssignStatement* node) = 0;
     virtual void visit(const CIf* node) = 0;
-    virtual void visit(const CIdExp* node) = 0;
     virtual void visit(const CNotExp* node) = 0;
     virtual void visit(const CCallMethod* node) = 0;
     virtual void visit(const CNewIntArray* node) = 0;

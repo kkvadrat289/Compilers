@@ -2,7 +2,7 @@
 #define MAIN_H
 
 #include "Node.h"
-#include "StatementSeq.h"
+#include "statements/StatementSeq.h"
 #include <string>
 
 class CMain: public INode{

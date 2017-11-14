@@ -12,8 +12,8 @@ lex.o: example.lex
 solution.o: tree/AllProblemsSolution.cpp
 	g++ -g -c tree/AllProblemsSolution.cpp -o solution.o
 
-visitor.o: tree/PrettyPrinter.cpp
-	g++ -g -c tree/PrettyPrinter.cpp -o visitor.o
+visitor.o: tree/visitors/PrettyPrinter.cpp
+	g++ -g -c tree/visitors/PrettyPrinter.cpp -o visitor.o
 
 clean:
 	rm solution.o lex.o visitor.o parser.o parser parser.cpp tokens.h

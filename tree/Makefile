@@ -1,4 +1,4 @@
-SOURCE=main.cpp AllProblemsSolution.cpp PrettyPrinter.cpp
+SOURCE=main.cpp AllProblemsSolution.cpp visitors/PrettyPrinter.cpp
 
 all: main
 

@@ -2,7 +2,6 @@
 #define EXPRSEQ_H
 
 #include <vector>
-#include "Node.h"
 #include "Expression.h"
 
 class IVisitor;

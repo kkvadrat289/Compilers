@@ -1,7 +1,7 @@
 #ifndef IEXPRESSION_H
 #define IEXPRESSION_H
 
-#include "Node.h"
+#include "../Node.h"
 
 class IExpression: public INode{
 public:

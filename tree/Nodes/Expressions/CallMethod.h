@@ -2,6 +2,7 @@
 #define CALLMETHOD_H
 
 #include "Expression.h"
+#include "ExprSeq.h"
 
 class CCallMethod: public IExpression{
 public:

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <memory>
-#include "Visitor.h"
+#include "../visitors/Visitor.h"
 
 class IVisitor;
 

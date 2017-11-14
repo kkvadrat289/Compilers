@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include "Node.h"
+#include "Expression.h"
 
 class CId: public IExpression{
 public:
@@ -11,7 +11,7 @@ public:
         if (name_!=""){
             name = name_;
         }
-        std::cout << name_ << std::endl;
+
     }
     void accept(IVisitor* v) const override;
 
