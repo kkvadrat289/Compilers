@@ -14,11 +14,11 @@ public:
             userClass = userClass_;
         }
     }
-    CTypeInfo(VarType type, std::string userClass):
+    CTypeInfo(VarType type_, std::string userClass_):
         type(type_)
     {
         if(type == VarType::T_CLASS) {
-            userClass = CInternSymbol::GetIntern(userClass);
+            userClass = CInternSymbol::GetIntern(userClass_);
         }
     }
 

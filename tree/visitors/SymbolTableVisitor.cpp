@@ -1,20 +1,24 @@
 #include "SymbolTableVisitor.h"
-#include "../SymbolTable/ClassInfo.h"
+
 
 namespace STable {
+
+
 
 CTableVisitor::CTableVisitor(CProgram* program){
     program->accept(this);
 
 }
 
-CTableVisitor::visit(const CProgram *node){
+void CTableVisitor::visit(const CProgram *node){
     for (auto item : node->classes){
         item->accept(this);
     }
 }
 
-CTableVisitor::visit(const CClass *node){
+void CTableVisitor::visit(const CMethod *node){}
+
+void CTableVisitor::visit(const CClass *node){
     CClassInfo* classInfo = new CClassInfo(node->id->name);
     if (node->extends.get() != nullptr)
         classInfo->SetSuperClass(node->extends->name);
@@ -35,27 +39,22 @@ CTableVisitor::visit(const CClass *node){
         }
         classInfo->AddMethodInfo(methodInfo);
     }
-    table.AddClass(classInfo);
+    table->AddClass(classInfo);
 }
 
 CTypeInfo* CTableVisitor::convertType(IType *type){
     std::string label = type->label;
     VarType res;
 
-    switch (label) {
-    case "bool":
+    if (label == "bool")
         res = VarType::T_BOOL;
-        break;
-    case "int":
+    else if (label == "int")
         res = VarType::T_INT;
-        break;
-    case "int[]":
+    else if (label == "int[]")
         res = VarType::T_INT_ARR;
-        break;
-    default:
+    else
         res = VarType::T_CLASS;
-        break;
-    }
+
     if (res == VarType::T_CLASS){
         return new CTypeInfo(res, label);
     }

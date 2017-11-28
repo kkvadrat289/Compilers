@@ -17,16 +17,16 @@ public:
         superClass(nullptr)
     {}
 
-    void AddMethodInfo(const CMethodInfo* method)
+    void AddMethodInfo(CMethodInfo* method)
     {
           methods.push_back(method->GetName());
-          methodsBlock.insert(std::make_pair(method->GetName(), std::unique_ptr<CMethodInfo>(method)));
+          methodsBlock[method->GetName()]= std::unique_ptr<CMethodInfo>(method);
     }
 
-    void AddVariableInfo(const CVariableInfo* var)
+    void AddVariableInfo(CVariableInfo* var)
     {
           vars.push_back(var->GetName());
-          variablesBlock.insert(std::make_pair(var->GetName(), std::unique_ptr<CVariableInfo>(var)));
+          variablesBlock[var->GetName()] = std::unique_ptr<CVariableInfo>(var);
     }
 
     CInternSymbol* GetSuperClass(){

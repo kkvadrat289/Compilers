@@ -1,13 +1,14 @@
 #ifndef SYMBOLTABLE_H
 #define SYMBOLTABLE_H
 
-#include "Scope.h"
-#include "ClassInfo.h"
-#include "MethodInfo.h"
+//#include "table.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <set>
+
+#include "ClassInfo.h"
+#include "Scope.h"
 
 namespace STable {
 
@@ -17,6 +18,8 @@ public:
     void AddNewClass(std::string neClassName);
     void AddNewMethod(std::string newMethodName);
     void FreeLastScope();
+    CTable(const CTable&) = delete;
+    CTable(){}
 
 private: 
     CClassInfo* getClassInfo(std::string className);

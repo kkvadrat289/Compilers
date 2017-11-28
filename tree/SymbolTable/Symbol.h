@@ -11,7 +11,7 @@ public:
     CSymbol(std::string name_): name(CInternSymbol::GetIntern(name_)){}
     CSymbol(CInternSymbol* name_): name(name_){}
 
-  const CInternSymbol* GetName() const {
+  CInternSymbol* GetName() const {
       return name;
   }
 
@@ -27,12 +27,9 @@ public:
 
   virtual ~CSymbol() {}
 
-  const CInternSymbol* GetName() const {
-      return name;
-  }
-
 protected:
-  const CInternSymbol* name;
+
+  CInternSymbol* name;
 
 };
 

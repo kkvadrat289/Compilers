@@ -22,22 +22,22 @@ public:
         static std::unordered_map<std::string, std::unique_ptr<CInternSymbol>> strings;
         auto cached = strings.find(name);
         if (cached != strings.end()){
-            return cached->second;
+            return cached->second.get();
         }
         CInternSymbol* newVal = new CInternSymbol(name);
-        strings.insert(std::make_pair(name, std::unique_ptr<CInternSymbol>(newVal)));
+        strings[name] = std::unique_ptr<CInternSymbol>(newVal);
         return newVal;
     }
 
-    const std::string& GetString() const {
+    const std::string& GetString()  {
         return body;
     }
 
 private:
     std::string body;
 
-    CSymbol(std::string name) : body(name) { }
-    CSymbol( const CInternSymbol& ) = delete;
+    CInternSymbol(std::string name) : body(name) { }
+    CInternSymbol(  CInternSymbol& ) = delete;
     void operator=( const CInternSymbol& ) = delete;
 };
 

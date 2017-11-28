@@ -13,7 +13,7 @@ namespace STable {
 
 void CTable::AddClass(CClassInfo *newClass){
     if (classes.find(newClass->GetName()) == classes.end()){
-        classes.insert(std::make_pair(newClass->GetName(), std::unique_ptr<CClassInfo>(newClass)));
+        classes[newClass->GetName()] = std::unique_ptr<CClassInfo>(newClass);
 
     }
     else{
