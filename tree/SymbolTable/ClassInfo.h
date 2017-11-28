@@ -11,6 +11,7 @@
 namespace STable {
 
 class CClassInfo: public CSymbol{
+public:
     CClassInfo( std::string name_) :
         CSymbol(name_),
         superClass(nullptr)
@@ -45,12 +46,18 @@ class CClassInfo: public CSymbol{
         return methods;
     }
 
+    std::unordered_map<CInternSymbol*, std::unique_ptr<CVariableInfo> > GetVarBlock(){
+        return variablesBlock;
+    }
 
+    std::unordered_map<CInternSymbol*, std::unique_ptr<CMethodInfo> > GetMethodsBlock(){
+        return methodsBlock;
+    }
 private:
     std::vector<CInternSymbol*> vars;
     std::vector<CInternSymbol*> methods;
-    std::unordered_map<CInternSymbol*, std::unique_ptr<CVariableInfo>> variablesBlock;
-    std::unordered_map<CInternSymbol*, std::unique_ptr<CMethodInfo>> methodsBlock;
+    std::unordered_map<CInternSymbol*, std::unique_ptr<CVariableInfo> > variablesBlock;
+    std::unordered_map<CInternSymbol*, std::unique_ptr<CMethodInfo> > methodsBlock;
     CInternSymbol* superClass;
 };
 

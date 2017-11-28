@@ -8,6 +8,7 @@ public:
     CClassType(std::shared_ptr<CId> id_):
         id(id_)
     {
+       // label = "class";
         label = id->name;
     }
     std::shared_ptr<CId> id;

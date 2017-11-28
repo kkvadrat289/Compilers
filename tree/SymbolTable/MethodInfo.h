@@ -12,7 +12,11 @@ namespace  STable {
 class CMethodInfo: public CSymbol
 {
 public:
-    CMethodInfo(std::string name_, VarType returnType_):CSymbol(name_), returnType(returnType_){}
+    CMethodInfo(std::string name_, VarType returnType_, std::string& className_):
+        CSymbol(name_),
+        returnType(returnType_),
+        className(CInternSymbol::GetIntern(className_))
+    {}
     VarType GetType(){
         return returnType;
     }
@@ -34,11 +38,20 @@ public:
         return res;
     }
 
+    std::unordered_map<CInternSymbol*, std::unique_ptr<CVariableInfo> > GetVariablesBlock(){
+        return variablesBlock;
+    }
+
+    CInternSymbol* GetClassName(){
+        return className;
+    }
+
 private:
+    CInternSymbol* className;
     std::vector<CInternSymbol*> args;
     std::vector<CInternSymbol*> vars;
     VarType returnType;
-    std::unordered_map<CInternSymbol*, std::unique_ptr<CVariableInfo>> variablesBlock;
+    std::unordered_map<CInternSymbol*, std::unique_ptr<CVariableInfo> > variablesBlock;
 };
 
 }

@@ -11,6 +11,7 @@ public:
         type(type_),
         id(id_)
     {}
+    std::string GetUserClassName(){return id->name;}
     void accept(IVisitor *v) const override;
 
     std::shared_ptr<IType> type;

@@ -2,7 +2,7 @@
 #define SYMBOL_H
 
 #include <string>
-#include <InternSymbol.h>
+#include "InternSymbol.h"
 
 namespace STable {
 
