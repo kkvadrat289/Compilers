@@ -19,12 +19,11 @@ public:
     CTable(const CTable&) = delete;
     CTable(){}
 
-private: 
+private:
     CClassInfo* getClassInfo(std::string className);
     CMethodInfo* getMethodInfo(std::string methodName);
     void checkClass(CClassInfo* classToCheck);
     std::vector<CClassInfo*> getChain(CClassInfo* newClass);
-
     std::vector<std::shared_ptr<CScope> > scopes;
     std::unordered_map<CInternSymbol*, std::shared_ptr<CClassInfo> > classes;
     std::set<CInternSymbol*> checked;

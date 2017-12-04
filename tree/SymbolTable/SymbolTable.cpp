@@ -1,4 +1,3 @@
-
 #include "SymbolTable.h"
 
 
@@ -55,7 +54,9 @@ void CTable::AddNewClass(std::string newClassName){
         chain.push_back(class_);
     }
     for(auto class_ : chain) {
-        scopes.push_back(std::shared_ptr<CScope>(new CScope(&class_->GetVarBlock(), &class_->GetMethodsBlock(), class_)));
+        auto varBlock = class_->GetVarBlock();
+        auto methBlock = class_->GetMethodsBlock();
+        scopes.push_back(std::shared_ptr<CScope>(new CScope(&varBlock, &methBlock, class_)));
     }
 }
 
@@ -69,7 +70,6 @@ CMethodInfo* CTable::getMethodInfo(std::string methodName){
     }
     //not declared
     return nullptr;
-    //throw DeclarationException("Not declared method " + name + " requested", position);
 }
 
 void CTable::FreeLastScope(){
@@ -79,7 +79,8 @@ void CTable::FreeLastScope(){
 
 void CTable::AddNewMethod(std::string newMethodName){
     CMethodInfo* method = getMethodInfo(newMethodName);
-    scopes.push_back(std::make_shared<CScope>(&method->GetVariablesBlock(), nullptr, scopes.begin()->get()->GetClassName()));
+    auto varBlock = method->GetVariablesBlock();
+    scopes.push_back(std::shared_ptr<CScope>(new CScope(&varBlock, nullptr, scopes.begin()->get()->GetClassName())));
 }
 
 }
