@@ -1,9 +1,7 @@
 
 #include "SymbolTable.h"
 
-#include "InternSymbol.h"
-#include "Symbol.h"
-#include "Scope.h"
+
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -13,7 +11,7 @@ namespace STable {
 
 void CTable::AddClass(CClassInfo *newClass){
     if (classes.find(newClass->GetName()) == classes.end()){
-        classes[newClass->GetName()] = std::unique_ptr<CClassInfo>(newClass);
+        classes[newClass->GetName()] = std::shared_ptr<CClassInfo>(newClass);
 
     }
     else{
@@ -21,14 +19,14 @@ void CTable::AddClass(CClassInfo *newClass){
     }
 }
 
-void CTable::getClassInfo(std::string className){
+CClassInfo* CTable::getClassInfo(std::string className){
     CInternSymbol *nameIntern = CInternSymbol::GetIntern(className);
     auto info = classes.find(nameIntern);
     if (info != classes.end()){
         return info->second.get();
     }
     //not declared
-    return;
+
 }
 
 void CTable::checkClass(CClassInfo *classToCheck){
@@ -44,7 +42,7 @@ void CTable::checkClass(CClassInfo *classToCheck){
             chain.insert(classToCheck->GetName());
         }
         for(auto class_ : chain) {
-            checked.insert(*class_);
+            checked.insert(class_);
         }
 }
 
@@ -57,7 +55,7 @@ void CTable::AddNewClass(std::string newClassName){
         chain.push_back(class_);
     }
     for(auto class_ : chain) {
-        scopes.push_back(std::make_unique<CScope>(&class_->GetVarBlock(), &class_->GetMethodsBlock(), class_));
+        scopes.push_back(std::shared_ptr<CScope>(new CScope(&class_->GetVarBlock(), &class_->GetMethodsBlock(), class_)));
     }
 }
 
@@ -81,7 +79,7 @@ void CTable::FreeLastScope(){
 
 void CTable::AddNewMethod(std::string newMethodName){
     CMethodInfo* method = getMethodInfo(newMethodName);
-    scopes.push_back(std::make_unique<CScope>(&method->GetVariablesBlock(), nullptr, scopes.begin()->get()->GetClassName()));
+    scopes.push_back(std::make_shared<CScope>(&method->GetVariablesBlock(), nullptr, scopes.begin()->get()->GetClassName()));
 }
 
 }

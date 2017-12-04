@@ -1,4 +1,4 @@
-SOURCE=main.cpp AllProblemsSolution.cpp visitors/PrettyPrinter.cpp visitors/SymbolTableVisitor.cpp
+SOURCE=main.cpp AllProblemsSolution.cpp visitors/PrettyPrinter.cpp SymbolTable/table.cpp SymbolTable/SymbolTable.cpp visitors/SymbolTableVisitor.cpp 
 
 all: main
 

@@ -3,15 +3,15 @@
 
 #include "Visitor.h"
 
-//#include "../SymbolTable/table.h"
+#include "../SymbolTable/table.h"
 #include "../SymbolTable/SymbolTable.h"
 
-#include "../SymbolTable/ClassInfo.h"
+/*#include "../SymbolTable/ClassInfo.h"
 #include "../SymbolTable/InternSymbol.h"
 #include "../SymbolTable/MethodInfo.h"
 #include "../SymbolTable/Scope.h"
 #include "../SymbolTable/TypeInfo.h"
-#include "../SymbolTable/VariableInfo.h"
+#include "../SymbolTable/VariableInfo.h"*/
 
 namespace STable {
 
@@ -53,3 +53,4 @@ private:
 
 
 #endif // SYMBOLTABLEVISITOR_H
+

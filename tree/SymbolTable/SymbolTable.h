@@ -1,14 +1,12 @@
 #ifndef SYMBOLTABLE_H
 #define SYMBOLTABLE_H
 
-//#include "table.h"
+#include "table.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
 #include <set>
 
-#include "ClassInfo.h"
-#include "Scope.h"
 
 namespace STable {
 
@@ -27,8 +25,8 @@ private:
     void checkClass(CClassInfo* classToCheck);
     std::vector<CClassInfo*> getChain(CClassInfo* newClass);
 
-    std::vector<std::unique_ptr<CScope> > scopes;
-    std::unordered_map<CInternSymbol*, std::unique_ptr<CClassInfo> > classes;
+    std::vector<std::shared_ptr<CScope> > scopes;
+    std::unordered_map<CInternSymbol*, std::shared_ptr<CClassInfo> > classes;
     std::set<CInternSymbol*> checked;
 };
 
