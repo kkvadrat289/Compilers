@@ -1,24 +1,25 @@
 #ifndef SYMBOLTABLEVISITOR_H
 #define SYMBOLTABLEVISITOR_H
 
+#include <iostream>
+
 #include "Visitor.h"
 
 #include "../SymbolTable/table.h"
-#include "../SymbolTable/SymbolTable.h"
-
-/*#include "../SymbolTable/ClassInfo.h"
-#include "../SymbolTable/InternSymbol.h"
-#include "../SymbolTable/MethodInfo.h"
-#include "../SymbolTable/Scope.h"
-#include "../SymbolTable/TypeInfo.h"
-#include "../SymbolTable/VariableInfo.h"*/
 
 namespace STable {
 
 class CTableVisitor: public IVisitor{
 public:
+    CTableVisitor();
+    ~CTableVisitor(){}
     CTableVisitor(CProgram* program);
     CTypeInfo *convertType(IType* type);
+    void printClassInfo(CClassInfo* classInfo);
+    void printVariableInfo(CVariableInfo *varInfo);
+    void printTypeInfo(CTypeInfo* type);
+    void ParseProgram(CProgram* program);
+
     void visit(const CProgram* node)  override;
     void visit(const CMain* node)  override{}
     void visit(const CClass* node)  override;

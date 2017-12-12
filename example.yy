@@ -14,7 +14,8 @@ void yyerror(char *s) {
       printf (RED "%s\n" RESET, s);
     }
 
-CPrettyprinter *pp = new CPrettyprinter("./graph.gv");
+//CPrettyprinter *pp = new CPrettyprinter("./graph.gv");
+CProgram* program;
 %}
 
 %union {
@@ -125,8 +126,8 @@ CPrettyprinter *pp = new CPrettyprinter("./graph.gv");
 %right BANG
 
 %%
-goal  : main_class END                                                          {$$ = new CProgram(std::shared_ptr<CMain>($1)); $$->accept(pp); printf("goal only\n");}
-      | main_class class_s END                                                  {$$ = new CProgram(std::shared_ptr<CMain>($1), std::shared_ptr<CClassSeq>($2)); $$->accept(pp); printf("goal\n");}
+goal  : main_class END                                                          {$$ = new CProgram(std::shared_ptr<CMain>($1)); program = $$;   printf("goal only\n");}
+      | main_class class_s END                                                  {$$ = new CProgram(std::shared_ptr<CMain>($1), std::shared_ptr<CClassSeq>($2)); program = $$;  printf("goal\n");}
       ;
 
 main_class  : CLASS id L_BRACKET
@@ -139,14 +140,14 @@ class_s : class_s class                                                         
         | class                                                                 {$$ = new CClassSeq(std::shared_ptr<CClass>($1)); printf("classes\n");}
         ;
 
-class   : CLASS id L_BRACKET R_BRACKET                         {$$ = new CClass(std::shared_ptr<CId>($2), nullptr); printf("class (%s)\n", $2 );}
-        | CLASS id L_BRACKET var_s R_BRACKET                   {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4)); printf("class (%s) vars\n", $2 );}
-        | CLASS id L_BRACKET method_s R_BRACKET                {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CMethodSeq>($4)); printf("class (%s) methods\n", $2 );}
-        | CLASS id L_BRACKET var_s method_s R_BRACKET          {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4), std::shared_ptr<CMethodSeq>($5)); printf("class (%s) vars methods\n", $2);}
-        | CLASS id EXTENDS id L_BRACKET R_BRACKET                 {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4)); printf("class ext (%s)\n", $2 );}
-        | CLASS id EXTENDS id L_BRACKET var_s R_BRACKET           {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6)); printf("class ext (%s) vars\n", $2 );}
-        | CLASS id EXTENDS id L_BRACKET method_s R_BRACKET        {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CMethodSeq>($6)); printf("class ext (%s) methods\n", $2 );}
-        | CLASS id EXTENDS id L_BRACKET var_s method_s R_BRACKET  {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6), std::shared_ptr<CMethodSeq>($7)); printf("class ext(%s) vars methods\n", $2);}
+class   : CLASS id L_BRACKET R_BRACKET                         {$$ = new CClass(std::shared_ptr<CId>($2), nullptr); printf("class (%s)\n", *($2) );}
+        | CLASS id L_BRACKET var_s R_BRACKET                   {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4)); printf("class (%s) vars\n", *($2) );}
+        | CLASS id L_BRACKET method_s R_BRACKET                {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CMethodSeq>($4)); printf("class (%s) methods\n", *($2) );}
+        | CLASS id L_BRACKET var_s method_s R_BRACKET          {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4), std::shared_ptr<CMethodSeq>($5)); printf("class (%s) vars methods\n", *($2));}
+        | CLASS id EXTENDS id L_BRACKET R_BRACKET                 {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4)); printf("class ext (%s)\n", *($2));}
+        | CLASS id EXTENDS id L_BRACKET var_s R_BRACKET           {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6)); printf("class ext (%s) vars\n", *($2) );}
+        | CLASS id EXTENDS id L_BRACKET method_s R_BRACKET        {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CMethodSeq>($6)); printf("class ext (%s) methods\n", *($2) );}
+        | CLASS id EXTENDS id L_BRACKET var_s method_s R_BRACKET  {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6), std::shared_ptr<CMethodSeq>($7)); printf("class ext(%s) vars methods\n", *($2));}
         ;
 
 var_s    : var_s var                                           {$$ = new CVariableSeq(std::shared_ptr<CVariableSeq>($1), std::shared_ptr<CVariable>($2)); printf("vars_vars\n");}
@@ -226,8 +227,9 @@ exp : exp AND exp                       {$$ = new CBinExpression(std::shared_ptr
 id 	:	ID                             {$$ = new CId(std::string(yylval.nameId)); printf("ID");} ;
 %%
 
-int main (void) {
+/*int main (void) {
 //  yydebug=0;
   yyparse();
+
   delete pp;
-}
+}*/

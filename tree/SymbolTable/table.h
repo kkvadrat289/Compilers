@@ -5,6 +5,8 @@
 #include <string>
 #include <unordered_map>
 #include <memory>
+#include <set>
+#include <assert.h>
 
 namespace STable {
 
@@ -38,6 +40,8 @@ protected:
 
 };
 
+/* ******* CLASS ************************ */
+
 class CClassInfo: public CSymbol{
 public:
     CClassInfo( std::string name_) ;
@@ -53,9 +57,9 @@ public:
     std::vector<CInternSymbol*> GetVars();
     std::vector<CInternSymbol*> GetMethods();
 
-    std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> > GetVarBlock();
+    std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* GetVarBlock();
 
-    std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo> > GetMethodsBlock();
+    std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo> >* GetMethodsBlock();
 private:
     CClassInfo(const CClassInfo&) = delete;
     std::vector<CInternSymbol*> vars;
@@ -72,11 +76,13 @@ enum VarType{
     T_CLASS
 };
 
+/* ********** INTERN SYMBOL *************** */
+
 class CInternSymbol {
 public:
     static CInternSymbol* GetIntern(const std::string& name);
 
-    const std::string& GetString()  ;
+    const std::string& GetString();
 
 private:
     std::string body;
@@ -99,11 +105,14 @@ public:
     CVariableInfo* GetVariableInfo(CInternSymbol *name);
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> > GetVariablesBlock();
     CInternSymbol* GetClassName();
+    CTypeInfo* GetReturnType();
+    std::vector<CInternSymbol*>* GetArgs();
+    std::vector<CInternSymbol*>* GetVars();
 
-private:
-    CInternSymbol* className;
     std::vector<CInternSymbol*> args;
     std::vector<CInternSymbol*> vars;
+private:
+    CInternSymbol* className;
     CTypeInfo* returnType;
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> > variablesBlock;
 };
@@ -120,8 +129,6 @@ public:
     std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo > >* GetMethodsBlock();
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* GetVariablesBlock();
     CClassInfo* GetClassName();
-
-private:
     std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo> >* methodsBlock;
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* variablesBlock;
     CClassInfo* className;
@@ -157,6 +164,32 @@ public:
     CTypeInfo* GetType();
 private:
     CTypeInfo* type;
+};
+
+/* ************************************************** */
+
+class CTable {
+public:
+    void AddClass(CClassInfo* newClass);
+    void AddNewClass(std::string neClassName);
+    void AddNewMethod(std::string newMethodName);
+    void FreeLastScope();
+    CClassInfo* getClassInfo(std::string className);
+    CVariableInfo* getVariableInfo(std::string &name);
+    CMethodInfo* GetMethodInfo(std::string& name);
+    std::vector<CInternSymbol*>& GetClassesNames(){ return classesNames; }
+    CTable(const CTable&) = delete;
+    CTable(){}
+
+private:
+    CMethodInfo* getMethodInfo(std::string methodName);
+    void checkClass(CClassInfo* classToCheck);
+    std::vector<CClassInfo*> getChain(CClassInfo* newClass);
+    std::vector<std::shared_ptr<CScope> > scopes;
+    std::unordered_map<CInternSymbol*, std::shared_ptr<CClassInfo> > classes;
+    std::vector<CInternSymbol*> classesNames;
+    std::set<CInternSymbol*> checked;
+
 };
 
 }
