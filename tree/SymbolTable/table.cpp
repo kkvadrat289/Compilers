@@ -94,8 +94,8 @@ CVariableInfo* CMethodInfo::GetVariableInfo(CInternSymbol *name){
     return res;
 }
 
-std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> > CMethodInfo::GetVariablesBlock(){
-    return variablesBlock;
+std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* CMethodInfo::GetVariablesBlock(){
+    return &variablesBlock;
 }
 
 CInternSymbol* CMethodInfo::GetClassName(){
@@ -185,7 +185,7 @@ bool CSymbol::operator !=( const CSymbol& symbol ){
 
 CSymbol::~CSymbol() {}
 
-/* ********************************************************************************************************** */
+/* ************************CLASS********************************************************************* */
 
 
 void CTable::AddClass(CClassInfo *newClass){
@@ -260,22 +260,22 @@ void CTable::FreeLastScope(){
 
 void CTable::AddNewMethod(std::string newMethodName){
     CMethodInfo* method = getMethodInfo(newMethodName);
-    auto varBlock = method->GetVariablesBlock();
-    scopes.push_back(std::shared_ptr<CScope>(new CScope(&varBlock, nullptr, scopes.begin()->get()->GetClassName())));
+    std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* varBlock = method->GetVariablesBlock();
+    scopes.push_back(std::shared_ptr<CScope>(new CScope(varBlock, nullptr, scopes.begin()->get()->GetClassName())));
 }
 
 CVariableInfo* CTable::getVariableInfo(std::string &name)
 {
     CInternSymbol* varName = CInternSymbol::GetIntern(name);
-   // for(auto scope : this-> scopes) {
-    auto scope = this->scopes[0];
+    for(auto scope : this-> scopes) {
+    //auto scope = this->scopes[0];
         if (scope->GetVariablesBlock() != nullptr){
             auto variable = scope->GetVariablesBlock()->find(varName);
             if(variable != scope->GetVariablesBlock()->end()) {
                 return variable->second.get();
             }
         }
-   // }
+    }
     //not declared
     return nullptr;
 }

@@ -39,7 +39,11 @@ void CTableVisitor::visit(const CClass *node){
     table->AddClass(classInfo);
 }
 
-CTypeInfo* CTableVisitor::convertType(IType *type){
+void CTableVisitor::FillTable(CProgram* program){
+    program->accept(this);
+}
+
+CTypeInfo* CTableVisitor::convertType(const IType *type){
     std::string label = type->label;
     VarType res;
 
@@ -75,26 +79,28 @@ void CTableVisitor::printClassInfo(CClassInfo* classInfo)
         auto variable = table->getVariableInfo(str);
         printVariableInfo(variable);
     }
-
+    std::cout << "\tMethods:\n";
     for(auto methodName : classInfo->GetMethods()) {
+        std::cout << "\t\t";
         std::string name = methodName->GetString();
         auto method = table->GetMethodInfo(name);
         table->AddNewMethod(method->GetName()->GetString());
         printTypeInfo(method->GetReturnType());
-        std::cout << method->GetName()->GetString() << std::endl << "\tArgs:" << std::endl;
+        std::cout << method->GetName()->GetString() << std::endl << "\t\t\tArgs:";
         for(auto arg : method->args) {
             std::string str = arg->GetString();
             auto var = table->getVariableInfo(str);
             std::cout << "\t";
             printVariableInfo(var);
         }
-        std::cout << "\tLocal vars:" << std::endl;
+        std::cout << "\n\t\t\tLocal vars:" ;
         for(auto var : method->vars) {
             std::string str =var-> GetString();
             auto varInfo = table->getVariableInfo(str);
-            std::cout << "\t\t";
+            std::cout  << std::endl << "\t\t\t\t";
             printVariableInfo(varInfo);
         }
+        std::cout << std::endl;
         table->FreeLastScope();
     }
 }
@@ -103,7 +109,7 @@ void CTableVisitor::printVariableInfo(CVariableInfo* varInfo)
 {
     if (varInfo != nullptr){
         printTypeInfo(varInfo->GetType());
-        std::cout << " " << varInfo->GetName()->GetString() << std::endl;
+        std::cout << " " << varInfo->GetName()->GetString() ;
     }
 
 }

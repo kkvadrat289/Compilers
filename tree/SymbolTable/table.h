@@ -103,7 +103,7 @@ public:
     void AddVariable(CVariableInfo* var);
     void AddArg(CVariableInfo *arg);
     CVariableInfo* GetVariableInfo(CInternSymbol *name);
-    std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> > GetVariablesBlock();
+    std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* GetVariablesBlock();
     CInternSymbol* GetClassName();
     CTypeInfo* GetReturnType();
     std::vector<CInternSymbol*>* GetArgs();

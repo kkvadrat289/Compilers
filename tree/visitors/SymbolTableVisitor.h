@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "Visitor.h"
+#include "../Exceptions.h"
 
 #include "../SymbolTable/table.h"
 
@@ -14,11 +15,15 @@ public:
     CTableVisitor();
     ~CTableVisitor(){}
     CTableVisitor(CProgram* program);
-    CTypeInfo *convertType(IType* type);
+    CTypeInfo *convertType(const IType *type);
     void printClassInfo(CClassInfo* classInfo);
     void printVariableInfo(CVariableInfo *varInfo);
     void printTypeInfo(CTypeInfo* type);
     void ParseProgram(CProgram* program);
+    void FillTable(CProgram* program);
+    CTable* GetTable(){
+        return table;
+    }
 
     void visit(const CProgram* node)  override;
     void visit(const CMain* node)  override{}
