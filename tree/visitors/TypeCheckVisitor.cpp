@@ -1,10 +1,9 @@
 #include "TypeCheckVisitor.h"
-
+/*
 #include <iostream>
 #include "../SymbolTable/table.h"
 #include "SymbolTableVisitor.h"
-
-namespace TypeChecker {
+using namespace TypeChecker;
 
 static STable::CTypeInfo fromType(const IType* type)
 {
@@ -70,7 +69,7 @@ void CTypeChecker::visit(const CMethod* node)
     table->FreeLastScope();
 }
 
-void CTypeChecker::visit(const IType* node)
+/*void CTypeChecker::visit(const IType* node)
 {
     if(node->label != BasicType::BOOL_ && node->label != BasicType::INT_ && node->label && BasicType::INT_ARRAY_) {
         table->getClassInfo(node->label);
@@ -284,4 +283,11 @@ void CTypeChecker::visit(const CNotExp* node)
     }
     typesStack.push(&BooleanType);
 }
-}
+void CTypeChecker::visit(const CThis* node){}
+void CTypeChecker::visit(const CArg* node){}
+void CTypeChecker::visit(const CMain* node){}
+void CTypeChecker::visit(const CTrue* node){}
+void CTypeChecker::visit(const CFalse* node){}
+
+*/
+

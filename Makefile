@@ -2,7 +2,7 @@ NODES_DIR = Nodes
 TABLE_OBJ = table1.o table2.o table_visitor.o
 PARSER_OBJ = parser.o lex.o solution.o
 
-all: graph table
+all: graph table checker
 
 parser: parser.o lex.o solution.o visitor.o table.o
 	g++ -g -Wno-write-strings -o solution.o visitor.o  $(PARSER_OBJ) -lfl
@@ -36,6 +36,15 @@ table1.o:	tree/SymbolTable/table.cpp
 
 table2.o:	tree/visitors/SymbolTableVisitor.cpp
 	g++ -g -c tree/visitors/SymbolTableVisitor.cpp -o table2.o
+
+checker:  $(PARSER_OBJ)  visitor.o checker.o table1.o table2.o checker2.o
+		g++ -g $(PARSER_OBJ) visitor.o checker.o table1.o table2.o checker2.o -lfl -std=c++14 -Wno-write-strings -o checker
+
+checker.o:	table1.o
+	g++ -g -c checker.cpp -o checker.o -std=c++14
+
+checker2.o:	tree/visitors/TypeCheckVisitor.cpp
+	g++ -g -c tree/visitors/TypeCheckVisitor.cpp -o checker2.o
 
 clean:
 	rm solution.o $(PARSER_OBJ) $(TABLE_OBJ) visitor.o parser.cpp tokens.h visitor.o graph.o table
