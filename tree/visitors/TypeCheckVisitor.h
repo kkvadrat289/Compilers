@@ -2,10 +2,7 @@
 #define T_H
 
 #include <stack>
-#include "../includes.h"
 #include "SymbolTableVisitor.h"
-#include "../Exceptions.h"
-#include "../SymbolTable/table.h"
 
 namespace TypeChecker {
 

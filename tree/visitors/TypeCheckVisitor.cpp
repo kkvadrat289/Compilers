@@ -343,6 +343,7 @@ void CTypeChecker::visit(const CNotExp* node)
 void CTypeChecker::visit(const CArg* node){}
 void CTypeChecker::visit(const CTrue* node){}
 void CTypeChecker::visit(const CFalse* node){}
+void CTypeChecker::visit(const CStatementSeq *node){}
 
 
 

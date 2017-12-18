@@ -28,8 +28,8 @@ graph.o:	AST.cpp
 exceptions.o: tree/Exceptions.cpp
 	g++ -g -c tree/Exceptions.cpp -o exceptions.o -std=c++14
 
-table:  $(PARSER_OBJ)  visitor.o table.o table1.o table2.o
-	g++ -g $(PARSER_OBJ) visitor.o table.o table1.o table2.o -lfl -std=c++14 -Wno-write-strings -o table
+table:  $(PARSER_OBJ)  visitor.o table.o table1.o table2.o exceptions.o
+	g++ -g $(PARSER_OBJ) visitor.o table.o table1.o table2.o exceptions.o -lfl -std=c++14 -Wno-write-strings -o table
 
 table.o:	table1.o
 	g++ -g -c table.cpp -o table.o -std=c++14
@@ -40,8 +40,8 @@ table1.o:	tree/SymbolTable/table.cpp
 table2.o:	tree/visitors/SymbolTableVisitor.cpp
 	g++ -g -c tree/visitors/SymbolTableVisitor.cpp -o table2.o
 
-checker: table1.o table2.o $(PARSER_OBJ)   checker2.o checker.o
-		g++ -g table1.o table2.o $(PARSER_OBJ) checker2.o checker.o -lfl -std=c++14 -Wno-write-strings -o checker
+checker: exceptions.o table1.o table2.o $(PARSER_OBJ)   checker2.o checker.o
+		g++ -g  exceptions.o table1.o table2.o $(PARSER_OBJ) checker2.o checker.o  -lfl -std=c++14 -Wno-write-strings -o checker
 
 checker.o:	table1.o
 	g++ -g -c checker.cpp -o checker.o -std=c++14
