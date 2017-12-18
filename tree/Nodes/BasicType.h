@@ -6,7 +6,8 @@
 enum BasicType{
     INT_,
     BOOL_,
-    INT_ARRAY_
+    INT_ARRAY_,
+    NON_BASIC
 };
 
 class CBasicType: public IType{

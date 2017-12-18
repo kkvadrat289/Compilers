@@ -60,6 +60,7 @@ public:
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* GetVarBlock();
 
     std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo> >* GetMethodsBlock();
+    const CTypeInfo *GetTypeInfo() const;
 private:
     CClassInfo(const CClassInfo&) = delete;
     std::vector<CInternSymbol*> vars;
@@ -82,7 +83,7 @@ class CInternSymbol {
 public:
     static CInternSymbol* GetIntern(const std::string& name);
 
-    const std::string& GetString();
+    const std::string& GetString() const;
 
 private:
     std::string body;
@@ -105,7 +106,7 @@ public:
     CVariableInfo* GetVariableInfo(CInternSymbol *name);
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* GetVariablesBlock();
     CInternSymbol* GetClassName();
-    CTypeInfo* GetReturnType();
+    CTypeInfo* GetReturnType() const;
     std::vector<CInternSymbol*>* GetArgs();
     std::vector<CInternSymbol*>* GetVars();
 
@@ -142,9 +143,9 @@ class CTypeInfo {
 public:
     CTypeInfo(VarType type_, CInternSymbol* userClass_ = nullptr);
     CTypeInfo(VarType type_, std::string userClass_);
-
-    CInternSymbol* GetClassName();
-    VarType GetType();
+    bool operator==(const CTypeInfo& other) const;
+    const CInternSymbol *GetClassName() const;
+    const VarType GetType() const;
 private:
     VarType type;
     CInternSymbol* userClass;
@@ -174,9 +175,10 @@ public:
     void AddNewClass(std::string neClassName);
     void AddNewMethod(std::string newMethodName);
     void FreeLastScope();
-    CClassInfo* getClassInfo(std::string className);
-    CVariableInfo* getVariableInfo(std::string &name);
+    CClassInfo* getClassInfo(const std::string className) const;
+    CVariableInfo* getVariableInfo(const std::string &name);
     CMethodInfo* GetMethodInfo(std::string& name);
+    CTypeInfo* GetTypeInfo(std::string& name);
     std::vector<CInternSymbol*>& GetClassesNames(){ return classesNames; }
     CTable(const CTable&) = delete;
     CTable(){}

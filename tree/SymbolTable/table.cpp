@@ -9,6 +9,19 @@ CClassInfo::CClassInfo( std::string name_) :
     superClass(nullptr)
 {}
 
+const CTypeInfo* CClassInfo::GetTypeInfo() const{
+    return new CTypeInfo(VarType::T_CLASS, this->name->GetString());
+}
+
+bool CTypeInfo::operator==(const CTypeInfo &other) const
+{
+    if(other.GetType() != VarType::T_CLASS) {
+        return this->GetType() == other.GetType();
+    }
+    return this->GetType() == other.GetType() &&
+            this->GetClassName() == other.GetClassName();
+}
+
 void CClassInfo::AddMethodInfo(CMethodInfo* method)
 {
       methods.push_back(method->GetName());
@@ -61,7 +74,7 @@ CInternSymbol* CInternSymbol::GetIntern(const std::string& name)
         return newVal;
     }
 
-const std::string& CInternSymbol::GetString()  {
+const std::string& CInternSymbol::GetString()  const{
         return body;
     }
 
@@ -102,7 +115,7 @@ CInternSymbol* CMethodInfo::GetClassName(){
     return className;
 }
 
-CTypeInfo* CMethodInfo::GetReturnType(){
+CTypeInfo* CMethodInfo::GetReturnType() const {
     return returnType;
 }
 
@@ -146,8 +159,8 @@ CTypeInfo::CTypeInfo(VarType type_, std::string userClass_):
     }
 }
 
-CInternSymbol* CTypeInfo::GetClassName(){return userClass;}
-VarType CTypeInfo::GetType(){return type;}
+const CInternSymbol* CTypeInfo::GetClassName() const {return userClass;}
+const VarType CTypeInfo::GetType() const {return type;}
 
 
 /* ******************VARIABLE ******************** */
@@ -199,7 +212,7 @@ void CTable::AddClass(CClassInfo *newClass){
     }
 }
 
-CClassInfo* CTable::getClassInfo(std::string className){
+CClassInfo* CTable::getClassInfo(const std::string className) const{
     CInternSymbol *nameIntern = CInternSymbol::GetIntern(className);
     auto info = classes.find(nameIntern);
     if (info != classes.end()){
@@ -264,7 +277,7 @@ void CTable::AddNewMethod(std::string newMethodName){
     scopes.push_back(std::shared_ptr<CScope>(new CScope(varBlock, nullptr, scopes.begin()->get()->GetClassName())));
 }
 
-CVariableInfo* CTable::getVariableInfo(std::string &name)
+CVariableInfo* CTable::getVariableInfo(const std::string &name)
 {
     CInternSymbol* varName = CInternSymbol::GetIntern(name);
     for(auto scope : this-> scopes) {

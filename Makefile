@@ -1,5 +1,5 @@
 NODES_DIR = Nodes
-TABLE_OBJ = table1.o table2.o table_visitor.o
+TABLE_OBJ = exceptions.o table table1.o table2.o
 PARSER_OBJ = parser.o lex.o solution.o
 
 all: graph table checker
@@ -25,6 +25,9 @@ graph:	$(PARSER_OBJ) visitor.o graph.o
 graph.o:	AST.cpp
 	g++ -g -c AST.cpp -o graph.o -std=c++14
 
+exceptions.o: tree/Exceptions.cpp
+	g++ -g -c tree/Exceptions.cpp -o exceptions.o -std=c++14
+
 table:  $(PARSER_OBJ)  visitor.o table.o table1.o table2.o
 	g++ -g $(PARSER_OBJ) visitor.o table.o table1.o table2.o -lfl -std=c++14 -Wno-write-strings -o table
 
@@ -37,8 +40,8 @@ table1.o:	tree/SymbolTable/table.cpp
 table2.o:	tree/visitors/SymbolTableVisitor.cpp
 	g++ -g -c tree/visitors/SymbolTableVisitor.cpp -o table2.o
 
-checker:  $(PARSER_OBJ)  visitor.o checker.o table1.o table2.o checker2.o
-		g++ -g $(PARSER_OBJ) visitor.o checker.o table1.o table2.o checker2.o -lfl -std=c++14 -Wno-write-strings -o checker
+checker: table1.o table2.o $(PARSER_OBJ)   checker2.o checker.o
+		g++ -g table1.o table2.o $(PARSER_OBJ) checker2.o checker.o -lfl -std=c++14 -Wno-write-strings -o checker
 
 checker.o:	table1.o
 	g++ -g -c checker.cpp -o checker.o -std=c++14

@@ -1,6 +1,5 @@
 #ifndef T_H
 #define T_H
-/*
 
 #include <stack>
 #include "../includes.h"
@@ -13,13 +12,13 @@ namespace TypeChecker {
 class CTypeChecker : public IVisitor {
 public:
     void Check(CProgram* root, STable::CTable* table);
-
+    void visit(const CClassType* node);
     void visit(const CBinExpression* node)  override; //
     void visit(const CId* node)  override; //
     void visit(const CTrue* node)  override;
     void visit(const CFalse* node)  override;
     void visit(const CClass* node)  override;//
-    void visit(const CMain* node)  override;
+    void visit(const CMain* node)  override; //
     void visit(const CMethod* node)  override;//
     void visit(const CProgram* node)  override; //
     void visit(const CBooleanExp* node)  override;//
@@ -54,7 +53,5 @@ inline const STable::CTypeInfo *CTypeChecker::popTypeStack() {
     return type;
 }
 }
-
-*/
 
 #endif // T_H
