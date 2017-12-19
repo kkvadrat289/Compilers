@@ -5,7 +5,12 @@
 extern CProgram *program;
 
 int main(void) {
-    yyparse();
-    STable::CTableVisitor visitor;
-    visitor.ParseProgram(program);
+    try{
+        yyparse();
+        STable::CTableVisitor visitor;
+        visitor.ParseProgram(program);
+    }
+    catch (DeclarationException e){
+        std::cout << e.what() << std::endl;
+    }
 }

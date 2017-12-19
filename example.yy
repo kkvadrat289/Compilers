@@ -8,6 +8,8 @@
 #define RED "\x1b[31m"
 #define RESET "\x1b[0m"
 
+#define POSITION Position(yylloc.first_line, yylloc.first_column)
+
 extern "C" int yylex();
 
 void yyerror(char *s) {
@@ -121,40 +123,41 @@ CProgram* program;
 %left PERCENT
 %left STAR
 %left LESS
+%right BANG
 %left DOT
 %left L_SQUARE
-%right BANG
+
 
 %%
-goal  : main_class END                                                          {$$ = new CProgram(std::shared_ptr<CMain>($1)); program = $$;   printf("goal only\n");}
-      | main_class class_s END                                                  {$$ = new CProgram(std::shared_ptr<CMain>($1), std::shared_ptr<CClassSeq>($2)); program = $$;  printf("goal\n");}
+goal  : main_class END                                                          {$$ = new CProgram(std::shared_ptr<CMain>($1), Position(yylloc.first_line, yylloc.first_column)); program = $$; printf("goal only\n");}
+      | main_class class_s END                                                  {$$ = new CProgram(std::shared_ptr<CMain>($1), std::shared_ptr<CClassSeq>($2), Position(yylloc.first_line, yylloc.first_column)); program = $$; printf("goal\n");}
       ;
 
 main_class  : CLASS id L_BRACKET
               PUBLIC STATICVOIDMAIN L_ROUND STRING L_SQUARE R_SQUARE id R_ROUND
               L_BRACKET statement_s R_BRACKET
-              R_BRACKET                                                         {$$ = new CMain(std::shared_ptr<CId>($2), std::shared_ptr<CId>($10), std::shared_ptr<CStatementSeq>($13)); printf("main_class\n");}
+              R_BRACKET                                                         {$$ = new CMain(std::shared_ptr<CId>($2), std::shared_ptr<CId>($10), std::shared_ptr<CStatementSeq>($13), POSITION); printf("main_class\n");}
             ;
 
 class_s : class_s class                                                         {$$ = new CClassSeq(std::shared_ptr<CClassSeq>($1), std::shared_ptr<CClass>($2)); printf("classes\n");}
         | class                                                                 {$$ = new CClassSeq(std::shared_ptr<CClass>($1)); printf("classes\n");}
         ;
 
-class   : CLASS id L_BRACKET R_BRACKET                         {$$ = new CClass(std::shared_ptr<CId>($2), nullptr); printf("class (%s)\n", *($2) );}
-        | CLASS id L_BRACKET var_s R_BRACKET                   {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4)); printf("class (%s) vars\n", *($2) );}
-        | CLASS id L_BRACKET method_s R_BRACKET                {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CMethodSeq>($4)); printf("class (%s) methods\n", *($2) );}
-        | CLASS id L_BRACKET var_s method_s R_BRACKET          {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4), std::shared_ptr<CMethodSeq>($5)); printf("class (%s) vars methods\n", *($2));}
-        | CLASS id EXTENDS id L_BRACKET R_BRACKET                 {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4)); printf("class ext (%s)\n", *($2));}
-        | CLASS id EXTENDS id L_BRACKET var_s R_BRACKET           {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6)); printf("class ext (%s) vars\n", *($2) );}
-        | CLASS id EXTENDS id L_BRACKET method_s R_BRACKET        {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CMethodSeq>($6)); printf("class ext (%s) methods\n", *($2) );}
-        | CLASS id EXTENDS id L_BRACKET var_s method_s R_BRACKET  {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6), std::shared_ptr<CMethodSeq>($7)); printf("class ext(%s) vars methods\n", *($2));}
+class   : CLASS id L_BRACKET R_BRACKET                         {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, POSITION); printf("class (%s)\n", *($2) );}
+        | CLASS id L_BRACKET var_s R_BRACKET                   {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4), POSITION); printf("class (%s) vars\n", *($2) );}
+        | CLASS id L_BRACKET method_s R_BRACKET                {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CMethodSeq>($4), POSITION); printf("class (%s) methods\n", *($2) );}
+        | CLASS id L_BRACKET var_s method_s R_BRACKET          {$$ = new CClass(std::shared_ptr<CId>($2), nullptr, std::shared_ptr<CVariableSeq>($4), std::shared_ptr<CMethodSeq>($5), POSITION); printf("class (%s) vars methods\n", *($2));}
+        | CLASS id EXTENDS id L_BRACKET R_BRACKET                 {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), POSITION); printf("class ext (%s)\n", *($2));}
+        | CLASS id EXTENDS id L_BRACKET var_s R_BRACKET           {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6), POSITION); printf("class ext (%s) vars\n", *($2) );}
+        | CLASS id EXTENDS id L_BRACKET method_s R_BRACKET        {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CMethodSeq>($6), POSITION); printf("class ext (%s) methods\n", *($2) );}
+        | CLASS id EXTENDS id L_BRACKET var_s method_s R_BRACKET  {$$ = new CClass(std::shared_ptr<CId>($2), std::shared_ptr<CId>($4), std::shared_ptr<CVariableSeq>($6), std::shared_ptr<CMethodSeq>($7), POSITION); printf("class ext(%s) vars methods\n", *($2));}
         ;
 
 var_s    : var_s var                                           {$$ = new CVariableSeq(std::shared_ptr<CVariableSeq>($1), std::shared_ptr<CVariable>($2)); printf("vars_vars\n");}
         | var                                                  {$$ = new CVariableSeq(std::shared_ptr<CVariable>($1)); printf("vars_var\n");}
         ;
 
-var     : type id SEMICOLON                                    {$$ = new CVariable(std::shared_ptr<IType>($1), std::shared_ptr<CId>($2)); printf("var\n");}
+var     : type id SEMICOLON                                    {$$ = new CVariable(std::shared_ptr<IType>($1), std::shared_ptr<CId>($2), POSITION); printf("var\n");}
         ;
 
 method_s : method_s method                                     {$$ = new CMethodSeq(std::shared_ptr<CMethodSeq>($1), std::shared_ptr<CMethod>($2)); printf("methods 1\n");}
@@ -162,18 +165,18 @@ method_s : method_s method                                     {$$ = new CMethod
         ;
 
 method	:	modifier type id L_ROUND arg_s R_ROUND
-          L_BRACKET var_s statement_s RETURN exp SEMICOLON R_BRACKET   {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), std::shared_ptr<CVariableSeq>($8), std::shared_ptr<CStatementSeq>($9), std::shared_ptr<IExpression>($11)); printf("method 1 (%s)\n", $3);}
+          L_BRACKET var_s statement_s RETURN exp SEMICOLON R_BRACKET   {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), std::shared_ptr<CVariableSeq>($8), std::shared_ptr<CStatementSeq>($9), std::shared_ptr<IExpression>($11), POSITION); printf("method 1 (%s)\n", $3);}
         | modifier type id L_ROUND arg_s R_ROUND
-        L_BRACKET var_s RETURN exp SEMICOLON R_BRACKET                 {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), std::shared_ptr<CVariableSeq>($8), nullptr, std::shared_ptr<IExpression>($10)); printf("method 2 (%s)\n", $3);}
+        L_BRACKET var_s RETURN exp SEMICOLON R_BRACKET                 {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), std::shared_ptr<CVariableSeq>($8), nullptr, std::shared_ptr<IExpression>($10), POSITION); printf("method 2 (%s)\n", $3);}
         | modifier type id L_ROUND arg_s R_ROUND
-        L_BRACKET statement_s RETURN exp SEMICOLON R_BRACKET           {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), nullptr, std::shared_ptr<CStatementSeq>($8), std::shared_ptr<IExpression>($10)); printf("method 3 (%s)\n", $3);}
+        L_BRACKET statement_s RETURN exp SEMICOLON R_BRACKET           {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), nullptr, std::shared_ptr<CStatementSeq>($8), std::shared_ptr<IExpression>($10), POSITION); printf("method 3 (%s)\n", $3);}
         | modifier type id L_ROUND arg_s R_ROUND
-        L_BRACKET RETURN exp SEMICOLON R_BRACKET                       {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), nullptr, nullptr, std::shared_ptr<IExpression>($9)); printf("method 4 (%s)\n", $3);}
+        L_BRACKET RETURN exp SEMICOLON R_BRACKET                       {$$ = new CMethod(std::shared_ptr<IType>($2), std::shared_ptr<CId>($3), std::shared_ptr<CArgs>($5), nullptr, nullptr, std::shared_ptr<IExpression>($9), POSITION); printf("method 4 (%s)\n", $3);}
         ;
 
 arg_s    : %empty                      {$$ = new CArgs();}
-        | arg_s COMMA type id          {$$ = new CArgs(std::shared_ptr<CArgs>($1), std::shared_ptr<IType>($3), std::shared_ptr<CId>($4)); printf("args 2\n");}
-        | type id                      {$$ = new CArgs(std::shared_ptr<IType>($1), std::shared_ptr<CId>($2)); printf("args 3\n");}
+        | arg_s COMMA type id          {$$ = new CArgs(std::shared_ptr<CArgs>($1), std::shared_ptr<IType>($3), std::shared_ptr<CId>($4), POSITION); printf("args 2\n");}
+        | type id                      {$$ = new CArgs(std::shared_ptr<IType>($1), std::shared_ptr<CId>($2), POSITION); printf("args 3\n");}
         ;
 
 modifier: PUBLIC                       {printf("public\n");}
@@ -191,40 +194,40 @@ statement_s:	statement_s statement      {$$ = new CStatementSeq(std::shared_ptr<
 		;
 
 statement:	L_BRACKET statement_s R_BRACKET            {$$ = new CStatements(std::shared_ptr<CStatementSeq>($2)); printf("statement 1\n");}
-		|	IF L_ROUND exp R_ROUND statement ELSE statement  {$$ = new CIf(std::shared_ptr<IExpression>($3), std::shared_ptr<IStatement>($5), std::shared_ptr<IStatement>($7)); printf("statement 2 if\n");}
-		|	WHILE L_ROUND exp R_ROUND statement              {$$ = new CWhile(std::shared_ptr<IExpression>($3), std::shared_ptr<IStatement>($5)); printf("statement 3 while\n");}
-		|	SYSTEMOUTPRINTLN L_ROUND exp R_ROUND SEMICOLON   {$$ = new CPrintLine(std::shared_ptr<IExpression>($3)); printf("statement 4 sys out print\n");}
-		|	id EQUALS exp SEMICOLON                          {$$ = new CAssignStatement(std::shared_ptr<CId>($1), std::shared_ptr<IExpression>($3)); printf("statement 5 =\n");}
-		|	id L_SQUARE exp R_SQUARE EQUALS exp SEMICOLON    {$$ = new CRandomAccessAssign(std::shared_ptr<CId>($1), std::shared_ptr<IExpression>($3), std::shared_ptr<IExpression>($6)); printf("statement 6 id[]=\n");}
+		|	IF L_ROUND exp R_ROUND statement ELSE statement  {$$ = new CIf(std::shared_ptr<IExpression>($3), std::shared_ptr<IStatement>($5), std::shared_ptr<IStatement>($7), POSITION); printf("statement 2 if\n");}
+		|	WHILE L_ROUND exp R_ROUND statement              {$$ = new CWhile(std::shared_ptr<IExpression>($3), std::shared_ptr<IStatement>($5), POSITION); printf("statement 3 while\n");}
+		|	SYSTEMOUTPRINTLN L_ROUND exp R_ROUND SEMICOLON   {$$ = new CPrintLine(std::shared_ptr<IExpression>($3), POSITION); printf("statement 4 sys out print\n");}
+		|	id EQUALS exp SEMICOLON                          {$$ = new CAssignStatement(std::shared_ptr<CId>($1), std::shared_ptr<IExpression>($3), POSITION); printf("statement 5 =\n");}
+		|	id L_SQUARE exp R_SQUARE EQUALS exp SEMICOLON    {$$ = new CRandomAccessAssign(std::shared_ptr<CId>($1), std::shared_ptr<IExpression>($3), std::shared_ptr<IExpression>($6), POSITION); printf("statement 6 id[]=\n");}
 		;
 
 exp_s:	exp_s COMMA exp  {$$ = new IExpressionSeq(std::shared_ptr<IExpressionSeq>($1), std::shared_ptr<IExpression>($3)); printf("expressions 1\n");}
 			|	exp              {$$ = new IExpressionSeq(std::shared_ptr<IExpression>($1)); printf("expression 2\n");}
 			;
 
-exp : exp AND exp                       {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), AND_, std::shared_ptr<IExpression>($3)); printf("and\n");}
-		|	exp LESS exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), LESS_, std::shared_ptr<IExpression>($3)); printf("less\n");}
-		|	exp PLUS exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), PLUS_, std::shared_ptr<IExpression>($3)); printf("PLUS\n");}
-		|	exp MINUS exp                     {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), MINUS_, std::shared_ptr<IExpression>($3)); printf("MINUS\n");}
-		|	exp STAR exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), TIMES_, std::shared_ptr<IExpression>($3)); printf("*\n");}
-		|	exp PERCENT exp                   {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), MOD_, std::shared_ptr<IExpression>($3)); printf("PERCENT\n");}
-		|	exp OR exp                        {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), OR_, std::shared_ptr<IExpression>($3)); printf("or\n");}
-		|	exp L_SQUARE exp R_SQUARE         {$$ = new CRandomAccess(std::shared_ptr<IExpression>($1), std::shared_ptr<IExpression>($3)); printf("[ ]\n");}
-		| exp DOT LENGTH                    {$$ = new CLength(std::shared_ptr<IExpression>($1)); printf("LENGTH\n");}
-    | exp DOT id L_ROUND R_ROUND        {$$ = new CCallMethod(std::shared_ptr<IExpression>($1), std::shared_ptr<CId>($3), nullptr); printf("%s()\n", $3);/*call method*/}
-		| exp DOT id L_ROUND exp_s R_ROUND  {$$ = new CCallMethod(std::shared_ptr<IExpression>($1), std::shared_ptr<CId>($3), std::shared_ptr<IExpressionSeq>($5)); printf("%s()\n", $3);/*call method*/}
-		| INTEGER                           {$$ = new CIntegerExp(yylval.intVal); printf("INTEGER\n");}
-		| TRUE                              {$$ = new CTrue(); printf("true\n");}
-		|	FALSE                             {$$ = new CFalse(); printf("false\n");}
+exp : exp AND exp                       {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), AND_, std::shared_ptr<IExpression>($3), POSITION); printf("and\n");}
+		|	exp LESS exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), LESS_, std::shared_ptr<IExpression>($3), POSITION); printf("less\n");}
+		|	exp PLUS exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), PLUS_, std::shared_ptr<IExpression>($3), POSITION); printf("PLUS\n");}
+		|	exp MINUS exp                     {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), MINUS_, std::shared_ptr<IExpression>($3), POSITION); printf("MINUS\n");}
+		|	exp STAR exp                      {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), TIMES_, std::shared_ptr<IExpression>($3), POSITION); printf("*\n");}
+		|	exp PERCENT exp                   {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), MOD_, std::shared_ptr<IExpression>($3), POSITION); printf("PERCENT\n");}
+		|	exp OR exp                        {$$ = new CBinExpression(std::shared_ptr<IExpression>($1), OR_, std::shared_ptr<IExpression>($3), POSITION); printf("or\n");}
+		|	exp L_SQUARE exp R_SQUARE         {$$ = new CRandomAccess(std::shared_ptr<IExpression>($1), std::shared_ptr<IExpression>($3), POSITION); printf("[ ]\n");}
+		| exp DOT LENGTH                    {$$ = new CLength(std::shared_ptr<IExpression>($1), POSITION); printf("LENGTH\n");}
+    | exp DOT id L_ROUND R_ROUND        {$$ = new CCallMethod(std::shared_ptr<IExpression>($1), std::shared_ptr<CId>($3), nullptr, POSITION); printf("%s()\n", $3);/*call method*/}
+		| exp DOT id L_ROUND exp_s R_ROUND  {$$ = new CCallMethod(std::shared_ptr<IExpression>($1), std::shared_ptr<CId>($3), std::shared_ptr<IExpressionSeq>($5), POSITION); printf("%s()\n", $3);/*call method*/}
+		| INTEGER                           {$$ = new CIntegerExp(yylval.intVal, POSITION); printf("INTEGER\n");}
+		| TRUE                              {$$ = new CTrue(POSITION); printf("true\n");}
+		|	FALSE                             {$$ = new CFalse(POSITION); printf("false\n");}
 		| id                                {$$ = $1; printf("id\n");}
-		| THIS                              {$$ = new CThis(); printf("THIS\n");}
-		| NEW INT L_SQUARE exp R_SQUARE     {$$ = new CNewIntArray(std::shared_ptr<IExpression>($4)); printf("new int [exp]\n");}
-		| NEW id L_ROUND R_ROUND            {$$ = new CNewClassObject(std::shared_ptr<CId>($2)); printf("new (%s) ()\n", $2);}
-		| BANG exp                          {$$ = new CNotExp(std::shared_ptr<IExpression>($2)); printf("!exp\n");}
+		| THIS                              {$$ = new CThis(POSITION); printf("THIS\n");}
+		| NEW INT L_SQUARE exp R_SQUARE     {$$ = new CNewIntArray(std::shared_ptr<IExpression>($4), POSITION); printf("new int [exp]\n");}
+		| NEW id L_ROUND R_ROUND            {$$ = new CNewClassObject(std::shared_ptr<CId>($2), POSITION); printf("new (%s) ()\n", $2);}
+		| BANG exp                          {$$ = new CNotExp(std::shared_ptr<IExpression>($2), POSITION); printf("!exp\n");}
 		| L_ROUND exp R_ROUND               {$$ = $2; printf("(exp)\n");}
 		;
 
-id 	:	ID                             {$$ = new CId(std::string(yylval.nameId)); printf("ID");} ;
+id 	:	ID                             {$$ = new CId(std::string(yylval.nameId), POSITION); printf("ID");} ;
 %%
 
 /*int main (void) {

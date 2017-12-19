@@ -11,6 +11,7 @@ public:
        // label = "class";
         label = id->name;
     }
+
     std::shared_ptr<CId> id;
 };
 

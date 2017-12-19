@@ -20,20 +20,20 @@ void CTableVisitor::visit(const CProgram *node){
 void CTableVisitor::visit(const CMethod *node){}
 
 void CTableVisitor::visit(const CClass *node){
-    CClassInfo* classInfo = new CClassInfo(node->id->name);
+    CClassInfo* classInfo = new CClassInfo(node->id->name, node->pos);
     if (node->extends.get() != nullptr)
         classInfo->SetSuperClass(node->extends->name);
     for(auto var : node->vars) {
-        CVariableInfo* newVar = new CVariableInfo(var->id->name, convertType(var->type.get()));
+        CVariableInfo* newVar = new CVariableInfo(var->id->name, convertType(var->type.get()), node->pos);
         classInfo->AddVariableInfo(newVar);
     }
     for (auto method : node->methods){
-        CMethodInfo* methodInfo = new CMethodInfo(method->id->name, convertType(method->type.get()), node->id->name);
+        CMethodInfo* methodInfo = new CMethodInfo(method->id->name, convertType(method->type.get()), node->id->name, node->pos);
         for(auto arg : method->params) {
-            methodInfo->AddArg(new CVariableInfo(arg->id->name,convertType(arg->type.get())));
+            methodInfo->AddArg(new CVariableInfo(arg->id->name,convertType(arg->type.get()), node->pos));
         }
         for(auto var : method->vars) {
-            methodInfo->AddVariable(new CVariableInfo(var->id->name, convertType(var->type.get())));
+            methodInfo->AddVariable(new CVariableInfo(var->id->name, convertType(var->type.get()), node->pos));
         }
         classInfo->AddMethodInfo(methodInfo);
     }
@@ -84,8 +84,8 @@ void CTableVisitor::printClassInfo(CClassInfo* classInfo) const
     for(auto methodName : classInfo->GetMethods()) {
         std::cout << "\t\t";
         std::string name = methodName->GetString();
-        auto method = table->GetMethodInfo(name);
-        table->AddNewMethod(method->GetName()->GetString());
+        auto method = table->GetMethodInfo(name, Position(0,0));
+        table->AddNewMethod(method->GetName()->GetString(), Position(0,0));
         printTypeInfo(method->GetReturnType());
         std::cout << method->GetName()->GetString() << std::endl << "\t\t\tArgs:";
         for(auto arg : method->args) {

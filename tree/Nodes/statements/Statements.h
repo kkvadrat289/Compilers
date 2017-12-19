@@ -11,7 +11,11 @@ public:
         statements.swap(newVec);
     }
     void accept(IVisitor *v) const override;
+    virtual const Position& GetPosition() const {
+        return pos;
+    }
 
+    Position pos;
     std::vector<std::shared_ptr<IStatement> > statements;
 };
 

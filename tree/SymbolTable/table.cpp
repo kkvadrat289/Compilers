@@ -4,10 +4,12 @@ namespace STable {
 
 /* ******************CLASS INFO****************** */
 
-CClassInfo::CClassInfo( std::string name_) :
+CClassInfo::CClassInfo(std::string name_, Position pos_) :
     CSymbol(name_),
     superClass(nullptr)
-{}
+{
+    pos = pos_;
+}
 
 const CTypeInfo* CClassInfo::GetTypeInfo() const{
     return new CTypeInfo(VarType::T_CLASS, this->name->GetString());
@@ -88,11 +90,13 @@ const std::string& CInternSymbol::GetString()  const{
 /* ******************METHOD************************* */
 
 
-CMethodInfo::CMethodInfo(std::string name_, CTypeInfo* returnType_, std::string& className_):
+CMethodInfo::CMethodInfo(std::string name_, CTypeInfo* returnType_, std::string& className_, Position pos_):
     CSymbol(name_),
     returnType(returnType_),
     className(CInternSymbol::GetIntern(className_))
-{}
+{
+    pos = pos_;
+}
 CTypeInfo* CMethodInfo::GetType(){
     return returnType;
 }
@@ -182,15 +186,24 @@ const VarType CTypeInfo::GetType() const {return type;}
 
 
 
-CVariableInfo::CVariableInfo(std::string name_, VarType type_): CSymbol(name){
+CVariableInfo::CVariableInfo(std::string name_, VarType type_, Position pos_):
+    CSymbol(name)
+{
+    pos = pos_;
     type = new CTypeInfo(type_);
 }
-CVariableInfo::CVariableInfo(std::string name_, CTypeInfo* type_):
+CVariableInfo::CVariableInfo(std::string name_, CTypeInfo* type_, Position pos_):
     CSymbol(name_),
     type(type_)
-{}
+{
+    pos = pos_;
+}
+
 //если пользовательский тип:
-CVariableInfo::CVariableInfo(std::string name_, VarType type_, std::string className): CSymbol(name){
+CVariableInfo::CVariableInfo(std::string name_, VarType type_, std::string className, Position pos_):
+    CSymbol(name)
+{
+    pos = pos_;
     type = new CTypeInfo(type_, className);
 }
 
@@ -217,13 +230,14 @@ CSymbol::~CSymbol() {}
 
 
 void CTable::AddClass(CClassInfo *newClass){
-    if (classes.find(newClass->GetName()) == classes.end()){
+    auto existingClass = classes.find(newClass->GetName());
+    if (existingClass == classes.end()){
         classesNames.push_back(newClass->GetName());
         classes[newClass->GetName()] = std::shared_ptr<CClassInfo>(newClass);
 
     }
     else{
-        throw DeclarationException("Class " + newClass->GetName()->GetString() + " already declared");
+        throw DeclarationException("Class " + newClass->GetName()->GetString() + " already declared in line " + std::to_string(existingClass->second.get()->GetPosition().Line));
     }
 }
 
@@ -233,7 +247,8 @@ CClassInfo* CTable::getClassInfo(const std::string className) const{
     if (info != classes.end()){
         return info->second.get();
     }
-    throw DeclarationException("Class " + className + " not declared");
+    throw DeclarationException("Class " + className + " not declared. Line " +
+                               std::to_string(info->second.get()->GetPosition().Line));
 }
 
 bool CTable::TypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const
@@ -256,8 +271,9 @@ void CTable::checkClass(CClassInfo *classToCheck){
     std::set<CInternSymbol*> chain;
     for(auto class_ = classToCheck; class_->GetSuperClass() != nullptr; class_ = getClassInfo(class_->GetSuperClass()->GetString())) {
             if(chain.find(class_->GetName()) != chain.end()) {
-                //cycle
-                return;
+                throw DeclarationException("cyclic dependency in class " + class_->GetName()->GetString() + " declared in line " +
+                                           std::to_string(class_->GetPosition().Line));
+
             }
             chain.insert(classToCheck->GetName());
         }
@@ -272,12 +288,14 @@ void CTable::AddNewClass(std::string newClassName){
     std::vector<CClassInfo*> chain;
     chain.push_back(newClass);
     for (CClassInfo* class_ = newClass; class_ ->GetSuperClass()!= nullptr; class_ = getClassInfo(class_->GetSuperClass()->GetString())){
-        for (auto super : chain){
+      /*  for (auto super : chain){
             if (super->GetName()->GetString() == class_->GetName()->GetString()){
                 //cyclic dependency
-                throw DeclarationException("cyclic dependency in class " + class_->GetName()->GetString());
+                throw DeclarationException("2) cyclic dependency in class " + class_->GetName()->GetString() + " declared in line " +
+                                           std::to_string(class_->GetPosition().Line));
             }
-        }
+        }*/
+        //ДОБАВЛЯТЬ ПЕРЕМЕННЫЕ ИЗ РОДИТЕЛЕЙ
         chain.push_back(class_);
     }
     for(auto class_ : chain) {
@@ -287,7 +305,7 @@ void CTable::AddNewClass(std::string newClassName){
     }
 }
 
-CMethodInfo* CTable::getMethodInfo(std::string methodName){
+CMethodInfo* CTable::getMethodInfo(std::string methodName, Position pos){
     CInternSymbol* symbol = CInternSymbol::GetIntern(methodName);
     for(auto scope : scopes) {
         auto method = scope.get()->GetMethodsBlock()->find(symbol);
@@ -303,8 +321,8 @@ void CTable::FreeLastScope(){
     scopes.pop_back();
 }
 
-void CTable::AddNewMethod(std::string newMethodName){
-    CMethodInfo* method = getMethodInfo(newMethodName);
+void CTable::AddNewMethod(std::string newMethodName, Position pos){
+    CMethodInfo* method = getMethodInfo(newMethodName, pos);
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* varBlock = method->GetVariablesBlock();
     scopes.push_back(std::shared_ptr<CScope>(new CScope(varBlock, nullptr, scopes.begin()->get()->GetClassName())));
 }
@@ -317,7 +335,6 @@ CVariableInfo* CTable::getVariableInfo(const std::string &name)
 {
     CInternSymbol* varName = CInternSymbol::GetIntern(name);
     for(auto scope : this-> scopes) {
-    //auto scope = this->scopes[0];
         if (scope->GetVariablesBlock() != nullptr){
             auto variable = scope->GetVariablesBlock()->find(varName);
             if(variable != scope->GetVariablesBlock()->end()) {
@@ -328,7 +345,7 @@ CVariableInfo* CTable::getVariableInfo(const std::string &name)
     throw DeclarationException("Variable " + name + " not declared");
 }
 
-CMethodInfo* CTable::GetMethodInfo(std::string& name)
+CMethodInfo* CTable::GetMethodInfo(std::string& name, Position pos)
 {
     CInternSymbol* methodName = CInternSymbol::GetIntern(name);
     for(auto scope : scopes) {
@@ -337,6 +354,6 @@ CMethodInfo* CTable::GetMethodInfo(std::string& name)
             return method->second.get();
         }
     }
-    throw DeclarationException("Method " + name + " not declared");
+    throw DeclarationException("Method " + name + "requested in line " + std::to_string(pos.Line)+ " is not declared");
 }
 }

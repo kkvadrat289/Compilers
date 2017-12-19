@@ -9,7 +9,7 @@ CPrettyprinter::~CPrettyprinter(){
     out.close();
 }
 void CPrettyprinter::visit(const CProgram* node) {
-    this->printVertex(node, "Program");
+    this->printVertex(node, "Program: " + std::to_string(node->pos.Line) + " lines");
     node->main->accept(this);
     printEdge(node, node->main);
     for (auto el : node->classes){
@@ -18,7 +18,7 @@ void CPrettyprinter::visit(const CProgram* node) {
     }
 }
 void CPrettyprinter::visit(const CMain* node)  {
-    printVertex(node, "Main");
+    printVertex(node, "Main: " + std::to_string(node->pos.Line) );
     node->id->accept(this);
     printEdge(node, node->id);
     node->paramId->accept(this);
@@ -29,7 +29,7 @@ void CPrettyprinter::visit(const CMain* node)  {
     }
 }
 void CPrettyprinter::visit(const CClass* node)  {
-    printVertex(node, "Class");
+    printVertex(node, "Class: " + std::to_string(node->pos.Line));
     node->id->accept(this);
     printEdge(node, node->id);
     for (auto method : node->methods){
@@ -38,15 +38,15 @@ void CPrettyprinter::visit(const CClass* node)  {
     }
 }
 void CPrettyprinter::visit(const CId* node) {
-    printVertex(node, "id:" + node->name);
+    printVertex(node, "id:" + node->name + " : " + std::to_string(node->pos.Line));
 }
 void CPrettyprinter::visit(const CPrintLine* node) {
-    printVertex(node, "println");
+    printVertex(node, "println: " + std::to_string(node->pos.Line));
     node->object->accept(this);
     printEdge(node, node->object);
 }
 void CPrettyprinter::visit(const CCallMethod* node)  {
-    printVertex(node, "callMethod");
+    printVertex(node, "callMethod:  " + std::to_string(node->pos.Line));
     node->id->accept(this);
     printEdge(node, node->id);
     node->expression->accept(this);
@@ -57,27 +57,27 @@ void CPrettyprinter::visit(const CCallMethod* node)  {
     }
 }
 void CPrettyprinter::visit(const CIntegerExp* node)  {
-    printVertex(node, "int " + std::to_string(node->val));
+    printVertex(node, "int " + std::to_string(node->val) + " : " + std::to_string(node->pos.Line));
 
 }
 //проблемы с less
 void CPrettyprinter::visit(const CBinExpression* node){
-    printVertex(node, node->label);
+    printVertex(node, node->label +": " + std::to_string(node->pos.Line));
     node->left->accept(this);
     node->right->accept(this);
     printEdge(node, node->left, "left");
     printEdge(node, node->right, "right");
 }
 void CPrettyprinter::visit(const CTrue* node)  {
-    printVertex(node, "True");
+    printVertex(node, "True: " + std::to_string(node->pos.Line));
 }
 void CPrettyprinter::visit(const CFalse* node)  {
-    printVertex(node, "False");
+    printVertex(node, "False: " + std::to_string(node->pos.Line));
 }
 
 
 void CPrettyprinter::visit(const CMethod* node)  {
-    printVertex(node, "method " + node->type->label);
+    printVertex(node, "method " + node->type->label + ": " + std::to_string(node->pos.Line));
     node->id->accept(this);
     printEdge(node, node->id);
     for (auto var : node->vars){
@@ -98,17 +98,17 @@ void CPrettyprinter::visit(const CMethod* node)  {
 }
 
 void CPrettyprinter::visit(const CBooleanExp* node) {
-    printVertex(node, "bool " + std::to_string(node->val));
+    printVertex(node, "bool " + std::to_string(node->val) + ": " + std::to_string(node->pos.Line));
 }
 void CPrettyprinter::visit(const CAssignStatement* node)  {
-    printVertex(node, "=");
+    printVertex(node, "=:  " + std::to_string(node->pos.Line));
     node->left->accept(this);
     node->right->accept(this);
     printEdge(node, node->left, "left");
     printEdge(node, node->right, "right");
 }
 void CPrettyprinter::visit(const CIf* node) {
-    printVertex(node, "If");
+    printVertex(node, "If:  " + std::to_string(node->pos.Line));
     node->cond->accept(this);
     printEdge(node, node->cond, "condition");
     node->ifFalse->accept(this);
@@ -118,22 +118,22 @@ void CPrettyprinter::visit(const CIf* node) {
 }
 
 void CPrettyprinter::visit(const CNotExp* node) {
-    printVertex(node, "NotExpression");
+    printVertex(node, "NotExpression:  " + std::to_string(node->pos.Line));
     node->right->accept(this);
     printEdge(node, node->right);
 }
 void CPrettyprinter::visit(const CNewIntArray* node)  {
-    printVertex(node, "new int[]");
+    printVertex(node, "new int[]: " + std::to_string(node->pos.Line));
     node->size->accept(this);
     printEdge(node, node->size, "size");
 }
 void CPrettyprinter::visit(const CNewClassObject* node)  {
-    printVertex(node, "new");
+    printVertex(node, "new:  " + std::to_string(node->pos.Line));
     node->id->accept(this);
     printEdge(node, node->id);
 }
 void CPrettyprinter::visit(const CRandomAccessAssign* node)  {
-    printVertex(node, "=");
+    printVertex(node, "=: " + std::to_string(node->pos.Line));
     node->id->accept(this);
     printEdge(node, node->id, "array");
     node->position->accept(this);
@@ -142,19 +142,19 @@ void CPrettyprinter::visit(const CRandomAccessAssign* node)  {
     printEdge(node, node->expression);
 }
 void CPrettyprinter::visit(const CLength* node)  {
-    printVertex(node, "getLength");
+    printVertex(node, "getLength:  " + std::to_string(node->pos.Line));
     node->object->accept(this);
     printEdge(node, node->object, "object");
 }
 void CPrettyprinter::visit(const CStatements* node)  {
-    printVertex(node, "statements");
+    printVertex(node, "statements:  " + std::to_string(node->pos.Line));
     for (auto statement : node->statements){
         statement->accept(this);
         printEdge(node, statement);
     }
 }
 void CPrettyprinter::visit(const CRandomAccess* node) {
-    printVertex(node, "AccessToPosition");
+    printVertex(node, "AccessToPosition:  " + std::to_string(node->pos.Line));
     node->object->accept(this);
     node->position->accept(this);
     printEdge(node, node->object, "object");
@@ -162,7 +162,7 @@ void CPrettyprinter::visit(const CRandomAccess* node) {
 }
 
 void CPrettyprinter::visit(const CArg* node) {
-    printVertex(node, node->type->label);
+    printVertex(node, node->type->label + ": " + std::to_string(node->pos.Line));
     node->id->accept(this);
     printEdge(node, node->id);
 }

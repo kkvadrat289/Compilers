@@ -9,4 +9,5 @@ int main(void) {
     CPrettyprinter *printer = new CPrettyprinter("./graph.gv");
     program->accept(printer);
     delete printer;
+    return 0;
 }

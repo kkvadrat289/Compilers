@@ -8,6 +8,7 @@
 #include <set>
 #include <assert.h>
 #include "../Exceptions.h"
+#include "../Nodes/Position.h"
 
 namespace STable {
 
@@ -36,6 +37,7 @@ public:
   virtual ~CSymbol();
 
 protected:
+  Position pos;
 
   CInternSymbol* name;
 
@@ -45,20 +47,20 @@ protected:
 
 class CClassInfo: public CSymbol{
 public:
-    CClassInfo( std::string name_) ;
+    CClassInfo( std::string name_, Position pos_) ;
     void AddMethodInfo(CMethodInfo* method);
     void AddVariableInfo(CVariableInfo* var);
     CInternSymbol *GetSuperClass() const;
     void SetSuperClass(std::string& name);
     void SetSuperClass(CInternSymbol* name);
-
     std::vector<CInternSymbol*> GetVars();
     std::vector<CInternSymbol*> GetMethods();
-
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* GetVarBlock();
-
     std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo> >* GetMethodsBlock();
     const CTypeInfo *GetTypeInfo() const;
+    const Position& GetPosition() const {
+        return pos;
+    }
 private:
     CClassInfo(const CClassInfo&) = delete;
     std::vector<CInternSymbol*> vars;
@@ -97,7 +99,7 @@ class CMethodInfo: public CSymbol
 {
 public:
     CMethodInfo(const CMethodInfo&) = delete;
-    CMethodInfo(std::string name_, CTypeInfo* returnType_, std::string& className_);
+    CMethodInfo(std::string name_, CTypeInfo* returnType_, std::string& className_, Position pos_);
     CTypeInfo* GetType();
     void AddVariable(CVariableInfo* var);
     void AddArg(CVariableInfo *arg);
@@ -112,7 +114,11 @@ public:
 
     std::vector<CInternSymbol*> args;
     std::vector<CInternSymbol*> vars;
+    const Position& GetPosition() const {
+        return pos;
+    }
 private:
+
     CInternSymbol* className;
     CTypeInfo* returnType;
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> > variablesBlock;
@@ -157,13 +163,17 @@ private:
 class CVariableInfo : public CSymbol{
 public:
     CVariableInfo(const CVariableInfo&) = delete;
-    CVariableInfo(std::string name_, VarType type_);
-    CVariableInfo(std::string name_, CTypeInfo* type_);
+    CVariableInfo(std::string name_, VarType type_, Position pos_);
+    CVariableInfo(std::string name_, CTypeInfo* type_, Position pos_);
     //если пользовательский тип:
-    CVariableInfo(std::string name_, VarType type_, std::string className);
+    CVariableInfo(std::string name_, VarType type_, std::string className, Position pos_);
 
     CTypeInfo* GetType();
+    const Position& GetPosition() const {
+        return pos;
+    }
 private:
+
     CTypeInfo* type;
 };
 
@@ -173,12 +183,12 @@ class CTable {
 public:
     void AddClass(CClassInfo* newClass);
     void AddNewClass(std::string neClassName);
-    void AddNewMethod(std::string newMethodName);
+    void AddNewMethod(std::string newMethodName, Position pos);
     void FreeLastScope();
     bool TypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const;
     CClassInfo* getClassInfo(const std::string className) const;
     CVariableInfo* getVariableInfo(const std::string &name);
-    CMethodInfo* GetMethodInfo(std::string& name);
+    CMethodInfo* GetMethodInfo(std::string& name, Position pos);
     CTypeInfo* GetTypeInfo(std::string& name);
     std::vector<CInternSymbol*>& GetClassesNames(){ return classesNames; }
     const CClassInfo* GetScopedClass() const ;
@@ -186,7 +196,7 @@ public:
     CTable(){}
 
 private:
-    CMethodInfo* getMethodInfo(std::string methodName);
+    CMethodInfo* getMethodInfo(std::string methodName, Position pos);
     void checkClass(CClassInfo* classToCheck);
     std::vector<CClassInfo*> getChain(CClassInfo* newClass);
     std::vector<std::shared_ptr<CScope> > scopes;

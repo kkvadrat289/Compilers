@@ -18,6 +18,10 @@ public:
         if (type == BOOL_) label = "bool";
         if (type == INT_ARRAY_) label = "int[]";
     }
+    virtual const Position& GetPosition() const {
+        return pos;
+    }
+    Position pos;
     BasicType type;
 };
 

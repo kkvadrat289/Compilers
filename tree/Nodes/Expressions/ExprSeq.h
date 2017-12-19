@@ -22,6 +22,7 @@ public:
         return expressions;
     }
     std::vector<std::shared_ptr<IExpression> > expressions;
+
 };
 
 #endif // EXPRSEQ_H

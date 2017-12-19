@@ -15,10 +15,12 @@ enum BinType {
 
 class CBinExpression: public IExpression{
 public:
-    CBinExpression(std::shared_ptr<IExpression> left_, BinType type_, std::shared_ptr<IExpression> right_):
+    CBinExpression(std::shared_ptr<IExpression> left_, BinType type_, std::shared_ptr<IExpression> right_,
+                   Position pos_):
         type(type_),
         left(left_),
-        right(right_)
+        right(right_),
+        pos(pos_)
     {
         switch(type){
             case AND_:
@@ -46,6 +48,11 @@ public:
     }
 
     void accept(IVisitor *v) const  override;
+    virtual const Position& GetPosition() const {
+        return pos;
+    }
+
+    Position pos;
     std::string label;
     BinType type;
     std::shared_ptr<IExpression> left;

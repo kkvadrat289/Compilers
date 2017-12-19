@@ -8,10 +8,12 @@
 class CMethod: public INode{
 public:
     CMethod(std::shared_ptr<IType> type_, std::shared_ptr<CId> id_, std::shared_ptr<CArgs> params_,
-             std::shared_ptr<CVariableSeq> vars_, std::shared_ptr<CStatementSeq> statements_,std::shared_ptr<IExpression> res_):
+             std::shared_ptr<CVariableSeq> vars_, std::shared_ptr<CStatementSeq> statements_,std::shared_ptr<IExpression> res_,
+            Position pos_):
         type(type_),
         id(id_),
-        res(res_)
+        res(res_),
+        pos(pos_)
     {
         params.clear();
         if (params_){
@@ -32,6 +34,11 @@ public:
         }
     }
     void accept(IVisitor *v) const  override;
+    virtual const Position& GetPosition() const {
+        return pos;
+    }
+
+    Position pos;
     std::shared_ptr<IType> type;
     std::shared_ptr<CId> id;
     std::vector<std::shared_ptr<CArg> > params;
