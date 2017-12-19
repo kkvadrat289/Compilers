@@ -1,9 +1,6 @@
 #include "SymbolTableVisitor.h"
 #include "../includes.h"
 
-
-
-
 using namespace STable;
 
 CTableVisitor::CTableVisitor(){
@@ -68,7 +65,7 @@ CTypeInfo* CTableVisitor::convertType(const IType *type){
 
 }
 
-void CTableVisitor::printClassInfo(CClassInfo* classInfo)
+void CTableVisitor::printClassInfo(CClassInfo* classInfo) const
 {
     if(classInfo->GetSuperClass() != nullptr) {
         std::cout << "  Super: " << classInfo->GetSuperClass()->GetString() << std::endl;
@@ -109,7 +106,7 @@ void CTableVisitor::printClassInfo(CClassInfo* classInfo)
     }
 }
 
-void CTableVisitor::printVariableInfo(CVariableInfo* varInfo)
+void CTableVisitor::printVariableInfo(CVariableInfo* varInfo) const
 {
     if (varInfo != nullptr){
         printTypeInfo(varInfo->GetType());
@@ -118,7 +115,7 @@ void CTableVisitor::printVariableInfo(CVariableInfo* varInfo)
 
 }
 
-void CTableVisitor::printTypeInfo(CTypeInfo* type)
+void CTableVisitor::printTypeInfo(CTypeInfo* type) const
 {
     switch (type->GetType()) {
     case T_INT:

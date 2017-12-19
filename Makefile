@@ -28,7 +28,7 @@ graph.o:	AST.cpp
 exceptions.o: tree/Exceptions.cpp
 	g++ -g -c tree/Exceptions.cpp -o exceptions.o -std=c++14
 
-table:  $(PARSER_OBJ)  visitor.o table.o table1.o table2.o exceptions.o
+table:   $(PARSER_OBJ)  visitor.o table.o table1.o table2.o exceptions.o
 	g++ -g $(PARSER_OBJ) visitor.o table.o table1.o table2.o exceptions.o -lfl -std=c++14 -Wno-write-strings -o table
 
 table.o:	table1.o

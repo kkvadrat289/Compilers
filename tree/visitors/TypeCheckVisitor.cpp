@@ -61,6 +61,19 @@ static std::string ToString(const STable::CTypeInfo *type){
     return "user class";
 }
 
+static std::string ToString(const STable::VarType type){
+    if (type == STable::VarType::T_BOOL){
+        return "bool";
+    }
+    else if (type == STable::VarType::T_INT){
+        return "int";
+    }
+    else if (type == STable::VarType::T_INT_ARR){
+        return "int[]";
+    }
+    return "user class";
+}
+
 inline bool operator ==(const IType &a, const IType &b) {
     return a.label == b.label;
 }
@@ -121,15 +134,9 @@ void CTypeChecker::visit(const CMethod* node)
     node->res->accept(this);
     auto returnedType = popTypeStack();
     if( !(*returnedType == *convertType(node->type.get()))) {
-        throw DeclarationException("Trying to return wrong type from method " + node->id->name);
+        throw DeclarationException("Trying to return " + node->type->label +  " from method " + node->id->name);
     }
     table->FreeLastScope();
-}
-
-void CTypeChecker::visit(const CClassType* node)
-{
-    table->getClassInfo(node->label);
-
 }
 
 void CTypeChecker::visit(const CAssignStatement* node)
@@ -137,8 +144,9 @@ void CTypeChecker::visit(const CAssignStatement* node)
     auto var = table->getVariableInfo(node->left->name);
     node->right->accept(this);
     auto returnedType = popTypeStack();
-    if( !(*(var->GetType()) == *returnedType) ) {
-        throw DeclarationException("Trying to assign wrong type to variable " + node->left->name);
+    if( !(convertType(var->GetType()) == convertType(returnedType->GetType())) ) {
+        throw DeclarationException("Trying to assign " + ToString(returnedType->GetType()) + " to variable " + node->left->name +
+                                   " of type " + ToString(var->GetType()));
     }
 }
 
@@ -148,7 +156,7 @@ void CTypeChecker::visit(const CPrintLine* node)
     auto toPrint = popTypeStack();
     if(convertType(toPrint->GetType()) != BasicType::INT_ && convertType(toPrint->GetType()) != BasicType::BOOL_ &&
             convertType(toPrint->GetType()) != BasicType::INT_ARRAY_) {
-        throw DeclarationException("Trying to return wrong user type ");
+        throw DeclarationException("Trying to return wrong user type " + toPrint->GetClassName()->GetString());
     }
 }
 
@@ -157,7 +165,7 @@ void CTypeChecker::visit(const CWhile* node)
     node->cond->accept(this);
     auto returned = popTypeStack();
     if(convertType(returned->GetType()) != BasicType::BOOL_) {
-            throw DeclarationException("Trying to use wrong type as while condition");
+            throw DeclarationException("Trying to use " + ToString(returned->GetType()) + " type as while condition");
     }
     node->action->accept(this);
 }
@@ -174,7 +182,7 @@ void CTypeChecker::visit(const CIf* node)
     node->cond->accept(this);
     auto returned = popTypeStack();
     if(convertType(returned->GetType()) != BasicType::BOOL_) {
-            throw DeclarationException("Trying to use wrong type as if condition");
+            throw DeclarationException("Trying to use " + ToString(returned->GetType()) + " type as if condition");
     }
     node->ifTrue->accept(this);
     node->ifFalse->accept(this);
@@ -202,12 +210,12 @@ void CTypeChecker::visit(const CBinExpression* node)
     case BinType::MOD_:
     case BinType::LESS_:
         if(convertType(returned->GetType() )!= BasicType::INT_) {
-                throw DeclarationException("Trying to apply math operation to non integer");
+                throw DeclarationException("Trying to apply math operation to " + ToString(returned->GetType()));
         }
         node->right->accept(this);
         returned = popTypeStack();
         if(convertType(returned->GetType()) != BasicType::INT_) {
-                throw DeclarationException("Trying to apply math operation to non integer");
+                throw DeclarationException("Trying to apply math operation to " + ToString(returned->GetType()));
         }
         if(node->type == BinType::LESS_) {
             typesStack.push(&BooleanType);
@@ -218,12 +226,12 @@ void CTypeChecker::visit(const CBinExpression* node)
     case BinType::AND_:
     case BinType::OR_:
         if(convertType(returned->GetType()) != BasicType::BOOL_) {
-                throw DeclarationException("Trying to apply logical operation to non bool");
+                throw DeclarationException("Trying to apply logical operation to " + ToString(returned->GetType()));
         }
         node->right->accept(this);
         returned = popTypeStack();
         if(convertType(returned->GetType()) != BasicType::BOOL_) {
-                throw DeclarationException("Trying to apply logical operation to non bool");
+                throw DeclarationException("Trying to apply logical operation to " + ToString(returned->GetType()));
         }
         typesStack.push(&BooleanType);
     default:
@@ -240,12 +248,12 @@ void CTypeChecker::visit(const CRandomAccessAssign* node)
     node->position->accept(this);
     auto returned = popTypeStack();
     if(convertType(returned->GetType()) != BasicType::INT_) {
-        throw DeclarationException("Trying to return wrong type as index of array " + node->id->name);
+        throw DeclarationException("Trying to return " + ToString(returned->GetType()) + " as index of array " + node->id->name);
     }
     node->expression->accept(this);
     returned = popTypeStack();
     if(convertType(returned->GetType()) != BasicType::INT_) {
-            throw DeclarationException("Trying to assign wrong type to int array " + node->id->name);
+            throw DeclarationException("Trying to assign " + ToString(returned->GetType()) + " to int array " + node->id->name);
     }
 }
 
@@ -254,12 +262,12 @@ void CTypeChecker::visit(const CRandomAccess* node)
     node->object->accept(this);
     auto returnedBase = popTypeStack();
     if(convertType(returnedBase->GetType()) != BasicType::INT_ARRAY_) {
-        throw DeclarationException("Trying to use wrong type as array");
+        throw DeclarationException("Trying to use " + ToString(returnedBase->GetType()) + " as array");
     }
     node->position->accept(this);
     auto returned = popTypeStack();
     if(convertType(returned->GetType())!= BasicType::INT_) {
-        throw DeclarationException("Trying to return non integer type as index of array ");
+        throw DeclarationException("Trying to return " + ToString(returned->GetType()) + " type as index of array ");
     }
     typesStack.push(&IntType);
 }
@@ -269,7 +277,7 @@ void CTypeChecker::visit(const CLength* node)
     node->object->accept(this);
     auto returnedBase = popTypeStack();
     if(convertType(returnedBase->GetType()) != BasicType::INT_ARRAY_) {
-        throw DeclarationException("Trying to use wrong type as array");
+        throw DeclarationException("Trying to use " + ToString(returnedBase->GetType()) + " as array");
     }
     typesStack.push(&IntType);
 }
@@ -280,29 +288,54 @@ void CTypeChecker::visit(const CCallMethod* node)
     auto returnedBase = popTypeStack();
     if(convertType(returnedBase->GetType()) == BasicType::INT_ || convertType(returnedBase->GetType()) == BasicType::INT_ARRAY_ ||
             convertType(returnedBase->GetType()) == BasicType::BOOL_) {
-        throw DeclarationException("Trying to use type basic type as user type");
+        throw DeclarationException("Trying to use type " + ToString(returnedBase->GetType()) + " as user type");
     }
     STable::CClassInfo* classInfo = table->getClassInfo(returnedBase->GetClassName()->GetString());
     auto methodIterator = classInfo->GetMethodsBlock()->find(STable::CInternSymbol::GetIntern(node->id->name));
     if(methodIterator == classInfo->GetMethodsBlock()->end()) {
-        throw DeclarationException("Requested method " + node->id->name + " is not present in class " +
+        throw DeclarationException("Requested method " + node->id->name + " is not declared in class " +
                                                         classInfo->GetName()->GetString());
     }
     const STable::CMethodInfo* methodInfo = methodIterator->second.get();
+    auto scoped = table->GetScopedClass();
+    if(scoped == nullptr || scoped->GetName() != classInfo->GetName()) { }
     for (auto arg : node->params){
         arg->accept(this);
+    }
+
+    if(node->params.size() != methodInfo->GetArgsCount()) {
+        throw DeclarationException("Requested method " + classInfo->GetName()->GetString() + "::" + node->id->name + " has " + std::to_string(methodInfo->GetArgsCount()) +
+                                                               " arguments, but " + std::to_string(node->params.size()) + " passed");
+        for(auto argument = methodInfo->GetArgs()->rbegin(); argument != methodInfo->GetArgs()->rend(); ++argument) {
+            auto arg = *argument;
+            auto passed = popTypeStack();
+            if( !(convertType(methodInfo->GetVariableInfo(arg)->GetType()) == convertType(passed))) {
+                if(ToString(passed->GetType()) == "user class" &&
+                    table->DoesTypeHaveSuper(table->getClassInfo(passed->GetClassName()->GetString()),
+                                                    methodInfo->GetVariableInfo(arg)->GetType()->GetClassName())) {
+                    continue;
+                }
+                throw DeclarationException("Requested method " + classInfo->GetName()->GetString() + "::" + node->id->name +
+                                                                   " was called with invalid argument - expected " + ToString(methodInfo->GetVariableInfo(arg)->GetType()) +
+                                           ", got " + ToString(passed->GetType()));
+            }
+        }
     }
     typesStack.push(methodInfo->GetReturnType());
 }
 
+void CTypeChecker::visit(const CClassType *node){
+    table->getClassInfo(node->label);
+}
+
 void CTypeChecker::visit(const CBooleanExp* node)
 {
-    typesStack.push(&IntType);
+    typesStack.push(&BooleanType);
 }
 
 void CTypeChecker::visit(const CIntegerExp* node)
 {
-    typesStack.push(&BooleanType);
+    typesStack.push(&IntType);
 }
 
 void CTypeChecker::visit(const CId* node)
@@ -312,14 +345,17 @@ void CTypeChecker::visit(const CId* node)
 }
 
 void CTypeChecker::visit(const CThis* node)
-{}
+{
+    auto scopedClass = table->GetScopedClass();
+    typesStack.push(scopedClass->GetTypeInfo());
+}
 
 void CTypeChecker::visit(const CNewIntArray* node)
 {
     node->size->accept(this);
     auto returned = popTypeStack();
     if(convertType(returned->GetType()) != BasicType::INT_) {
-        throw DeclarationException("Trying to use non integer type as size of array ");
+        throw DeclarationException("Trying to use " + ToString(returned->GetType()) + " type as size of array ");
     }
     typesStack.push(&IntArrayType);
 }
@@ -335,7 +371,7 @@ void CTypeChecker::visit(const CNotExp* node)
     node->right->accept(this);
     auto returned = popTypeStack();
     if(convertType(returned->GetType()) != BasicType::BOOL_) {
-        throw DeclarationException("Trying to use non boolean type as boolean expression ");
+        throw DeclarationException("Trying to use " + ToString(returned->GetType()) + " type as boolean expression ");
     }
     typesStack.push(&BooleanType);
 }
@@ -344,6 +380,3 @@ void CTypeChecker::visit(const CArg* node){}
 void CTypeChecker::visit(const CTrue* node){}
 void CTypeChecker::visit(const CFalse* node){}
 void CTypeChecker::visit(const CStatementSeq *node){}
-
-
-

@@ -7,6 +7,7 @@
 #include <memory>
 #include <set>
 #include <assert.h>
+#include "../Exceptions.h"
 
 namespace STable {
 
@@ -45,12 +46,9 @@ protected:
 class CClassInfo: public CSymbol{
 public:
     CClassInfo( std::string name_) ;
-
     void AddMethodInfo(CMethodInfo* method);
-
     void AddVariableInfo(CVariableInfo* var);
-
-    CInternSymbol* GetSuperClass();
+    CInternSymbol *GetSuperClass() const;
     void SetSuperClass(std::string& name);
     void SetSuperClass(CInternSymbol* name);
 
@@ -103,12 +101,14 @@ public:
     CTypeInfo* GetType();
     void AddVariable(CVariableInfo* var);
     void AddArg(CVariableInfo *arg);
-    CVariableInfo* GetVariableInfo(CInternSymbol *name);
+    CVariableInfo* GetVariableInfo(CInternSymbol *name) const;
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* GetVariablesBlock();
     CInternSymbol* GetClassName();
     CTypeInfo* GetReturnType() const;
-    std::vector<CInternSymbol*>* GetArgs();
+    int GetArgsCount()const {return args.size();}
+    const std::vector<CInternSymbol *> *GetArgs() const;
     std::vector<CInternSymbol*>* GetVars();
+
 
     std::vector<CInternSymbol*> args;
     std::vector<CInternSymbol*> vars;
@@ -132,7 +132,7 @@ public:
     CClassInfo* GetClassName();
     std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo> >* methodsBlock;
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* variablesBlock;
-    CClassInfo* className;
+    CClassInfo* classInfo;
 };
 
 
@@ -175,11 +175,13 @@ public:
     void AddNewClass(std::string neClassName);
     void AddNewMethod(std::string newMethodName);
     void FreeLastScope();
+    bool DoesTypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const;
     CClassInfo* getClassInfo(const std::string className) const;
     CVariableInfo* getVariableInfo(const std::string &name);
     CMethodInfo* GetMethodInfo(std::string& name);
     CTypeInfo* GetTypeInfo(std::string& name);
     std::vector<CInternSymbol*>& GetClassesNames(){ return classesNames; }
+    const CClassInfo* GetScopedClass() const ;
     CTable(const CTable&) = delete;
     CTable(){}
 

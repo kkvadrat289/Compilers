@@ -24,17 +24,24 @@ bool CTypeInfo::operator==(const CTypeInfo &other) const
 
 void CClassInfo::AddMethodInfo(CMethodInfo* method)
 {
-      methods.push_back(method->GetName());
-      methodsBlock[method->GetName()]= std::shared_ptr<CMethodInfo>(method);
+    auto newMethod= methodsBlock.find(method->GetName());
+    if (newMethod != methodsBlock.end()){
+        throw  DeclarationException("Method " + method->GetName()->GetString() + "  already declared");
+    }
+    methods.push_back(method->GetName());
+    methodsBlock[method->GetName()]= std::shared_ptr<CMethodInfo>(method);
 }
 
 void CClassInfo::AddVariableInfo(CVariableInfo* var)
 {
-      vars.push_back(var->GetName());
-      variablesBlock[var->GetName()] = std::shared_ptr<CVariableInfo>(var);
+    if (variablesBlock.find(var->GetName()) != variablesBlock.end()){
+        throw  DeclarationException("Variable " + var->GetName()->GetString() + "  already declared");
+    }
+    vars.push_back(var->GetName());
+    variablesBlock[var->GetName()] = std::shared_ptr<CVariableInfo>(var);
 }
 
-CInternSymbol* CClassInfo::GetSuperClass(){
+CInternSymbol* CClassInfo::GetSuperClass() const{
     return superClass;
 }
 void CClassInfo::SetSuperClass(std::string& name){
@@ -90,19 +97,27 @@ CTypeInfo* CMethodInfo::GetType(){
     return returnType;
 }
 void CMethodInfo::AddVariable(CVariableInfo* var){
+    if (variablesBlock.find(var->GetName()) != variablesBlock.end()){
+        throw DeclarationException("Variable " + var->GetName()->GetString() + " in method "
+                                   + this->name->GetString() + " already declared");
+    }
     vars.push_back(var->GetName());
     variablesBlock[var->GetName()] = std::shared_ptr<CVariableInfo>(var);
 }
 
 void CMethodInfo::AddArg(CVariableInfo *arg){
+    if (variablesBlock.find(arg->GetName()) != variablesBlock.end()){
+        throw DeclarationException("Variable " + arg->GetName()->GetString() + " in method "
+                                   + this->name->GetString() + " already declared");
+    }
     args.push_back(arg->GetName());
     variablesBlock[arg->GetName()] = std::shared_ptr<CVariableInfo>(arg);
 }
 
-CVariableInfo* CMethodInfo::GetVariableInfo(CInternSymbol *name){
+CVariableInfo* CMethodInfo::GetVariableInfo(CInternSymbol *name) const {
     CVariableInfo *res = variablesBlock.find(name)->second.get();
     if (res == nullptr){
-        //exception
+        throw DeclarationException("Variable " + name->GetString() + " in method " + this->name->GetString() + " undeclared");
     }
     return res;
 }
@@ -119,7 +134,7 @@ CTypeInfo* CMethodInfo::GetReturnType() const {
     return returnType;
 }
 
-std::vector<CInternSymbol*>* CMethodInfo::GetArgs(){
+const std::vector<CInternSymbol*>* CMethodInfo::GetArgs() const{
     return &args;
 }
 
@@ -134,12 +149,12 @@ CScope::CScope(std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo>
       CClassInfo* className_) :
     methodsBlock(methodsBlock_),
     variablesBlock(variablesBlock_),
-    className(className_)
+    classInfo(className_)
 {}
 
 std::unordered_map<CInternSymbol*, std::shared_ptr<CMethodInfo > >* CScope::GetMethodsBlock(){return methodsBlock;}
 std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* CScope::GetVariablesBlock(){return variablesBlock;}
-CClassInfo* CScope::GetClassName(){return className;}
+CClassInfo* CScope::GetClassName(){return classInfo;}
 
 
 /* ******************** TYPEINFO *********************** */
@@ -208,7 +223,7 @@ void CTable::AddClass(CClassInfo *newClass){
 
     }
     else{
-        //already declared
+        throw DeclarationException("Class " + newClass->GetName()->GetString() + " already declared");
     }
 }
 
@@ -218,8 +233,20 @@ CClassInfo* CTable::getClassInfo(const std::string className) const{
     if (info != classes.end()){
         return info->second.get();
     }
-    //not declared
-    return nullptr;
+    throw DeclarationException("Class " + className + " not declared");
+}
+
+bool CTable::DoesTypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const
+{
+    for(auto info = classInfo;
+        info->GetSuperClass() != nullptr;
+        info = getClassInfo(info->GetSuperClass()->GetString()))
+    {
+        if(classInfo->GetSuperClass() == super) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void CTable::checkClass(CClassInfo *classToCheck){
@@ -245,6 +272,12 @@ void CTable::AddNewClass(std::string newClassName){
     std::vector<CClassInfo*> chain;
     chain.push_back(newClass);
     for (CClassInfo* class_ = newClass; class_ ->GetSuperClass()!= nullptr; class_ = getClassInfo(class_->GetSuperClass()->GetString())){
+        for (auto super : chain){
+            if (super->GetName()->GetString() == class_->GetName()->GetString()){
+                //cyclic dependency
+                throw DeclarationException("cyclic dependency in class " + class_->GetName()->GetString());
+            }
+        }
         chain.push_back(class_);
     }
     for(auto class_ : chain) {
@@ -262,8 +295,7 @@ CMethodInfo* CTable::getMethodInfo(std::string methodName){
             return method->second.get();
         }
     }
-    //not declared
-    return nullptr;
+    throw DeclarationException("method " + methodName + " not declared");
 }
 
 void CTable::FreeLastScope(){
@@ -275,6 +307,10 @@ void CTable::AddNewMethod(std::string newMethodName){
     CMethodInfo* method = getMethodInfo(newMethodName);
     std::unordered_map<CInternSymbol*, std::shared_ptr<CVariableInfo> >* varBlock = method->GetVariablesBlock();
     scopes.push_back(std::shared_ptr<CScope>(new CScope(varBlock, nullptr, scopes.begin()->get()->GetClassName())));
+}
+
+const CClassInfo* CTable::GetScopedClass() const {
+    return scopes.size() > 0 ? scopes.rbegin()->get()->classInfo : nullptr;
 }
 
 CVariableInfo* CTable::getVariableInfo(const std::string &name)
@@ -289,8 +325,7 @@ CVariableInfo* CTable::getVariableInfo(const std::string &name)
             }
         }
     }
-    //not declared
-    return nullptr;
+    throw DeclarationException("Variable " + name + " not declared");
 }
 
 CMethodInfo* CTable::GetMethodInfo(std::string& name)
@@ -302,7 +337,6 @@ CMethodInfo* CTable::GetMethodInfo(std::string& name)
             return method->second.get();
         }
     }
-    //not declared
-    return nullptr;
+    throw DeclarationException("Method " + name + " not declared");
 }
 }

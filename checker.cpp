@@ -12,14 +12,16 @@ extern std::unique_ptr<CProgram> program;
 int main(void) {
    yyparse();
    STable::CTableVisitor visitor;
-   visitor.ParseProgram(program.get());
-   /*try {
+   try{
+      //visitor.ParseProgram(program.get());
       visitor.FillTable(program.get());
       std::unique_ptr<STable::CTable> symbolTable(visitor.GetTable());
       TypeChecker::CTypeChecker checker;
       checker.Check(program.get(), symbolTable.get());
    }
-   catch(DeclarationException e) {}
-*/
+   catch(DeclarationException e) {
+        std::cout << e.what() << std::endl;
+   }
+
   return 0;
 }

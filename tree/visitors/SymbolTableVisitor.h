@@ -18,9 +18,9 @@ public:
     ~CTableVisitor(){}
     CTableVisitor(CProgram* program);
     CTypeInfo *convertType(const IType *type);
-    void printClassInfo(CClassInfo* classInfo);
-    void printVariableInfo(CVariableInfo *varInfo);
-    void printTypeInfo(CTypeInfo* type);
+    void printClassInfo(CClassInfo* classInfo) const;
+    void printVariableInfo(CVariableInfo *varInfo) const;
+    void printTypeInfo(CTypeInfo* type) const;
     void ParseProgram(CProgram* program);
     void FillTable(CProgram* program);
     CTable* GetTable(){
