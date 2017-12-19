@@ -189,7 +189,7 @@ void CTypeChecker::visit(const CIf* node)
 }
 
 static STable::CTypeInfo IntType(STable::T_INT);
-static STable::CTypeInfo BooleanType(STable::T_BOOL);
+static STable::CTypeInfo BoolType(STable::T_BOOL);
 static STable::CTypeInfo IntArrayType(STable::T_INT_ARR);
 
 void CTypeChecker::visit(const CBinExpression* node)
@@ -218,7 +218,7 @@ void CTypeChecker::visit(const CBinExpression* node)
                 throw DeclarationException("Trying to apply math operation to " + ToString(returned->GetType()));
         }
         if(node->type == BinType::LESS_) {
-            typesStack.push(&BooleanType);
+            typesStack.push(&BoolType);
         } else {
             typesStack.push(&IntType);
         }
@@ -233,7 +233,7 @@ void CTypeChecker::visit(const CBinExpression* node)
         if(convertType(returned->GetType()) != BasicType::BOOL_) {
                 throw DeclarationException("Trying to apply logical operation to " + ToString(returned->GetType()));
         }
-        typesStack.push(&BooleanType);
+        typesStack.push(&BoolType);
     default:
         break;
     }
@@ -311,7 +311,7 @@ void CTypeChecker::visit(const CCallMethod* node)
             auto passed = popTypeStack();
             if( !(convertType(methodInfo->GetVariableInfo(arg)->GetType()) == convertType(passed))) {
                 if(ToString(passed->GetType()) == "user class" &&
-                    table->DoesTypeHaveSuper(table->getClassInfo(passed->GetClassName()->GetString()),
+                    table->TypeHaveSuper(table->getClassInfo(passed->GetClassName()->GetString()),
                                                     methodInfo->GetVariableInfo(arg)->GetType()->GetClassName())) {
                     continue;
                 }
@@ -330,7 +330,7 @@ void CTypeChecker::visit(const CClassType *node){
 
 void CTypeChecker::visit(const CBooleanExp* node)
 {
-    typesStack.push(&BooleanType);
+    typesStack.push(&BoolType);
 }
 
 void CTypeChecker::visit(const CIntegerExp* node)
@@ -373,10 +373,14 @@ void CTypeChecker::visit(const CNotExp* node)
     if(convertType(returned->GetType()) != BasicType::BOOL_) {
         throw DeclarationException("Trying to use " + ToString(returned->GetType()) + " type as boolean expression ");
     }
-    typesStack.push(&BooleanType);
+    typesStack.push(&BoolType);
 }
 
 void CTypeChecker::visit(const CArg* node){}
-void CTypeChecker::visit(const CTrue* node){}
-void CTypeChecker::visit(const CFalse* node){}
+void CTypeChecker::visit(const CTrue* node){
+    typesStack.push(&BoolType);
+}
+void CTypeChecker::visit(const CFalse* node){
+    typesStack.push(&BoolType);
+}
 void CTypeChecker::visit(const CStatementSeq *node){}

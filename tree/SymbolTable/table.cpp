@@ -236,7 +236,7 @@ CClassInfo* CTable::getClassInfo(const std::string className) const{
     throw DeclarationException("Class " + className + " not declared");
 }
 
-bool CTable::DoesTypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const
+bool CTable::TypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const
 {
     for(auto info = classInfo;
         info->GetSuperClass() != nullptr;

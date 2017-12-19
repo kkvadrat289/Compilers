@@ -175,7 +175,7 @@ public:
     void AddNewClass(std::string neClassName);
     void AddNewMethod(std::string newMethodName);
     void FreeLastScope();
-    bool DoesTypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const;
+    bool TypeHaveSuper(const CClassInfo* classInfo, const CInternSymbol *super) const;
     CClassInfo* getClassInfo(const std::string className) const;
     CVariableInfo* getVariableInfo(const std::string &name);
     CMethodInfo* GetMethodInfo(std::string& name);
