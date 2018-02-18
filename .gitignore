@@ -19,3 +19,6 @@ tokens.h
 compile
 getGraph
 main.cpp
+graph
+checker
+table
