@@ -1,29 +1,47 @@
-#ifndef INREGACCESS_H
-#define INREGACCESS_H
+#include <iostream>
+#include "InRegAccess.h"
 
+namespace ActivationRecords {
 
-#include <memory>
+const char* const ArPrefix = "AR::";
 
-#include "Access.h"
-#include "Temp.h"
+InRegAccess::InRegAccess(T_RecordsType _type, int _size, const std::string& name) :
+    type(_type),
+    size(_size),
+    id(-1),
+    name(name),
+    temp(new IR::Temp(ArPrefix + name))
+{
+}
 
-namespace Records {
+InRegAccess::InRegAccess(T_RecordsType _type, int _size, int id) :
+    type(_type),
+    size(_size),
+    id(id),
+    name(std::to_string(id)),
+    temp(new IR::Temp(ArPrefix + name))
+{
+}
 
-class InRegAccess : public IAccess {
-public:
-    InRegAccess(T_RecordsType _type, int _size, int regNumber);
-
-    virtual const int GetSize() const override { return size; }
-    virtual const T_RecordsType GetRecordType() override { return type; }
-    virtual const int GetRegNumber() const { return regNumber; }
-    virtual void print(Temp fp) const override;
-
-private:
-    T_RecordsType type;
-    int size;
-    int regNumber;
-};
+InRegAccess::InRegAccess(const InRegAccess& other):
+    type(other.type),
+    size(other.size),
+    id(other.id),
+    name(other.name),
+    temp(new IR::Temp(*other.temp.get()))
+{
 
 }
 
-#endif // INREGACCESS_H
+void InRegAccess::print(TempAddress fp) const
+{
+    std::cout << "Register: " << name << std::endl;
+}
+
+IR::IExp* InRegAccess::GetExp(IR::Temp* fp, const SymbolTable::Position& position) const
+{
+    delete fp;
+    return new IR::Mem(new IR::Temp(*temp.get()));
+}
+
+}

@@ -1,11 +1,12 @@
-#ifndef ACCESS_H
-#define ACCESS_H
+#pragma once
 
-#include "../SymbolTable/table.h"
-#include "Temp.h"
 #include <string>
 
-namespace Records {
+#include "TempAddress.h"
+
+//#include "Temp.h"
+
+namespace ActivationRecords {
 
 enum T_RecordsType {
     RT_Formal,
@@ -22,9 +23,7 @@ public:
     virtual ~IAccess() {}
     virtual const T_RecordsType GetRecordType() = 0;
     virtual const int GetSize() const = 0;
-    virtual void print(Temp fp) const = 0;
+    virtual void print(TempAddress fp) const = 0;
 };
 
 }
-
-#endif // ACCESS_H

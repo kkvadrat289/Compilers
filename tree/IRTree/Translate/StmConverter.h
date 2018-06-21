@@ -1,0 +1,4 @@
+#ifndef STMCONVERTER_H
+#define STMCONVERTER_H
+
+#endif // STMCONVERTER_H

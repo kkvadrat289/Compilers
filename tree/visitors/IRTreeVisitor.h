@@ -1,0 +1,4 @@
+#ifndef IRTREEVISITOR_H
+#define IRTREEVISITOR_H
+
+#endif // IRTREEVISITOR_H

@@ -1,0 +1,4 @@
+#ifndef ARRAYSTRUCT_H
+#define ARRAYSTRUCT_H
+
+#endif // ARRAYSTRUCT_H

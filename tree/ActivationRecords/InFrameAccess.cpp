@@ -1,23 +1,31 @@
 #include <iostream>
 
-#include "../SymbolTable/table.h"
+#include "Symbol.h"
 #include "InFrameAccess.h"
+#include "IRNodeTypes.h"
 
-namespace Records {
+namespace ActivationRecords {
 
 InFrameAccess::InFrameAccess(T_RecordsType _type, int _size, int offset) :
-    recordType(_type),
     size(_size),
-    address(Temp(offset))
+    address(TempAddress(offset)),
+    recordType(_type)
 {
 }
 
-const Temp& InFrameAccess::Offset() const
+IR::IExp* InFrameAccess::GetExp(IR::Temp* fp, const SymbolTable::Position& position) const
+{
+    return new IR::Mem(new IR::Binop(IR::Binop::TB_PLUS, fp,
+                                     new IR::Const(address.GetAddress(), position),
+                                     position), position);
+}
+
+const TempAddress& InFrameAccess::Offset() const
 {
      return address;
 }
 
-void InFrameAccess::print(Temp fp) const
+void InFrameAccess::print(TempAddress fp) const
 {
     std::cout << "In frame position " << address.AtAddress(fp.GetAddress()).GetAddress() << std::endl;
 }
