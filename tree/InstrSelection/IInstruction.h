@@ -1,0 +1,4 @@
+#ifndef IINSTRUCTION_H
+#define IINSTRUCTION_H
+
+#endif // IINSTRUCTION_H
